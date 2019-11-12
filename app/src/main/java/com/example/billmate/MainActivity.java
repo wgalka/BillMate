@@ -46,18 +46,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void buildLayout(Bundle savedInstanceState){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        floatingActionButton = findViewById(R.id.floating_button);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Toast.makeText(getApplicationContext(), "SNACK BAR", Toast.LENGTH_LONG).show();
-//                floatingActionButton.setVisibility(View.INVISIBLE);
-            }
-        });
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
         avatar = headerView.findViewById(R.id.avatar);
@@ -81,6 +72,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             name.setText(user_google_information.getDisplayName());
             email.setText(user_google_information.getEmail());
         }
+
+        floatingActionButton = findViewById(R.id.floating_button);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
+//                floatingActionButton.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     @Override
