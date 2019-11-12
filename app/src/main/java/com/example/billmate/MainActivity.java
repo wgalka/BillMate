@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        final NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
         avatar = headerView.findViewById(R.id.avatar);
@@ -82,6 +83,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             name.setText(user_google_information.getDisplayName());
             email.setText(user_google_information.getEmail());
         }
+
+        floatingActionButton = findViewById(R.id.floating_button);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (navigationView.getCheckedItem().getItemId()) {
+                    case R.id.nav_profile:
+                        createNewFlat();
+                        break;
+                    case R.id.nav_chat:
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
+//                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -136,5 +154,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void createNewFlat(){
+        //finish();
+        startActivity(new Intent(MainActivity.this, CreateNewFlat.class));
     }
 }

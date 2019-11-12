@@ -11,11 +11,27 @@
         <item
             android:id="@+id/nav_groups"
             android:icon="@drawable/ic_group"
-            android:title="My groups" />
+            android:title="Mieszkanie" />
         <item
             android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_chat"
+            android:icon="@drawable/ic_group"
             android:title="Chat" />
+        <item
+            android:id="@+id/nav_groups2"
+            android:icon="@drawable/ic_group"
+            android:title="My groups" />
+        <item
+            android:id="@+id/nav_groups3"
+            android:icon="@drawable/ic_group"
+            android:title="Bukiet dla nauczycielki" />
+        <item
+            android:id="@+id/nav_groups4"
+            android:icon="@drawable/ic_group"
+            android:title="Sobota" />
+        <item
+            android:id="@+id/nav_groups5"
+            android:icon="@drawable/ic_group"
+            android:title="Koledzy" />
     </group>
 
     <item android:title="Actions">

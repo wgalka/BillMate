@@ -33,11 +33,11 @@ public class ChatFragment extends Fragment {
 
         exampleList = new ArrayList<>();
         exampleList.add(new ItemCardView(R.drawable.ic_send, "Line 1", "Line 2"));
-        exampleList.add(new ItemCardView(R.drawable.ic_info, "Line 3", "Line 4"));
-        exampleList.add(new ItemCardView(R.drawable.ic_profile, "Line 5", "Line 6"));
-        exampleList.add(new ItemCardView(R.drawable.ic_send, "Line 1", "Line 2"));
-        exampleList.add(new ItemCardView(R.drawable.ic_info, "Line 3", "Line 4"));
-        exampleList.add(new ItemCardView(R.drawable.ic_profile, "Line 5", "Line 6"));
+        exampleList.add(new ItemCardView(R.drawable.ic_info, "Line 2", "Line 4"));
+        exampleList.add(new ItemCardView(R.drawable.ic_profile, "Line 3", "Line 6"));
+        exampleList.add(new ItemCardView(R.drawable.ic_send, "Line 4", "Line 2"));
+        exampleList.add(new ItemCardView(R.drawable.ic_info, "Line 5", "Line 4"));
+        exampleList.add(new ItemCardView(R.drawable.ic_profile, "Line 6", "Line 6"));
         exampleList.add(new ItemCardView(R.drawable.ic_send, "Line 1", "Line 2"));
         exampleList.add(new ItemCardView(R.drawable.ic_info, "Line 3", "Line 4"));
         exampleList.add(new ItemCardView(R.drawable.ic_profile, "Line 5", "Line 6"));
