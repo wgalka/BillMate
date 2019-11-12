@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ProfileFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_profile);
-            navigationView.getMenu().add(R.id.menu_group,123, Menu.NONE,"Item");
         }
 
         if (user_google_information != null) {
@@ -85,9 +85,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
                     case R.id.nav_profile:
-                        createNewFlat();
+                        createNewItem(navigationView);
                         break;
                     case R.id.nav_chat:
+                        createNewFlat();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -150,5 +151,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNewFlat(){
         //finish();
         startActivity(new Intent(MainActivity.this, CreateNewFlat.class));
+    }
+
+    private void createNewItem(NavigationView navigationView){
+        Menu menu = navigationView.getMenu();
+        menu.add(R.id.group,1, Menu.NONE,"Item").setIcon(R.drawable.ic_firebase_logo).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ChatFragment()).commit();
+                return false;
+            }
+        });
     }
 }
