@@ -43,13 +43,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         buildLayout(savedInstanceState);
     }
 
-    private void buildLayout(Bundle savedInstanceState){
+    private void buildLayout(Bundle savedInstanceState) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         floatingActionButton = findViewById(R.id.floating_button);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 //              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 Toast.makeText(getApplicationContext(), "SNACK BAR", Toast.LENGTH_LONG).show();
 //                floatingActionButton.setVisibility(View.INVISIBLE);
@@ -93,6 +94,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
+                break;
+            case R.id.nav_groups:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new GroupsFragment()).commit();
                 break;
             case R.id.nav_info:
                 Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
