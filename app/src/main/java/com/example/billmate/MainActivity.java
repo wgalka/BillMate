@@ -10,6 +10,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView avatar;
     private TextView name, email;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
+    private static User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new ProfileFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_profile);
+            navigationView.getMenu().add(R.id.menu_group,123, Menu.NONE,"Item");
         }
 
         if (user_google_information != null) {
@@ -71,15 +74,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Picasso.get().load(user_google_information.getPhotoUrl().toString()).into(avatar);
             name.setText(user_google_information.getDisplayName());
             email.setText(user_google_information.getEmail());
+            user.setName(user_google_information.getDisplayName());
+            user.setEmail(user_google_information.getEmail());
+            user.setUid(user_google_information.getUid());
         }
 
         floatingActionButton = findViewById(R.id.floating_button);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
-//                floatingActionButton.setVisibility(View.INVISIBLE);
+                switch (navigationView.getCheckedItem().getItemId()) {
+                    case R.id.nav_profile:
+                        createNewFlat();
+                        break;
+                    case R.id.nav_chat:
+                        break;
+                    default:
+                        Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
+//                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
             }
         });
     }
@@ -132,5 +145,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void createNewFlat(){
+        //finish();
+        startActivity(new Intent(MainActivity.this, CreateNewFlat.class));
     }
 }
