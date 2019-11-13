@@ -23,7 +23,7 @@ public class CreateNewFlat extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View rowView = inflater.inflate(R.layout.add_email_row, null);
         // Add the new row before the add field button.
-        parentLinearLayout1.addView(rowView, parentLinearLayout1.getChildCount() - 1);
+        parentLinearLayout1.addView(rowView, parentLinearLayout1.getChildCount() - 2);
     }
 
     public void onDelete(View v) {

@@ -13,68 +13,84 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Group name"
         android:inputType="textPersonName"
-        android:text="Group name"
         android:textAlignment="center" />
 
-
-    <LinearLayout
-        android:id="@+id/parent_linear_layout1"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="181dp"
-        android:orientation="vertical">
-
+        android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/parent_linear_layout1"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/user_email"
-                android:layout_width="329dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Group member email" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/user_email"
+                    android:layout_width="329dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Group member email adress"
+                    android:inputType="textPersonName" />
+
+                <Button
+                    android:id="@+id/remove_user"
+                    android:layout_width="3dp"
+                    android:layout_height="37dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_clear"
+                    android:onClick="onDelete"
+                    android:padding="@dimen/sd_close_elevation" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/remove_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onDelete"
-                android:text="remove" />
+                android:id="@+id/add_user"
+                android:layout_width="38dp"
+                android:layout_height="36dp"
+                android:background="@drawable/ic_add_circle"
+                android:onClick="onAddField" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/create_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/sd_close_elevation"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_bg"
+                    android:backgroundTint="@color/primary_light"
+                    android:text="Create"
+                    android:textColor="@color/primary_text" />
+
+                <Button
+                    android:id="@+id/abort_creation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/sd_close_elevation"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_bg"
+                    android:backgroundTint="@color/accent"
+                    android:text="Abort"
+                    android:textColor="@color/primary_text" />
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
 
-        <Button
-            android:id="@+id/add_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onAddField"
-            android:text="Add" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/create_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Create" />
-
-        <Button
-            android:id="@+id/abort_creation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Abort" />
-    </LinearLayout>
 
 </LinearLayout>

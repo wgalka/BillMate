@@ -9,13 +9,15 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Group member email" />
+        android:hint="Group member email adress"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/remove_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="3dp"
+        android:layout_height="37dp"
         android:layout_weight="1"
-        android:text="remove" />
+        android:background="@drawable/ic_clear"
+        android:onClick="onDelete"
+        android:padding="@dimen/sd_close_elevation" />
 </LinearLayout>
