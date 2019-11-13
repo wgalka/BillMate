@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         buildLayout(savedInstanceState);
     }
 
-    private void buildLayout(Bundle savedInstanceState){
+    private void buildLayout(Bundle savedInstanceState) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -115,6 +115,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_logout:
                 logout();
                 break;
+            case 101:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ChatFragment()).commit();
+
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -148,20 +153,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createNewFlat(){
+    private void createNewFlat() {
         //finish();
         startActivity(new Intent(MainActivity.this, CreateNewFlat.class));
     }
 
-    private void createNewItem(NavigationView navigationView){
-        Menu menu = navigationView.getMenu();
-        menu.add(R.id.group,1, Menu.NONE,"Item").setIcon(R.drawable.ic_firebase_logo).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();
-                return false;
-            }
-        });
+    private void createNewItem(NavigationView navigationView) {
+        MenuItem menu = navigationView.getMenu().getItem(1);
+        SubMenu subMenu = menu.getSubMenu();
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo).setCheckable(true);
     }
 }
