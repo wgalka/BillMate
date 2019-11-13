@@ -10,7 +10,7 @@
         android:layout_weight="1"
         android:ems="10"
         android:hint="Group member email adress"
-        android:inputType="textPersonName" />
+        android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/remove_user"
