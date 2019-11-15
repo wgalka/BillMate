@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ProfileFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_profile);
+                    new MyGroupsFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_my_groups);
         }
 
         if (user_google_information != null) {
@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
-                    case R.id.nav_profile:
+                    case R.id.nav_my_groups:
                         createNewItem(navigationView);
                         break;
                     case R.id.nav_chat:
-                        createNewFlat();
+                        createNewGroup();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChatFragment()).commit();
                 break;
-            case R.id.nav_profile:
+            case R.id.nav_my_groups:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                        new MyGroupsFragment()).commit();
                 break;
             case R.id.nav_info:
                 Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createNewFlat() {
+    private void createNewGroup() {
         //finish();
         startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
     }

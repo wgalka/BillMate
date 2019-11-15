@@ -10,6 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".InviteActivity"></activity>
+        <activity android:name=".CreateNewGroup"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
