@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -158,6 +157,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void createNewFlat(){
         //finish();
-        startActivity(new Intent(MainActivity.this, CreateNewFlat.class));
+        startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
     }
 }
