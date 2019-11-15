@@ -3,10 +3,6 @@ package com.example.billmate;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
 
 public class CreateNewGroup extends AppCompatActivity {
 

@@ -10,7 +10,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView avatar;
     private TextView name, email;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
+    private static User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,16 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void buildLayout(Bundle savedInstanceState) {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        floatingActionButton = findViewById(R.id.floating_button);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-//              Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                Toast.makeText(getApplicationContext(), "SNACK BAR", Toast.LENGTH_LONG).show();
-//                floatingActionButton.setVisibility(View.INVISIBLE);
-            }
-        });
 
         drawer = findViewById(R.id.drawer_layout);
         final NavigationView navigationView = findViewById(R.id.nav_view);
@@ -81,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Picasso.get().load(user_google_information.getPhotoUrl().toString()).into(avatar);
             name.setText(user_google_information.getDisplayName());
             email.setText(user_google_information.getEmail());
+            user.setName(user_google_information.getDisplayName());
+            user.setEmail(user_google_information.getEmail());
+            user.setUid(user_google_information.getUid());
         }
 
         floatingActionButton = findViewById(R.id.floating_button);
@@ -89,9 +85,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
                     case R.id.nav_profile:
-                        createNewFlat();
+                        createNewItem(navigationView);
                         break;
                     case R.id.nav_chat:
+                        createNewFlat();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -112,15 +109,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;
-            case R.id.nav_groups:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new GroupsFragment()).commit();
-                break;
             case R.id.nav_info:
                 Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 logout();
+                break;
+            case 101:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ChatFragment()).commit();
+
                 break;
         }
 
@@ -155,8 +153,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createNewFlat(){
+    private void createNewFlat() {
         //finish();
         startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
+    }
+
+    private void createNewItem(NavigationView navigationView) {
+        MenuItem menu = navigationView.getMenu().getItem(1);
+        SubMenu subMenu = menu.getSubMenu();
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo).setCheckable(true);
     }
 }
