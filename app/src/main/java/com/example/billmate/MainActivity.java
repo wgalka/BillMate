@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MyGroupsFragment()).commit();
-            navigationView.setCheckedItem(R.id.nav_my_groups);
+            navigationView.setCheckedItem(R.id.nav_home);
         }
 
         if (user_google_information != null) {
@@ -84,10 +84,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
-                    case R.id.nav_my_groups:
+                    case R.id.nav_home:
                         createNewItem(navigationView);
                         break;
-                    case R.id.nav_chat:
+                    case R.id.nav_notifications:
                         createNewGroup();
                         break;
                     default:
@@ -101,11 +101,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_chat:
+            case R.id.nav_notifications:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ChatFragment()).commit();
                 break;
-            case R.id.nav_my_groups:
+            case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyGroupsFragment()).commit();
                 break;
