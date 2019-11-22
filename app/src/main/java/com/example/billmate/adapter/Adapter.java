@@ -1,4 +1,4 @@
-package com.example.billmate;
+package com.example.billmate.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.billmate.R;
+import com.example.billmate.itemsBean.ItemCardView;
 
 import java.util.ArrayList;
 

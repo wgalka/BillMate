@@ -101,14 +101,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.nav_notifications:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();
-                break;
+//            case R.id.nav_notifications:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new ChatFragment()).commit();
+//                break;
+            // Management group
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyGroupsFragment()).commit();
                 break;
+
+            case R.id.nav_bills:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new BillsFragment()).commit();
+                break;
+
+            case R.id.nav_members:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MembersFragment()).commit();
+                break;
+
+            case R.id.nav_notifications:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new NotificationFragment()).commit();
+                break;
+
+
+            // Actions group
             case R.id.nav_info:
                 Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
                 break;
