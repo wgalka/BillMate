@@ -1,5 +1,8 @@
 package com.example.billmate.itemsBean;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Bill {
     private int mBillImage;
     private String mBillTitle;
@@ -53,6 +56,14 @@ public class Bill {
 
     public void setmBillOwes(String mBillOwes) {
         this.mBillOwes = mBillOwes;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }
 
