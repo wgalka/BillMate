@@ -55,3 +55,7 @@ public class Bill {
         this.mBillOwes = mBillOwes;
     }
 }
+
+class Product {
+
+}
