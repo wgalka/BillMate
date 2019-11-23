@@ -6,11 +6,13 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,19 +27,18 @@ public class CreateBill extends AppCompatActivity {
         EditText mBillTotalPrice = findViewById(R.id.mBillTotalPrice);
         mBillTotalPrice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
         mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
-    }
 
-    public void addField(View v) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.item_act_group_member, null);
-        // Add the new row before the add field button.
-        mGroupMembersLinearLayout.addView(rowView, mGroupMembersLinearLayout.getChildCount());
-    }
+        ArrayList<String> groupMembers = new ArrayList<>();
+        groupMembers.add("pafsda@gmail.com");
+        groupMembers.add("vbuwrbveyu@gmail.com");
+        groupMembers.add("bruwuivew@gmail.com");
 
-    public void onDelete(View v) {
-        mGroupMembersLinearLayout.removeView((View) v.getParent());
+        for (int i = 0; i < groupMembers.size(); i++) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(groupMembers.get(i));
+            mGroupMembersLinearLayout.addView(checkBox, mGroupMembersLinearLayout.getChildCount());
+        }
     }
-
 
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
