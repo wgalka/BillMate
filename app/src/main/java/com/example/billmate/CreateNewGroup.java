@@ -21,5 +21,24 @@ public class CreateNewGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
+        confirmCreateNewGroup = findViewById(R.id.nextStepCreateGroup);
+        nameOfgroup = findViewById(R.id.nameNewGroup);
+        setConfirmCreateNewGroup();
+    }
+
+    private void setConfirmCreateNewGroup() {
+        confirmCreateNewGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addMembers = new Intent(CreateNewGroup.this, InviteActivity.class);
+                if (nameOfgroup.getText().toString().trim().length() > 0) {
+                    addMembers.putExtra(NAME_OF_GROUP, nameOfgroup.getText().toString());
+                    startActivity(addMembers);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.write_something), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
