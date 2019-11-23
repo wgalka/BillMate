@@ -51,6 +51,8 @@
             android:ems="10"
             android:gravity="start|top"
             android:hint="Description"
+            android:maxLines="10"
+            android:minLines="1"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
