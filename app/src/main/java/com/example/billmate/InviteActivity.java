@@ -57,15 +57,18 @@ public class InviteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (getEmailMember.getText().toString().trim().length() > 0 && isValid(getEmailMember.getText().toString())) {
                     if (mList.size() != 0) {
+                        int isDuplicated = 0;
                         for (int i = 0; i < mList.size(); i++) {
                             if (mList.get(i).getmText1().equals(getEmailMember.getText().toString())) {
                                 Toast.makeText(getApplicationContext(), "Dodano już tego usera: " + getEmailMember.getText().toString() + " do grupy: " + beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
+                                isDuplicated = 1;
                                 break;
-                            } else {
-                                beginningGroup.addElem(getEmailMember.getText().toString());
-                                mList.add(new ItemCardView(getEmailMember.getText().toString()));
-                                mInviteAdapter.notifyDataSetChanged();
                             }
+                        }
+                        if (isDuplicated == 0) {
+                            beginningGroup.addElem(getEmailMember.getText().toString());
+                            mList.add(new ItemCardView(getEmailMember.getText().toString()));
+                            mInviteAdapter.notifyDataSetChanged();
                         }
                     } else {
                         beginningGroup.addElem(getEmailMember.getText().toString());
@@ -118,7 +121,7 @@ public class InviteActivity extends AppCompatActivity {
         mInviteAdapter.notifyItemRemoved(position);
     }
 
-    private void uploadNewGroup(){
+    private void uploadNewGroup() {
 
     }
 
