@@ -32,12 +32,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String TAG = MainActivity.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient;
+    private NavigationView navigationView;
     private DrawerLayout drawer;
     private View headerView, floatingActionButton; //FloatingActionButton
     private ImageView avatar;
     private TextView name, email;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
-    private static User user = new User();
+    protected static User user = new User();
+    protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
-        final NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         headerView = navigationView.getHeaderView(0);
         avatar = headerView.findViewById(R.id.avatar);
@@ -80,12 +82,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         floatingActionButton = findViewById(R.id.floating_button);
+        setFloatingActionButton();
+    }
+
+    private void setFloatingActionButton() {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
                     case R.id.nav_my_groups:
-                        createNewItem(navigationView);
+                        //createNewItem(navigationView);
+                        createNewGroup();
                         break;
                     case R.id.nav_chat:
                         createNewGroup();
@@ -161,6 +168,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNewItem(NavigationView navigationView) {
         MenuItem menu = navigationView.getMenu().getItem(1);
         SubMenu subMenu = menu.getSubMenu();
-        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo).setCheckable(true);
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo);
     }
 }
