@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.billmate.itemsBean.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -89,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_notifications:
                         createNewGroup();
+                        break;
+                    case R.id.nav_bills:
+                        createBill();
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -175,6 +179,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNewGroup() {
         //finish();
         startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
+    }
+
+    private void createBill() {
+        startActivity(new Intent(MainActivity.this, CreateBill.class));
     }
 
     private void createNewItem(NavigationView navigationView) {

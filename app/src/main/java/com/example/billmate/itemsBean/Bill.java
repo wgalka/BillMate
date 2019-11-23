@@ -1,13 +1,13 @@
 package com.example.billmate.itemsBean;
 
-public class ItemBill {
+public class Bill {
     private int mBillImage;
     private String mBillTitle;
     private String mBillOwner;
     private String mBillTotal;
     private String mBillOwes;
 
-    public ItemBill(int mBillImage, String mBillTitle, String mBillOwner, String mBillTotal, String mBillOwes) {
+    public Bill(int mBillImage, String mBillTitle, String mBillOwner, String mBillTotal, String mBillOwes) {
         this.mBillImage = mBillImage;
         this.mBillTitle = mBillTitle;
         this.mBillOwner = mBillOwner;

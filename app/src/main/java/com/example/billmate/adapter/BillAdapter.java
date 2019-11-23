@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.billmate.R;
-import com.example.billmate.itemsBean.ItemBill;
+import com.example.billmate.itemsBean.Bill;
 
 import java.util.ArrayList;
 
 public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder> {
-    private ArrayList<ItemBill> mBillList;
+    private ArrayList<Bill> mBillList;
     public static class BillViewHolder extends RecyclerView.ViewHolder {
         public ImageView mBillImage;
         public TextView mBillTitle;
@@ -33,7 +33,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         }
     }
 
-    public BillAdapter(ArrayList<ItemBill> BillList) {
+    public BillAdapter(ArrayList<Bill> BillList) {
         mBillList = BillList;
     }
 
@@ -49,7 +49,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BillViewHolder holder, int position) {
-        ItemBill currentItem = mBillList.get(position);
+        Bill currentItem = mBillList.get(position);
 
         holder.mBillImage.setImageResource(currentItem.getmBillImage());
         holder.mBillTitle.setText(currentItem.getmBillTitle());

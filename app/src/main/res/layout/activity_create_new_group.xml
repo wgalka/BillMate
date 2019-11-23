@@ -9,7 +9,7 @@
     tools:context=".CreateNewGroup">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/mTextBillTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
@@ -18,7 +18,7 @@
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageButton6"
+        app:layout_constraintStart_toEndOf="@+id/mBtnChoseBillImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="group1" />
 
@@ -31,7 +31,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText">
+        app:layout_constraintTop_toBottomOf="@+id/mTextBillTitle">
 
 <!--        <LinearLayout-->
 <!--            android:layout_width="match_parent"-->
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/mBtnChoseBillImage"
         android:layout_width="59dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
@@ -109,7 +109,7 @@
         android:background="@drawable/round_bg"
         android:backgroundTint="@color/primary_light"
         android:src="@drawable/ic_add_a_photo"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/mTextBillTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

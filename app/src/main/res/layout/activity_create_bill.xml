@@ -6,20 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:padding="20dp"
+    android:padding="0dp"
     tools:context=".CreateNewGroup">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/mTextBillTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="27dp"
         android:ems="10"
         android:hint="Bill title"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageButton6"
+        app:layout_constraintStart_toEndOf="@+id/mBtnChoseBillImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Deafult bill name" />
 
@@ -34,7 +34,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText">
+        app:layout_constraintTop_toBottomOf="@+id/mTextBillTitle">
 
         <!--        <LinearLayout-->
         <!--            android:layout_width="match_parent"-->
@@ -118,19 +118,22 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@drawable/ic_add_black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/mBtnChoseBillImage"
         android:layout_width="59dp"
         android:layout_height="60dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/round_bg"
         android:backgroundTint="@color/primary_light"
         android:src="@drawable/ic_add_a_photo"
-        app:layout_constraintEnd_toStartOf="@+id/editText"
+        app:layout_constraintEnd_toStartOf="@+id/mTextBillTitle"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -2,27 +2,24 @@ package com.example.billmate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class CreateNewGroup extends AppCompatActivity {
 
-//    private LinearLayout parentLinearLayout1;
+    private static final String TAG = CreateNewGroup.class.getSimpleName();
+    private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
+    private Button confirmCreateNewGroup;
+    private EditText nameOfgroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_new_group);
-//        parentLinearLayout1 = (LinearLayout) findViewById(R.id.parent_linear_layout1);
     }
-
-//    public void onAddField(View v) {
-//        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        final View rowView = inflater.inflate(R.layout.add_email_row, null);
-//        // Add the new row before the add field button.
-//        parentLinearLayout1.addView(rowView, parentLinearLayout1.getChildCount() - 2);
-//    }
-//
-//    public void onDelete(View v) {
-//        parentLinearLayout1.removeView((View) v.getParent());
-//    }
 }
