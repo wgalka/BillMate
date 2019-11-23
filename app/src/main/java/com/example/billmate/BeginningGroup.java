@@ -26,4 +26,15 @@ public class BeginningGroup {
         this.members = members;
     }
 
+    public void addElem(String member){
+        this.members.add(member);
+    }
+
+    public void removeElem(int position){
+        this.members.remove(position);
+    }
+
+    public int getSize(){
+        return members.size();
+    }
 }

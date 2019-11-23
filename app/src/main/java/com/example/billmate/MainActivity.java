@@ -92,13 +92,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
                     case R.id.nav_home:
-                        createNewItem(navigationView);
-                        break;
-                    case R.id.nav_notifications:
                         createNewGroup();
                         break;
                     case R.id.nav_bills:
                         createBill();
+                        break;
+                    case R.id.nav_notifications:
+                        createNewItem(navigationView);
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -111,10 +111,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-//            case R.id.nav_notifications:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new ChatFragment()).commit();
-//                break;
             // Management group
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -146,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 101:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();
+                        new NotificationFragment()).commit();
 
                 break;
         }
@@ -183,7 +179,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void createNewGroup() {
-        //finish();
         startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
     }
 
@@ -194,6 +189,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void createNewItem(NavigationView navigationView) {
         MenuItem menu = navigationView.getMenu().getItem(1);
         SubMenu subMenu = menu.getSubMenu();
-        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo).setCheckable(true);
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo);
     }
 }

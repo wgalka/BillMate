@@ -9,13 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.billmate.BeginningGroup;
 import com.example.billmate.R;
 import com.example.billmate.itemsBean.ItemCardView;
 
 import java.util.ArrayList;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class InviteAdapter extends RecyclerView.Adapter<InviteAdapter.ViewHolder> {
     private ArrayList<ItemCardView> mList;
     private OnItemClickListener mListener;
 
@@ -64,7 +63,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         }
     }
 
-    public Adapter(ArrayList<ItemCardView> list) {
+    public InviteAdapter(ArrayList<ItemCardView> list) {
         mList = list;
     }
 
