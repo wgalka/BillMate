@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +19,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 
@@ -43,13 +47,15 @@ public class InviteActivity extends AppCompatActivity {
         setConfirmAddNewMember();
         setFinishFirstConfiguration();
         bulidRecycleView();
+
+
     }
 
     private void setConfirmAddNewMember() {
         confirmAddNewMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getEmailMember.getText().toString().trim().length() > 0) {
+                if (getEmailMember.getText().toString().trim().length() > 0 && isValid(getEmailMember.getText().toString())) {
                     if (mList.size() != 0) {
                         for (int i = 0; i < mList.size(); i++) {
                             if (mList.get(i).getmText1().equals(getEmailMember.getText().toString())) {
@@ -114,5 +120,10 @@ public class InviteActivity extends AppCompatActivity {
 
     private void uploadNewGroup(){
 
+    }
+
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
 }
