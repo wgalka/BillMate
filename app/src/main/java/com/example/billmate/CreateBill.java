@@ -1,11 +1,14 @@
 package com.example.billmate;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,13 +38,32 @@ public class CreateBill extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
         EditText mBillTotalPrice = findViewById(R.id.mTextBillTotalPrice);
+        //Bill Total Price validation
         mBillTotalPrice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
-        mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
 
         billTitle = findViewById(R.id.mTextBillTitle);
+        billTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+//                    Toast.makeText(getApplicationContext(), "okej text jest wypełniany dla ciebie", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(billTitle.getText().length()<3){
+                        Toast.makeText(getApplicationContext(), "Tytuł rachunku musi zawierać minimum 3 znaki", Toast.LENGTH_SHORT).show();
+//                        System.out.println("kolory: "+billTitle.getBackgroundTintList());
+//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.outcome));
+                    } else {
+//                        Toast.makeText(getApplicationContext(), billTitle.getText(), Toast.LENGTH_SHORT).show();
+//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.income));
+                    }
+                }
+            }
+        });
         billDescription = findViewById(R.id.mTextBillDescription);
         billTotalPrice = findViewById(R.id.mTextBillTotalPrice);
         saveBill = findViewById(R.id.mSaveBill);
+        //Layout where group members were loaded
+        mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
 
         ArrayList<String> groupMembers = new ArrayList<>();
         groupMembers.add("pafsda@gmail.com");
@@ -69,11 +91,16 @@ public class CreateBill extends AppCompatActivity {
             });
             mGroupMembersLinearLayout.addView(checkBox, mGroupMembersLinearLayout.getChildCount());
         }
-        billTitle = findViewById(R.id.mTextBillTitle);
+
+        saveBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), billTitle.getText(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void saveBill() {
-
         Toast.makeText(getApplicationContext(), getString(R.string.write_something), Toast.LENGTH_SHORT).show();
         return;
     }

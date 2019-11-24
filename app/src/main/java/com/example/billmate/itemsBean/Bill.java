@@ -2,20 +2,22 @@ package com.example.billmate.itemsBean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class Bill {
     private int mBillImage;
-    private String mBillTitle;
-    private String mBillOwner;
-    private String mBillTotal;
-    private String mBillOwes;
+    private String BillTitle;
+    private String BillOwner;
+    private String BillTotal;
+    private String BillOwes;
+    private ArrayList<String> BillPayers;
 
-    public Bill(int mBillImage, String mBillTitle, String mBillOwner, String mBillTotal, String mBillOwes) {
+    public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
         this.mBillImage = mBillImage;
-        this.mBillTitle = mBillTitle;
-        this.mBillOwner = mBillOwner;
-        this.mBillTotal = mBillTotal;
-        this.mBillOwes = mBillOwes;
+        BillTitle = billTitle;
+        BillOwner = billOwner;
+        BillTotal = billTotal;
+        BillOwes = billOwes;
     }
 
     public int getmBillImage() {
@@ -26,36 +28,44 @@ public class Bill {
         this.mBillImage = mBillImage;
     }
 
-    public String getmBillTitle() {
-        return mBillTitle;
+    public String getBillTitle() {
+        return BillTitle;
     }
 
-    public void setmBillTitle(String mBillTitle) {
-        this.mBillTitle = mBillTitle;
+    public void setBillTitle(String billTitle) {
+        BillTitle = billTitle;
     }
 
-    public String getmBillOwner() {
-        return mBillOwner;
+    public String getBillOwner() {
+        return BillOwner;
     }
 
-    public void setmBillOwner(String mBillOwner) {
-        this.mBillOwner = mBillOwner;
+    public void setBillOwner(String billOwner) {
+        BillOwner = billOwner;
     }
 
-    public String getmBillTotal() {
-        return mBillTotal;
+    public String getBillTotal() {
+        return BillTotal;
     }
 
-    public void setmBillTotal(String mBillTotal) {
-        this.mBillTotal = mBillTotal;
+    public void setBillTotal(String billTotal) {
+        BillTotal = billTotal;
     }
 
-    public String getmBillOwes() {
-        return mBillOwes;
+    public String getBillOwes() {
+        return BillOwes;
     }
 
-    public void setmBillOwes(String mBillOwes) {
-        this.mBillOwes = mBillOwes;
+    public void setBillOwes(String billOwes) {
+        BillOwes = billOwes;
+    }
+
+    public ArrayList<String> getBillPayers() {
+        return BillPayers;
+    }
+
+    public void setBillPayers(ArrayList<String> billPayers) {
+        BillPayers = billPayers;
     }
 
     public static double round(double value, int places) {
@@ -65,8 +75,4 @@ public class Bill {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-}
-
-class Product {
-
 }
