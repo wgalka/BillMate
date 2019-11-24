@@ -3,6 +3,7 @@ package com.example.billmate;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,13 +13,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.billmate.itemsBean.Bill;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.example.billmate.MainActivity.beginningGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,13 +50,13 @@ public class CreateBill extends AppCompatActivity {
     private Bill bill;
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("groups");
+    private CollectionReference collectionReference = db.collection("groups/" + beginningGroup.getIdDocFirebase() + "/bills");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
-
+        getIntent().getExtras();
         eBillTitle = findViewById(R.id.eBillTitle);
         eBillDescription = findViewById(R.id.eBillDescription);
         eBillTotalPrice = findViewById(R.id.eBillTotalPrice);
@@ -127,12 +135,12 @@ public class CreateBill extends AppCompatActivity {
         //Layout where group members were loaded
         mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
 
-        ArrayList<String> groupMembers = new ArrayList<>();
-        groupMembers.add("pafsda@gmail.com");
-        groupMembers.add("vbuwrbveyu@gmail.com");
-        groupMembers.add("bruwuivew@gmail.com");
+        ArrayList<String> groupMembers = beginningGroup.getMembers();
+//        groupMembers.add("pafsda@gmail.com");
+//        groupMembers.add("vbuwrbveyu@gmail.com");
+//        groupMembers.add("bruwuivew@gmail.com");
 
-        billPayers = groupMembers;
+        billPayers = beginningGroup.getMembers();
 
         for (int i = 0; i < groupMembers.size(); i++) {
             final CheckBox checkBox = new CheckBox(this);
@@ -157,25 +165,41 @@ public class CreateBill extends AppCompatActivity {
         saveBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isFormValid()){
-                    Toast.makeText(getApplicationContext(),"Tworzenie grupy", Toast.LENGTH_SHORT).show();
-                    bill.setBillTitle(billTitle.getText().toString());
-                    bill.setBillOwner(user_google_information.getEmail());
-                    bill.setBillDescription(billDescription.getText().toString());
-                    bill.setBillTotal(billTotalPrice.getText().toString());
-                    HashMap<String,Boolean> payers = new HashMap<>();
-                    for(int i=0;i<billPayers.size();i++){
-                        if(billPayers.get(i) != user_google_information.getEmail()){
-                            payers.put(billPayers.get(i),false);
-                        }else{
-                            payers.put(billPayers.get(i),true);
+                if (isFormValid()) {
+                    System.out.println("Wszystko po walidacji formularza !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+                    Toast.makeText(getApplicationContext(), "Tworzenie grupy", Toast.LENGTH_SHORT).show();
+//                    bill=new Bill();
+//                    bill.setBillTitle(billTitle.getText().toString());
+//                    bill.setBillOwner(user_google_information.getEmail());
+//                    bill.setBillDescription(billDescription.getText().toString());
+//                    bill.setBillTotal(billTotalPrice.getText().toString());
+                    HashMap<String, Boolean> payers = new HashMap<>();
+                    for (int i = 0; i < billPayers.size(); i++) {
+                        if (billPayers.get(i).equals(user_google_information.getEmail())) {
+                            payers.put(billPayers.get(i), true);
+                            System.out.println(billPayers.get(i).equals(user_google_information.getEmail())+ " = "+billPayers.get(i)+" | "+user_google_information.getEmail());
+                        } else {
+                            payers.put(billPayers.get(i), false);
+                            System.out.println(billPayers.get(i).equals(user_google_information.getEmail())+ " = "+billPayers.get(i)+" | "+user_google_information.getEmail());
                         }
                     }
-                    bill.setBillPayers(payers);
-
+//                    bill.setBillPayers(payers);
+                    bill = new Bill(billTitle.getText().toString(), user_google_information.getEmail(), billDescription.getText().toString(), billTotalPrice.getText().toString(), payers);
                     //wysyłanie do bazy
-
-                }else{
+                    collectionReference.add(bill).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Log.d(TAG, "Dane zostały zapisane");
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                        }
+                    });
+                    System.out.println("nazwa grupy:" + beginningGroup.getNameOfGroup());
+                } else {
                     Toast.makeText(getApplicationContext(), "Coś wymaga poprawy", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -204,10 +228,10 @@ public class CreateBill extends AppCompatActivity {
         } else {
             eBillTotalPrice.setText("Price should be greater than 0");
         }
-        if(billPayers.size()>0){
+        if (billPayers.size() > 0) {
             //resetowanie pola bledu
             eBillGroupMembers.setText("");
-        }else{
+        } else {
             eBillGroupMembers.setText("Someone have to pay");
         }
         return isFormValid == 0;

@@ -13,7 +13,12 @@ public class Bill {
     private String BillTotal;
     private String BillOwes;
 
+
+
     private HashMap<String, Boolean> BillPayers;
+
+    public Bill() {
+    }
 
     public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
         this.mBillImage = mBillImage;
@@ -28,10 +33,9 @@ public class Bill {
         BillCreator = billCreator;
         BillDescription = billDescription;
         BillTotal = billTotal;
-
         double billowes = Double.parseDouble(billTotal);
         billowes = billowes/billPayers.size();
-
+        billowes = round(billowes,2);
         BillOwes = String.valueOf(billowes);
         BillPayers = billPayers;
     }
