@@ -23,6 +23,19 @@ public class Bill {
         BillOwes = billOwes;
     }
 
+    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers) {
+        BillTitle = billTitle;
+        BillCreator = billCreator;
+        BillDescription = billDescription;
+        BillTotal = billTotal;
+
+        double billowes = Double.parseDouble(billTotal);
+        billowes = billowes/billPayers.size();
+
+        BillOwes = String.valueOf(billowes);
+        BillPayers = billPayers;
+    }
+
     public int getmBillImage() {
         return mBillImage;
     }

@@ -14,7 +14,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.billmate.itemsBean.Bill;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,10 +34,15 @@ public class CreateBill extends AppCompatActivity {
     private Button saveBill;
     private LinearLayout mGroupMembersLinearLayout;
 
+    private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private TextView eBillTitle;
     private TextView eBillDescription;
     private TextView eBillTotalPrice;
     private TextView eBillGroupMembers;
+    private Bill bill;
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference = db.collection("groups");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +159,22 @@ public class CreateBill extends AppCompatActivity {
             public void onClick(View v) {
                 if(isFormValid()){
                     Toast.makeText(getApplicationContext(),"Tworzenie grupy", Toast.LENGTH_SHORT).show();
+                    bill.setBillTitle(billTitle.getText().toString());
+                    bill.setBillOwner(user_google_information.getEmail());
+                    bill.setBillDescription(billDescription.getText().toString());
+                    bill.setBillTotal(billTotalPrice.getText().toString());
+                    HashMap<String,Boolean> payers = new HashMap<>();
+                    for(int i=0;i<billPayers.size();i++){
+                        if(billPayers.get(i) != user_google_information.getEmail()){
+                            payers.put(billPayers.get(i),false);
+                        }else{
+                            payers.put(billPayers.get(i),true);
+                        }
+                    }
+                    bill.setBillPayers(payers);
+
+                    //wysyłanie do bazy
+
                 }else{
                     Toast.makeText(getApplicationContext(), "Coś wymaga poprawy", Toast.LENGTH_SHORT).show();
                 }
