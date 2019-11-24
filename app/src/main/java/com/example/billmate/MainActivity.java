@@ -1,6 +1,7 @@
 package com.example.billmate;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,7 +28,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,14 +48,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ImageView avatar;
     private TextView name, email;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference collectionReference = db.collection("groups");
     protected static User user = new User();
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
+    protected static boolean youAreAdmin = false; //pozmianie grupy, powrót do false
+    protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buildLayout(savedInstanceState);
+        downloadGroupListener();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MenuItem menu = navigationView.getMenu().getItem(1);
+        menu.getSubMenu().clear();
+    }
+
+    private void downloadGroupListener() {
+        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                }
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
+                    for (int i = 0; i < beginningGroupLocal.getSize(); i++) {
+                        if (beginningGroupLocal.getMembers().get(i).equals(user_google_information.getEmail())) {
+                            beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
+                            groups.put(documentSnapshot.getId(), beginningGroupLocal);
+                            createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
+                            beginningGroup = groups.get(documentSnapshot.getId());
+                            setTitle(beginningGroup.getNameOfGroup());
+                            if (i == 0) {
+                                youAreAdmin = true;
+                            }
+                        }
+                    }
+                }
+                if (!groups.isEmpty()) {
+                    //zmienić XML na dodaj grupe
+                }
+            }
+        });
     }
 
     private void buildLayout(Bundle savedInstanceState) {
@@ -92,13 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 switch (navigationView.getCheckedItem().getItemId()) {
                     case R.id.nav_home:
-                        createNewItem(navigationView);
-                        break;
-                    case R.id.nav_notifications:
                         createNewGroup();
                         break;
                     case R.id.nav_bills:
                         createBill();
+                        break;
+                    case R.id.nav_notifications:
+                        createNewItem(navigationView, "TestItem", "TestDescription");
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -111,10 +161,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-//            case R.id.nav_notifications:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new ChatFragment()).commit();
-//                break;
             // Management group
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -145,14 +191,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 logout();
                 break;
             case 101:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ChatFragment()).commit();
-
+                String title = (String) menuItem.getTitle();
+                changeActualGroup((String) menuItem.getContentDescription());
+                setTitle(title);
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeActualGroup(String Id) {
+        beginningGroup = groups.get(Id);
     }
 
     private void logout() {
@@ -183,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void createNewGroup() {
-        //finish();
         startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
     }
 
@@ -191,9 +240,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this, CreateBill.class));
     }
 
-    private void createNewItem(NavigationView navigationView) {
+    private void createNewItem(NavigationView navigationView, String nameOfGroup, String Id) {
         MenuItem menu = navigationView.getMenu().getItem(1);
         SubMenu subMenu = menu.getSubMenu();
-        subMenu.add(R.id.group_flats, 101, Menu.NONE, "Item").setIcon(R.drawable.ic_firebase_logo).setCheckable(true);
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, nameOfGroup).setIcon(R.drawable.ic_firebase_logo).setContentDescription(Id);
     }
 }

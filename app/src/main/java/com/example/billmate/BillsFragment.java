@@ -43,7 +43,7 @@ public class BillsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
-//        mAdapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
+//        mAdapter.setOnItemClickListener(new InviteAdapter.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(int position) {
 //                Toast.makeText(getContext(), "Position: " + exampleList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
