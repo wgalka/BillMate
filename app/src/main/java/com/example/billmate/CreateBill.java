@@ -40,6 +40,10 @@ public class CreateBill extends AppCompatActivity {
         }
     }
 
+    public void saveBill() {
+        return;
+    }
+
     class DecimalDigitsInputFilter implements InputFilter {
         private Pattern mPattern;
 
