@@ -78,16 +78,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     return;
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    BeginningGroup beginningGroup = documentSnapshot.toObject(BeginningGroup.class);
-                    for (int i = 0; i < beginningGroup.getSize(); i++) {
-                        if (beginningGroup.getMembers().get(i).equals(user_google_information.getEmail())) {
-                            groups.put(documentSnapshot.getId(),beginningGroup);
-                            createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(),documentSnapshot.getId());
+                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
+                    for (int i = 0; i < beginningGroupLocal.getSize(); i++) {
+                        if (beginningGroupLocal.getMembers().get(i).equals(user_google_information.getEmail())) {
+                            beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
+                            groups.put(documentSnapshot.getId(), beginningGroupLocal);
+                            createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
+                            beginningGroup = groups.get(documentSnapshot.getId());
+                            setTitle(beginningGroup.getNameOfGroup());
                             if (i == 0) {
                                 youAreAdmin = true;
                             }
                         }
                     }
+                }
+                if (!groups.isEmpty()) {
+                    //zmienić XML na dodaj grupe
                 }
             }
         });
@@ -142,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         createBill();
                         break;
                     case R.id.nav_notifications:
-                        createNewItem(navigationView, "TestItem","TestDescription");
+                        createNewItem(navigationView, "TestItem", "TestDescription");
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -186,12 +192,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 101:
                 String title = (String) menuItem.getTitle();
+                changeActualGroup((String) menuItem.getContentDescription());
                 setTitle(title);
                 break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeActualGroup(String Id) {
+        beginningGroup = groups.get(Id);
     }
 
     private void logout() {

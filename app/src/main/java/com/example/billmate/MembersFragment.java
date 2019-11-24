@@ -29,7 +29,7 @@ public class MembersFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View mainView =inflater.inflate(R.layout.fragment_members, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_members, container, false);
         bulidRecycleView(mainView);
         deleteGroup = mainView.findViewById(R.id.deleteGroup);
         setDeleteGroup();
@@ -37,16 +37,16 @@ public class MembersFragment extends Fragment {
         return mainView;
     }
 
-    private void setDeleteGroup(){
+    private void setDeleteGroup() {
         deleteGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(getContext(), beginningGroup.getIdDocFirebase(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    private void setDataCompletion(){
+    private void setDataCompletion() {
 
     }
 
