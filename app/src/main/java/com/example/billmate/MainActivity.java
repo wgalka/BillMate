@@ -36,6 +36,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected static User user = new User();
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
     protected static boolean youAreAdmin = false; //pozmianie grupy, powrót do false
+    protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     BeginningGroup beginningGroup = documentSnapshot.toObject(BeginningGroup.class);
                     for (int i = 0; i < beginningGroup.getSize(); i++) {
                         if (beginningGroup.getMembers().get(i).equals(user_google_information.getEmail())) {
-                            createNewItem(navigationView, beginningGroup.getNameOfGroup());
+                            groups.put(documentSnapshot.getId(),beginningGroup);
+                            createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(),documentSnapshot.getId());
                             if (i == 0) {
                                 youAreAdmin = true;
                             }
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         createBill();
                         break;
                     case R.id.nav_notifications:
-                        createNewItem(navigationView, "TestItem");
+                        createNewItem(navigationView, "TestItem","TestDescription");
                         break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
@@ -181,9 +185,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 logout();
                 break;
             case 101:
-                int lastView = navigationView.getCheckedItem().getItemId();
-                setTitle("NazwaGrupyZObiektu");
-                navigationView.setCheckedItem(lastView);
+                String title = (String) menuItem.getTitle();
+                setTitle(title);
                 break;
         }
 
@@ -226,9 +229,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this, CreateBill.class));
     }
 
-    private void createNewItem(NavigationView navigationView, String nameOfGroup) {
+    private void createNewItem(NavigationView navigationView, String nameOfGroup, String Id) {
         MenuItem menu = navigationView.getMenu().getItem(1);
         SubMenu subMenu = menu.getSubMenu();
-        subMenu.add(R.id.group_flats, 101, Menu.NONE, nameOfGroup).setIcon(R.drawable.ic_firebase_logo);
+        subMenu.add(R.id.group_flats, 101, Menu.NONE, nameOfGroup).setIcon(R.drawable.ic_firebase_logo).setContentDescription(Id);
     }
 }
