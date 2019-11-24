@@ -43,6 +43,7 @@ public class InviteActivity extends AppCompatActivity {
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("groups");
+    private DocumentReference documentReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +52,14 @@ public class InviteActivity extends AppCompatActivity {
         confirmAddNewMember = findViewById(R.id.addNewMember);
         finishFirstConfiguration = findViewById(R.id.finish);
         getEmailMember = findViewById(R.id.getEmailMember);
-        prepareObjectGroup();
         setConfirmAddNewMember();
         setFinishFirstConfiguration();
         bulidRecycleView();
+        prepareObjectGroup();
+    }
+
+    private void ifUpdate(){
+        //dokończyć update
     }
 
     private void setConfirmAddNewMember() {
@@ -148,6 +153,11 @@ public class InviteActivity extends AppCompatActivity {
                 Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
             }
         });
+    }
+
+    private void updateExistGroup() {
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
+        documentReference.update("members", beginningGroup.getMembers());
     }
 
     private void prepareObjectGroup() {

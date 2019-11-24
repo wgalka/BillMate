@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,6 +42,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
     private static final String TAG = MainActivity.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient;
     private NavigationView navigationView;
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private CollectionReference collectionReference = db.collection("groups");
     protected static User user = new User();
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
-    protected static boolean youAreAdmin = false; //pozmianie grupy, powrót do false
     protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
 
     @Override
@@ -86,9 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
                             beginningGroup = groups.get(documentSnapshot.getId());
                             setTitle(beginningGroup.getNameOfGroup());
-                            if (i == 0) {
-                                youAreAdmin = true;
-                            }
                         }
                     }
                 }
@@ -147,6 +146,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_bills:
                         createBill();
                         break;
+                    case R.id.nav_members:
+                        if(beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())){
+                            addNewMember();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
+                        }
+                        break;
                     case R.id.nav_notifications:
                         createNewItem(navigationView, "TestItem", "TestDescription");
                         break;
@@ -194,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String title = (String) menuItem.getTitle();
                 changeActualGroup((String) menuItem.getContentDescription());
                 setTitle(title);
+                refreshFragment();
                 break;
         }
 
@@ -240,9 +247,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this, CreateBill.class));
     }
 
+    private void addNewMember(){
+        Intent addMembers = new Intent(MainActivity.this, InviteActivity.class).putExtra(NAME_OF_GROUP,"UPDATE");
+        startActivity(addMembers);
+    }
+
     private void createNewItem(NavigationView navigationView, String nameOfGroup, String Id) {
         MenuItem menu = navigationView.getMenu().getItem(1);
         SubMenu subMenu = menu.getSubMenu();
         subMenu.add(R.id.group_flats, 101, Menu.NONE, nameOfGroup).setIcon(R.drawable.ic_firebase_logo).setContentDescription(Id);
+    }
+
+    protected void refreshFragment() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.detach(fragment);
+        fragmentTransaction.attach(fragment);
+        fragmentTransaction.commit();
     }
 }
