@@ -4,15 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".CreateNewGroup">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="0dp"
-        tools:context=".CreateNewGroup">
+        android:padding="0dp">
 
         <ImageButton
             android:id="@+id/mBtnChoseBillImage"
@@ -42,7 +42,7 @@
             tools:text="Deafult bill name" />
 
         <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/mTextBillDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -51,16 +51,16 @@
             android:ems="10"
             android:gravity="start|top"
             android:hint="Description"
+            android:inputType="textMultiLine"
             android:maxLines="10"
             android:minLines="1"
-            android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mTextBillTitle" />
 
         <EditText
-            android:id="@+id/mBillTotalPrice"
+            android:id="@+id/mTextBillTotalPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -72,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText3" />
+            app:layout_constraintTop_toBottomOf="@+id/mTextBillDescription" />
 
         <LinearLayout
             android:id="@+id/mGroupMembersLinearLayout"
@@ -85,10 +85,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mBillTotalPrice" />
+            app:layout_constraintTop_toBottomOf="@+id/mTextBillTotalPrice" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/mSaveBill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -96,7 +96,6 @@
             android:background="@drawable/round_bg"
             android:backgroundTint="@color/primary_light"
             android:text="Save"
-            android:onClick="saveBill"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
