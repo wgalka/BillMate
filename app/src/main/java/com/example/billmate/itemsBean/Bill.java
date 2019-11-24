@@ -3,19 +3,22 @@ package com.example.billmate.itemsBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Bill {
     private int mBillImage;
     private String BillTitle;
-    private String BillOwner;
+    private String BillCreator;
+    private String BillDescription;
     private String BillTotal;
     private String BillOwes;
-    private ArrayList<String> BillPayers;
+
+    private HashMap<String, Boolean> BillPayers;
 
     public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
         this.mBillImage = mBillImage;
         BillTitle = billTitle;
-        BillOwner = billOwner;
+        BillCreator = billOwner;
         BillTotal = billTotal;
         BillOwes = billOwes;
     }
@@ -37,12 +40,22 @@ public class Bill {
     }
 
     public String getBillOwner() {
-        return BillOwner;
+        return BillCreator;
     }
 
     public void setBillOwner(String billOwner) {
-        BillOwner = billOwner;
+        BillCreator = billOwner;
     }
+
+
+    public String getBillDescription() {
+        return BillDescription;
+    }
+
+    public void setBillDescription(String billDescription) {
+        BillDescription = billDescription;
+    }
+
 
     public String getBillTotal() {
         return BillTotal;
@@ -60,11 +73,11 @@ public class Bill {
         BillOwes = billOwes;
     }
 
-    public ArrayList<String> getBillPayers() {
+    public HashMap<String, Boolean> getBillPayers() {
         return BillPayers;
     }
 
-    public void setBillPayers(ArrayList<String> billPayers) {
+    public void setBillPayers(HashMap<String, Boolean> billPayers) {
         BillPayers = billPayers;
     }
 

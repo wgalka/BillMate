@@ -1,66 +1,116 @@
 package com.example.billmate;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CreateBill extends AppCompatActivity {
 
+    private ArrayList<String> billPayers;
     private EditText billTitle;
     private EditText billDescription;
     private EditText billTotalPrice;
     private Button saveBill;
     private LinearLayout mGroupMembersLinearLayout;
 
+    private TextView eBillTitle;
+    private TextView eBillDescription;
+    private TextView eBillTotalPrice;
+    private TextView eBillGroupMembers;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_bill);
-        EditText mBillTotalPrice = findViewById(R.id.mTextBillTotalPrice);
+
+        eBillTitle = findViewById(R.id.eBillTitle);
+        eBillDescription = findViewById(R.id.eBillDescription);
+        eBillTotalPrice = findViewById(R.id.eBillTotalPrice);
+        eBillGroupMembers = findViewById(R.id.eBillGroupMembers);
+
         //Bill Total Price validation
+        EditText mBillTotalPrice = findViewById(R.id.mTextBillTotalPrice);
         mBillTotalPrice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
 
         billTitle = findViewById(R.id.mTextBillTitle);
         billTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
 //                    Toast.makeText(getApplicationContext(), "okej text jest wypełniany dla ciebie", Toast.LENGTH_SHORT).show();
-                }else{
-                    if(billTitle.getText().length()<3){
+                } else {
+                    if (billTitle.getText().length() < 3) {
                         Toast.makeText(getApplicationContext(), "Tytuł rachunku musi zawierać minimum 3 znaki", Toast.LENGTH_SHORT).show();
 //                        System.out.println("kolory: "+billTitle.getBackgroundTintList());
 //                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.outcome));
+                        eBillTitle.setText("Title too short");
+//                        eBillTitle.setTextColor(getResources().getColorStateList(R.color.outcome));
                     } else {
-//                        Toast.makeText(getApplicationContext(), billTitle.getText(), Toast.LENGTH_SHORT).show();
-//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.income));
+                        eBillTitle.setText("");
                     }
                 }
             }
         });
         billDescription = findViewById(R.id.mTextBillDescription);
+        billDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+//                    Toast.makeText(getApplicationContext(), "okej text jest wypełniany dla ciebie", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (billDescription.getText().length() < 3) {
+                        Toast.makeText(getApplicationContext(), "Description too short", Toast.LENGTH_SHORT).show();
+//                        System.out.println("kolory: "+billTitle.getBackgroundTintList());
+//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.outcome));
+                        eBillDescription.setText("Description too short");
+//                        eBillDescription.setTextColor(getResources().getColorStateList(R.color.outcome));
+                    } else {
+                        eBillDescription.setText("");
+                    }
+                }
+            }
+        });
+
         billTotalPrice = findViewById(R.id.mTextBillTotalPrice);
+        billTotalPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+//                    Toast.makeText(getApplicationContext(), "okej text jest wypełniany dla ciebie", Toast.LENGTH_SHORT).show();
+                } else {
+                    try {
+                        double price = Double.valueOf(billTotalPrice.getText().toString());
+                        System.out.println("Price: " + price);
+                        if (price <= 0) {
+                            throw new NullPointerException("zero price");
+                        }
+                        eBillTotalPrice.setText("");
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Tytuł rachunku musi zawierać minimum 3 znaki", Toast.LENGTH_SHORT).show();
+//                        System.out.println("kolory: "+billTitle.getBackgroundTintList());
+//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.outcome));
+                        eBillTotalPrice.setText("Price value should be greater than 0");
+//                        eBillTotalPrice.setTextColor(getResources().getColorStateList(R.color.outcome));
+                        System.out.println("!!! Error: " + e);
+                    }
+                }
+            }
+        });
+
         saveBill = findViewById(R.id.mSaveBill);
         //Layout where group members were loaded
         mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
@@ -70,7 +120,7 @@ public class CreateBill extends AppCompatActivity {
         groupMembers.add("vbuwrbveyu@gmail.com");
         groupMembers.add("bruwuivew@gmail.com");
 
-        final ArrayList<String> billPayers = groupMembers;
+        billPayers = groupMembers;
 
         for (int i = 0; i < groupMembers.size(); i++) {
             final CheckBox checkBox = new CheckBox(this);
@@ -82,10 +132,10 @@ public class CreateBill extends AppCompatActivity {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
                         billPayers.add(checkBox.getText().toString());
-                        System.out.println("Checkbox is true: "+billPayers);
+                        System.out.println("Checkbox is true: " + billPayers);
                     } else {
                         billPayers.remove(checkBox.getText().toString());
-                        System.out.println("Checkbox is false: "+billPayers);
+                        System.out.println("Checkbox is false: " + billPayers);
                     }
                 }
             });
@@ -95,9 +145,59 @@ public class CreateBill extends AppCompatActivity {
         saveBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), billTitle.getText(), Toast.LENGTH_SHORT).show();
+                if(isFormValid()){
+                    Toast.makeText(getApplicationContext(),"Tworzenie grupy", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Coś wymaga poprawy", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    private boolean isFormValid() {
+        int isFormValid = 0;
+        if (billTitle.getText().toString().length() > 2) {
+            //resetowanie pola bledu
+            eBillTitle.setText("");
+        } else {
+            eBillTitle.setText("Title too short");
+            ++isFormValid;
+        }
+        if (billDescription.getText().toString().length() > 2) {
+            //resetowanie pola bledu
+            eBillDescription.setText("");
+        } else {
+            eBillDescription.setText("Description too short");
+            ++isFormValid;
+        }
+        if (checkEditTextGreaterThanZero(billTotalPrice)) {
+            //resetowanie pola bledu
+            eBillTotalPrice.setText("");
+        } else {
+            eBillTotalPrice.setText("Price should be greater than 0");
+        }
+        if(billPayers.size()>0){
+            //resetowanie pola bledu
+            eBillGroupMembers.setText("");
+        }else{
+            eBillGroupMembers.setText("Someone have to pay");
+        }
+        return isFormValid == 0;
+    }
+
+    private boolean checkEditTextGreaterThanZero(EditText field) {
+        try {
+            double price = Double.valueOf(field.getText().toString());
+            System.out.println("Price: " + price);
+            if (price <= 0) {
+                throw new NullPointerException("zero price");
+            }
+            return true;
+        } catch (Exception e) {
+
+            System.out.println("!!! Error: " + e);
+            return false;
+        }
     }
 
     public void saveBill() {

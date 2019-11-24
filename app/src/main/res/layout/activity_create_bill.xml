@@ -46,7 +46,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
             android:ems="10"
             android:gravity="start|top"
@@ -57,14 +56,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mTextBillTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/eBillTitle" />
 
         <EditText
             android:id="@+id/mTextBillTotalPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:ems="10"
             android:hint="Price (PLN)"
@@ -72,26 +70,66 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mTextBillDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/eBillDescription" />
 
         <LinearLayout
             android:id="@+id/mGroupMembersLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/eBillTotalPrice" />
+
+        <TextView
+            android:id="@+id/eBillTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/outcome"
+            app:layout_constraintEnd_toEndOf="@+id/mTextBillTitle"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/mTextBillTitle"
+            app:layout_constraintTop_toBottomOf="@+id/mTextBillTitle" />
+
+        <TextView
+            android:id="@+id/eBillDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/outcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mTextBillDescription" />
+
+        <TextView
+            android:id="@+id/eBillTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/outcome"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mTextBillTotalPrice" />
+
+        <TextView
+            android:id="@+id/eBillGroupMembers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:textColor="@color/outcome"
+            app:layout_constraintEnd_toEndOf="@+id/mSaveBill"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/mSaveBill"
+            app:layout_constraintTop_toBottomOf="@+id/mGroupMembersLinearLayout" />
 
         <Button
             android:id="@+id/mSaveBill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="1dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/round_bg"
             android:backgroundTint="@color/primary_light"
@@ -100,7 +138,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mGroupMembersLinearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/eBillGroupMembers" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
