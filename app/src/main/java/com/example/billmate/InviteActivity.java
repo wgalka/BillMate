@@ -55,11 +55,15 @@ public class InviteActivity extends AppCompatActivity {
         setConfirmAddNewMember();
         setFinishFirstConfiguration();
         bulidRecycleView();
-        prepareObjectGroup();
+        ifUpdateGroup(getIntent().getExtras().getString(NAME_OF_GROUP));
     }
 
-    private void ifUpdate(){
-        //dokończyć update
+    private void ifUpdateGroup(String action){
+        if(action.equals("UPDATE")){
+
+        } else {
+            prepareObjectGroup();
+        }
     }
 
     private void setConfirmAddNewMember() {
