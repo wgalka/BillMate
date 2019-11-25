@@ -168,7 +168,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     static boolean isValid(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        String regex = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$";
         return email.matches(regex);
     }
 }
