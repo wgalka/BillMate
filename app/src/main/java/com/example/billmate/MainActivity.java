@@ -65,13 +65,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         downloadGroupListener();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MenuItem menu = navigationView.getMenu().getItem(1);
-        menu.getSubMenu().clear();
-    }
-
     private void downloadGroupListener() {
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -79,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (e != null) {
                     return;
                 }
+                clearMenuItem();
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
                     for (int i = 0; i < beginningGroupLocal.getSize(); i++) {
@@ -264,5 +258,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fragmentTransaction.detach(fragment);
         fragmentTransaction.attach(fragment);
         fragmentTransaction.commit();
+    }
+
+    private void clearMenuItem() {
+        MenuItem menu = navigationView.getMenu().getItem(1);
+        menu.getSubMenu().clear();
     }
 }
