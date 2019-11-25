@@ -53,6 +53,15 @@
 
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/getNewNameGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:hint="new name group"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/primary" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_managment"
             android:layout_width="match_parent"

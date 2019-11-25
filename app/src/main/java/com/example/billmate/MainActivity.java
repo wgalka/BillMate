@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             groups.put(documentSnapshot.getId(), beginningGroupLocal);
                             createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
                             beginningGroup = groups.get(documentSnapshot.getId());
-                            setTitle(beginningGroup.getNameOfGroup());
+                            setTitle(beginningGroup.getNameOfGroup()); //poprawić ładowanie po update InviteMembers
+                            //jezeli jest pusta baza begining group uzupełnic danymi przykładowymi
                         }
                     }
                 }
@@ -141,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         createBill();
                         break;
                     case R.id.nav_members:
-                        if(beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())){
+                        if (beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())) {
                             addNewMember();
                         } else {
                             Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
@@ -241,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(MainActivity.this, CreateBill.class));
     }
 
-    private void addNewMember(){
-        Intent addMembers = new Intent(MainActivity.this, InviteActivity.class).putExtra(NAME_OF_GROUP,"UPDATE");
+    private void addNewMember() {
+        Intent addMembers = new Intent(MainActivity.this, InviteActivity.class).putExtra(NAME_OF_GROUP, "UPDATE");
         startActivity(addMembers);
     }
 
