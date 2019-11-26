@@ -52,10 +52,10 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
         Bill currentItem = mBillList.get(position);
 
         holder.mBillImage.setImageResource(currentItem.getmBillImage());
-        holder.mBillTitle.setText(currentItem.getmBillTitle());
-        holder.mBillOwner.setText(currentItem.getmBillOwner());
-        holder.mBillTotal.setText(currentItem.getmBillTotal());
-        holder.mBillOwes.setText(currentItem.getmBillOwes());
+        holder.mBillTitle.setText(currentItem.getBillTitle());
+        holder.mBillOwner.setText(currentItem.getBillOwner());
+        holder.mBillTotal.setText(currentItem.getBillTotal());
+        holder.mBillOwes.setText(currentItem.getBillOwes());
     }
 
     @Override
