@@ -6,8 +6,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,11 +23,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.billmate.MainActivity.beginningGroup;
+import static com.example.billmate.MainActivity.groups;
+import static com.example.billmate.MembersFragment.mMembersFragment;
 
 public class InviteActivity extends AppCompatActivity {
 
@@ -43,6 +41,7 @@ public class InviteActivity extends AppCompatActivity {
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("groups");
+    private DocumentReference documentReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +50,18 @@ public class InviteActivity extends AppCompatActivity {
         confirmAddNewMember = findViewById(R.id.addNewMember);
         finishFirstConfiguration = findViewById(R.id.finish);
         getEmailMember = findViewById(R.id.getEmailMember);
-        prepareObjectGroup();
         setConfirmAddNewMember();
-        setFinishFirstConfiguration();
         bulidRecycleView();
+        ifUpdateGroup(getIntent().getExtras().getString(NAME_OF_GROUP));
+    }
+
+    private void ifUpdateGroup(String action) {
+        if (action.equals("UPDATE")) {
+            setFinishUpdateConfiguration();
+        } else {
+            setFinishFirstConfiguration();
+            prepareObjectGroup();
+        }
     }
 
     private void setConfirmAddNewMember() {
@@ -96,9 +103,26 @@ public class InviteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
                     Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getSize(), Toast.LENGTH_SHORT).show();
+                    beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
                     beginningGroup.getMembers().clear();
                     finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setFinishUpdateConfiguration() {
+        finishFirstConfiguration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (groups.get(beginningGroup.getIdDocFirebase()).getSize() + beginningGroup.getSize() > groups.get(beginningGroup.getIdDocFirebase()).getSize() && mList.size() > 0) {
+                    updateExistGroup();
+                    finish();
+                    //refresh mlist
+                    //mMembersFragment.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
                 }
@@ -149,6 +173,11 @@ public class InviteActivity extends AppCompatActivity {
         });
     }
 
+    private void updateExistGroup() {
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
+        documentReference.update("members", beginningGroup.getMembers());
+    }
+
     private void prepareObjectGroup() {
         beginningGroup.getMembers().clear();
         beginningGroup.setNameOfGroup(getIntent().getExtras().getString(NAME_OF_GROUP));
@@ -157,7 +186,8 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     static boolean isValid(String email) {
-        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+//        String regex = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$"; // tylko gmail i google mail
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"; // wszystkie domeny
         return email.matches(regex);
     }
 }
