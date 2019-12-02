@@ -26,11 +26,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -53,16 +57,61 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("groups");
+    private DocumentReference documentReference;
     protected static User user = new User();
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
     protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
+    protected static IdDocsForUser idDocsForUser = new IdDocsForUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buildLayout(savedInstanceState);
-        downloadGroupListener();
+        downloadListenerIdDoc();
+        //downloadGroupListener();
+    }
+
+    private void downloadListenerIdDoc(){
+        documentReference = db.collection("list").document(user_google_information.getEmail());
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if ((e) != null) {
+                    return;
+                }
+                if (documentSnapshot.exists()) {
+                    idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
+                    if(idDocsForUser.getIdDocs().size() != 1){
+                        loadingObject();
+                    }
+                }
+            }
+        });
+    }
+
+    protected void loadingObject(){
+        clearMenuItem();
+        for (int i = 0; i <idDocsForUser.getSize(); i++){
+            documentReference = db.collection("groups").document(idDocsForUser.getIdDocs().get(i));
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
+                    beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
+                    groups.put(documentSnapshot.getId(), beginningGroupLocal);
+                    createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
+                    beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
+                    setTitle(beginningGroup.getNameOfGroup());
+                    Log.d(TAG, "Dane zostały zapisane");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                }
+            });
+        }
     }
 
     private void downloadGroupListener() {

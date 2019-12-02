@@ -108,6 +108,7 @@ public class InviteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
                     Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getSize(), Toast.LENGTH_SHORT).show();
+                    oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
                     beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
                     beginningGroup.getMembers().clear();
