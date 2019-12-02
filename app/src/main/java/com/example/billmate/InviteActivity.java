@@ -164,6 +164,7 @@ public class InviteActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Log.d(TAG, "Dane zostały zapisane");
+                updateListId(documentReference.getId());
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -176,6 +177,11 @@ public class InviteActivity extends AppCompatActivity {
     private void updateExistGroup() {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
         documentReference.update("members", beginningGroup.getMembers());
+    }
+
+    private void updateListId(String id){
+        documentReference = db.document("list/" + user_google_information.getEmail());
+        documentReference.update("idGroups",id);
     }
 
     private void prepareObjectGroup() {
