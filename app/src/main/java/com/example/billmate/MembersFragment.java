@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.billmate.MainActivity.beginningGroup;
+import static com.example.billmate.MainActivity.groups;
 
 public class MembersFragment extends Fragment {
 
@@ -49,16 +51,24 @@ public class MembersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_members, container, false);
         bulidRecycleView(mainView);
+        initVariables(mainView);
+        if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+            setDeleteGroup();
+            setRenameGroup();
+            setDataCompletion();
+        } else {
+            Toast.makeText(getContext(), "Pusto! Uwtórz grupę!", Toast.LENGTH_LONG).show();
+        }
+        return mainView;
+    }
+
+    private void initVariables(View mainView) {
         deleteGroup = mainView.findViewById(R.id.deleteGroup);
         deleteGroup.setVisibility(View.GONE);
         renameGroup = mainView.findViewById(R.id.renameGroup);
         renameGroup.setVisibility(View.GONE);
         newNameGroup = mainView.findViewById(R.id.getNewNameGroup);
         newNameGroup.setVisibility(View.GONE);
-        setDeleteGroup();
-        setRenameGroup();
-        setDataCompletion();
-        return mainView;
     }
 
     private void setDeleteGroup() {
@@ -70,6 +80,7 @@ public class MembersFragment extends Fragment {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getContext(), "Grupa: " + beginningGroup.getNameOfGroup() + " usunięta", Toast.LENGTH_LONG).show();
+                        deleteGroupFromListId(beginningGroup.getIdDocFirebase(), beginningGroup.getMembers());
                         mMembersFragment.notifyDataSetChanged();
                         //wrócić do zakładki home!
                     }
@@ -140,6 +151,7 @@ public class MembersFragment extends Fragment {
             if (position != 0) {
                 //if user uregulował wszystkie zobowiązania
                 mList.remove(position);
+                deleteOneUserFromListId(beginningGroup.getIdDocFirebase(), beginningGroup.getMembers().get(position));
                 beginningGroup.removeElem(position);
                 mMembersFragment.notifyItemRemoved(position);
                 updateExistGroup();
@@ -159,6 +171,54 @@ public class MembersFragment extends Fragment {
     private void updateNameGroup() {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
         documentReference.update("nameOfGroup", beginningGroup.getNameOfGroup());
+    }
+
+    private void deleteGroupFromListId(final String id, ArrayList<String> members) {
+        for (int i = 0; i < members.size(); i++) {
+            documentReference = db.collection("list").document(members.get(i));
+            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                        IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
+                        for (int i = 0; i < idDocsForUser.getSize(); i++) {
+                            if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
+                            idDocsForUser.removeElem(i);
+                        }
+                        idDocsForUser.userUpdate(documentSnapshot.getId());
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                }
+            });
+        }
+    }
+
+    private void deleteOneUserFromListId(final String id, String email) {
+        documentReference = db.collection("list").document(email);
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                    IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
+                    for (int i = 0; i < idDocsForUser.getSize(); i++) {
+                        if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
+                        idDocsForUser.removeElem(i);
+                    }
+                    idDocsForUser.userUpdate(documentSnapshot.getId());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+            }
+        });
     }
 
 }
