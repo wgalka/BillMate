@@ -72,17 +72,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //downloadGroupListener();
     }
 
-    private void downloadListenerIdDoc(){
-        documentReference = db.collection("list").document(user_google_information.getEmail());
+    private void downloadListenerIdDoc() {
+        documentReference = db.document("list/" + user_google_information.getEmail());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if ((e) != null) {
                     return;
                 }
-                if (documentSnapshot.exists()) {
+                if (!documentSnapshot.exists()) {
+                    //pusty obiekt
+                    beginningGroup.setNameOfGroup("GROUP_NOT_EXIST");
+                    beginningGroup.addElem(user_google_information.getEmail());
+                } else {
                     idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
-                    if(idDocsForUser.getIdDocs().size() != 1){
+                    if (idDocsForUser.getIdDocs().size() != 0) {
                         loadingObject();
                     }
                 }
@@ -90,9 +94,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    protected void loadingObject(){
+    protected void loadingObject() {
         clearMenuItem();
-        for (int i = 0; i <idDocsForUser.getSize(); i++){
+        for (int i = 0; i < idDocsForUser.getSize(); i++) {
             documentReference = db.collection("groups").document(idDocsForUser.getIdDocs().get(i));
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -112,34 +116,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
-    }
-
-    private void downloadGroupListener() {
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                }
-                clearMenuItem();
-                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
-                    for (int i = 0; i < beginningGroupLocal.getSize(); i++) {
-                        if (beginningGroupLocal.getMembers().get(i).equals(user_google_information.getEmail())) {
-                            beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
-                            groups.put(documentSnapshot.getId(), beginningGroupLocal);
-                            createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
-                            beginningGroup = groups.get(documentSnapshot.getId());
-                            setTitle(beginningGroup.getNameOfGroup()); //poprawić ładowanie po update InviteMembers
-                            //jezeli jest pusta baza begining group uzupełnic danymi przykładowymi
-                        }
-                    }
-                }
-                if (!groups.isEmpty()) {
-                    //zmienić XML na dodaj grupe
-                }
-            }
-        });
     }
 
     private void buildLayout(Bundle savedInstanceState) {

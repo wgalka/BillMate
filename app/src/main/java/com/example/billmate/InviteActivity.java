@@ -108,7 +108,7 @@ public class InviteActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
                     Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getSize(), Toast.LENGTH_SHORT).show();
-                    oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
+                    //oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
                     beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
                     beginningGroup.getMembers().clear();
@@ -124,14 +124,18 @@ public class InviteActivity extends AppCompatActivity {
         finishFirstConfiguration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (groups.get(beginningGroup.getIdDocFirebase()).getSize() + beginningGroup.getSize() > groups.get(beginningGroup.getIdDocFirebase()).getSize() && mList.size() > 0) {
-                    updateExistGroup();
-                    oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
-                    finish();
-                    //refresh mlist
-                    //mMembersFragment.notifyDataSetChanged();
+                if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+                    if (groups.get(beginningGroup.getIdDocFirebase()).getSize() + beginningGroup.getSize() > groups.get(beginningGroup.getIdDocFirebase()).getSize() && mList.size() > 0) {
+                        updateExistGroup();
+                        oneUserAddToListId(beginningGroup.getIdDocFirebase(), mList);
+                        finish();
+                        //refresh mlist
+                        mMembersFragment.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Uwtórz grupę w zakładce HOME", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -172,7 +176,7 @@ public class InviteActivity extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Log.d(TAG, "Dane zostały zapisane");
-                updateListId(documentReference.getId(), beginningGroup.getMembers());
+                oneUserAddToListId(documentReference.getId(), mList);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -185,33 +189,7 @@ public class InviteActivity extends AppCompatActivity {
     private void updateExistGroup() {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
         documentReference.update("members", beginningGroup.getMembers());
-    }
-
-    private void updateListId(final String id, ArrayList<String> members) {
-        for (int i = 0; i < members.size(); i++) {
-            documentReference = db.collection("list").document(members.get(i));
-            documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if (documentSnapshot.exists()) {
-                        Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
-                        IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
-                        idDocsForUser.addElem(id);
-                        idDocsForUser.userUpdate(documentSnapshot.getId());
-                    } else {
-                        Log.d(TAG, "DOC nie istnieje dla " + documentSnapshot.getId());
-                        IdDocsForUser idDocsForUser = new IdDocsForUser();
-                        idDocsForUser.addElem(id);
-                        idDocsForUser.userUpdate(documentSnapshot.getId());
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
-                }
-            });
-        }
+        documentReference.update("size", beginningGroup.getSize());
     }
 
     private void oneUserAddToListId(final String id, ArrayList<ItemCardView> members) {

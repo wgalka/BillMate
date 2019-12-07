@@ -51,16 +51,24 @@ public class MembersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_members, container, false);
         bulidRecycleView(mainView);
+        initVariables(mainView);
+        if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+            setDeleteGroup();
+            setRenameGroup();
+            setDataCompletion();
+        } else {
+            Toast.makeText(getContext(), "Pusto! Uwtórz grupę!", Toast.LENGTH_LONG).show();
+        }
+        return mainView;
+    }
+
+    private void initVariables(View mainView) {
         deleteGroup = mainView.findViewById(R.id.deleteGroup);
         deleteGroup.setVisibility(View.GONE);
         renameGroup = mainView.findViewById(R.id.renameGroup);
         renameGroup.setVisibility(View.GONE);
         newNameGroup = mainView.findViewById(R.id.getNewNameGroup);
         newNameGroup.setVisibility(View.GONE);
-        setDeleteGroup();
-        setRenameGroup();
-        setDataCompletion();
-        return mainView;
     }
 
     private void setDeleteGroup() {
