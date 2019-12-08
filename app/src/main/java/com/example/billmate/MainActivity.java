@@ -88,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                     if (idDocsForUser.getIdDocs().size() != 0) {
                         loadingObject();
+                    } else {
+                        //pusty obiekt
+                        beginningGroup.setNameOfGroup("GROUP_NOT_EXIST");
+                        beginningGroup.addElem(user_google_information.getEmail());
                     }
                 }
             }
