@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -129,6 +130,7 @@ public class InviteActivity extends AppCompatActivity {
                         updateExistGroup();
                         oneUserAddToListId(beginningGroup.getIdDocFirebase(), mList);
                         finish();
+
                         //refresh mlist
                         mMembersFragment.notifyDataSetChanged();
                     } else {
@@ -230,5 +232,12 @@ public class InviteActivity extends AppCompatActivity {
 //        String regex = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$"; // tylko gmail i google mail
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"; // wszystkie domeny
         return email.matches(regex);
+    }
+
+    @Override
+    public void finish() {
+        Intent backToHomeFragment = new Intent(this,MainActivity.class);
+        setResult(R.id.nav_home,backToHomeFragment);
+        super.finish();
     }
 }

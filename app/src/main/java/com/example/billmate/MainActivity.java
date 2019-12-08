@@ -47,6 +47,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
+    private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
     private static final String TAG = MainActivity.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient;
     private NavigationView navigationView;
@@ -72,6 +73,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //downloadGroupListener();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == R.id.nav_home) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MyGroupsFragment()).commitAllowingStateLoss();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void downloadListenerIdDoc() {
         documentReference = db.document("list/" + user_google_information.getEmail());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -82,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
                 if (!documentSnapshot.exists()) {
                     //pusty obiekt
-                    beginningGroup.setNameOfGroup("GROUP_NOT_EXIST");
+                    beginningGroup.setNameOfGroup(GROUP_NOT_EXIST);
                     beginningGroup.addElem(user_google_information.getEmail());
                 } else {
                     idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
@@ -90,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         loadingObject();
                     } else {
                         //pusty obiekt
-                        beginningGroup.setNameOfGroup("GROUP_NOT_EXIST");
+                        beginningGroup.setNameOfGroup(GROUP_NOT_EXIST);
                         beginningGroup.addElem(user_google_information.getEmail());
                     }
                 }
@@ -264,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void createNewGroup() {
-        startActivity(new Intent(MainActivity.this, CreateNewGroup.class));
+        startActivityForResult(new Intent(MainActivity.this, CreateNewGroup.class), RESULT_CANCELED);
     }
 
     private void createBill() {
@@ -273,7 +284,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void addNewMember() {
         Intent addMembers = new Intent(MainActivity.this, InviteActivity.class).putExtra(NAME_OF_GROUP, "UPDATE");
-        startActivity(addMembers);
+        startActivityForResult(addMembers,RESULT_CANCELED);
     }
 
     private void createNewItem(NavigationView navigationView, String nameOfGroup, String Id) {

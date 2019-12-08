@@ -36,6 +36,8 @@ import static com.example.billmate.MainActivity.groups;
 
 public class MembersFragment extends Fragment {
 
+    private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
+    private static final String TAG = MembersFragment.class.getSimpleName();
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private Button deleteGroup, renameGroup;
     private EditText newNameGroup;
@@ -52,7 +54,7 @@ public class MembersFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_members, container, false);
         bulidRecycleView(mainView);
         initVariables(mainView);
-        if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+        if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
             setDeleteGroup();
             setRenameGroup();
             setDataCompletion();

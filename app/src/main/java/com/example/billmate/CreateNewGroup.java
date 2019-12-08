@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateNewGroup extends AppCompatActivity {
@@ -40,5 +39,12 @@ public class CreateNewGroup extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent backToHomeFragment = new Intent(this,MainActivity.class);
+        setResult(R.id.nav_home,backToHomeFragment);
+        super.onBackPressed();
     }
 }
