@@ -22,11 +22,11 @@
                     android:checkable="true"
                     android:icon="@drawable/ic_group"
                     android:title="Members" />
-                <item
-                    android:id="@+id/nav_notifications"
-                    android:checkable="true"
-                    android:icon="@drawable/ic_notifications"
-                    android:title="Notifications" />
+<!--                <item-->
+<!--                    android:id="@+id/nav_notifications"-->
+<!--                    android:checkable="true"-->
+<!--                    android:icon="@drawable/ic_notifications"-->
+<!--                    android:title="Notifications" />-->
             </group>
         </menu>
     </item>

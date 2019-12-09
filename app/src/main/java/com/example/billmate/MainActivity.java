@@ -79,6 +79,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new MyGroupsFragment()).commitAllowingStateLoss();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+        if (resultCode == R.id.nav_bills) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new BillsFragment()).commitAllowingStateLoss();
+            navigationView.setCheckedItem(R.id.nav_bills);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -189,9 +194,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
                         }
                         break;
-                    case R.id.nav_notifications:
-                        createNewItem(navigationView, "TestItem", "TestDescription");
-                        break;
+//                    case R.id.nav_notifications:
+//                        createNewItem(navigationView, "TestItem", "TestDescription");
+//                        break;
                     default:
                         Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
 //                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -219,10 +224,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new MembersFragment()).commit();
                 break;
 
-            case R.id.nav_notifications:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new NotificationFragment()).commit();
-                break;
+//            case R.id.nav_notifications:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+//                        new NotificationFragment()).commit();
+//                break;
 
 
             // Actions group
@@ -280,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void createBill() {
-        startActivity(new Intent(MainActivity.this, CreateBill.class));
+        startActivityForResult(new Intent(MainActivity.this, CreateBill.class), RESULT_CANCELED);
     }
 
     private void addNewMember() {

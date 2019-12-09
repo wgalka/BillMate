@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import static com.example.billmate.MainActivity.beginningGroup;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,18 +37,15 @@ public class BillsFragment extends Fragment {
 
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference collectionReference = db.collection("groups/"+beginningGroup.getIdDocFirebase()+"/bills");
+    private CollectionReference collectionReference = db.collection("groups/" + beginningGroup.getIdDocFirebase() + "/bills");
     protected static HashMap<String, Bill> bills = new HashMap<String, Bill>();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_bills, container, false);
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_bills, container, false);
 
         examplelist = new ArrayList<Bill>();
-        examplelist.add(new Bill(R.drawable.ic_format_list,"Gaz marzec","wgalka2@gamil.com","100,99 PLN","10 PLN"));
+        examplelist.add(new Bill(R.drawable.ic_format_list, "Gaz marzec", "wgalka2@gamil.com", "100,99 PLN", "10 PLN"));
         bills = downloadBillsListener(bills);
         Collection<Bill> values = bills.values();
         examplelist = new ArrayList<Bill>(values);
@@ -75,7 +73,8 @@ public class BillsFragment extends Fragment {
 //            }
 //        });
     }
-    private HashMap<String,Bill> downloadBillsListener(final HashMap<String,Bill> map) {
+
+    private HashMap<String, Bill> downloadBillsListener(final HashMap<String, Bill> map) {
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
@@ -84,7 +83,7 @@ public class BillsFragment extends Fragment {
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Bill billLocal = documentSnapshot.toObject(Bill.class);
-                    map.put(documentSnapshot.getId(),billLocal);
+                    map.put(documentSnapshot.getId(), billLocal);
 
                 }
                 if (!bills.isEmpty()) {
