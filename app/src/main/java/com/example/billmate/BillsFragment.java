@@ -34,7 +34,6 @@ public class BillsFragment extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Bill> examplelist;
 
-
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("groups/" + beginningGroup.getIdDocFirebase() + "/bills");

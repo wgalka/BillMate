@@ -26,7 +26,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.billmate.MainActivity.beginningGroup;
 
 import java.util.ArrayList;
@@ -36,6 +35,7 @@ import java.util.regex.Pattern;
 
 public class CreateBill extends AppCompatActivity {
 
+    private static final String TAG = CreateBill.class.getSimpleName();
     private ArrayList<String> billPayers;
     private EditText billTitle;
     private EditText billDescription;
@@ -48,6 +48,7 @@ public class CreateBill extends AppCompatActivity {
     private TextView eBillTotalPrice;
     private TextView eBillGroupMembers;
     private Bill bill;
+    private IdDocForBills idDocForBills;
 
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,6 +94,13 @@ public class CreateBill extends AppCompatActivity {
                     collectionReference.add(bill).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
+                            idDocForBills = new IdDocForBills(beginningGroup.getIdDocFirebase());
+                            for (int i = 0; i < billPayers.size(); i++) {
+                                idDocForBills.idDocsUpdate(billPayers.get(i));
+                                idDocForBills.addElem(documentReference.getId());
+                                idDocForBills.idDocUpdate(billPayers.get(i));
+                                continue;
+                            }
                             Log.d(TAG, "Dane zostały zapisane");
                             finish();
                         }
@@ -102,6 +110,7 @@ public class CreateBill extends AppCompatActivity {
                             Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
                         }
                     });
+
                     System.out.println("nazwa grupy:" + beginningGroup.getNameOfGroup());
                 } else {
                     Toast.makeText(getApplicationContext(), "Coś wymaga poprawy", Toast.LENGTH_SHORT).show();
