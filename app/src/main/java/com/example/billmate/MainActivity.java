@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         buildLayout(savedInstanceState);
         downloadListenerIdDoc();
-        //downloadGroupListener();
     }
 
     @Override
@@ -103,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //pusty obiekt
                         beginningGroup.setNameOfGroup(GROUP_NOT_EXIST);
                         beginningGroup.addElem(user_google_information.getEmail());
+                        clearMenuItem();
+                        setTitle(getString(R.string.app_name));
                     }
                 }
             }
@@ -284,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void addNewMember() {
         Intent addMembers = new Intent(MainActivity.this, InviteActivity.class).putExtra(NAME_OF_GROUP, "UPDATE");
-        startActivityForResult(addMembers,RESULT_CANCELED);
+        startActivityForResult(addMembers, RESULT_CANCELED);
     }
 
     private void createNewItem(NavigationView navigationView, String nameOfGroup, String Id) {

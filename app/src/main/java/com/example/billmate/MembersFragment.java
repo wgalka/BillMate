@@ -19,6 +19,7 @@ import com.example.billmate.adapter.InviteAdapter;
 import com.example.billmate.itemsBean.ItemCardView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -83,8 +84,11 @@ public class MembersFragment extends Fragment {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getContext(), "Grupa: " + beginningGroup.getNameOfGroup() + " usunięta", Toast.LENGTH_LONG).show();
                         deleteGroupFromListId(beginningGroup.getIdDocFirebase(), beginningGroup.getMembers());
-                        mMembersFragment.notifyDataSetChanged();
                         //wrócić do zakładki home!
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                                new MyGroupsFragment()).commit();
+                        NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
+                        navigationView.setCheckedItem(R.id.nav_home);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
