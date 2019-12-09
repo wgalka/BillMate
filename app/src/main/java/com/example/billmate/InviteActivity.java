@@ -58,12 +58,13 @@ public class InviteActivity extends AppCompatActivity {
         getEmailMember = findViewById(R.id.getEmailMember);
         setConfirmAddNewMember();
         bulidRecycleView();
-        ifUpdateGroup(getIntent().getExtras().getString(NAME_OF_GROUP));
+        ifUpdateGroup(isUpdateData(getIntent().getExtras().getString(NAME_OF_GROUP)));
     }
 
-    private void ifUpdateGroup(String action) {
-        if (action.equals("UPDATE")) {
+    private void ifUpdateGroup(boolean update) {
+        if (update == true) {
             setFinishUpdateConfiguration();
+            prepareListGroup();
         } else {
             setFinishFirstConfiguration();
             prepareObjectGroup();
@@ -172,9 +173,18 @@ public class InviteActivity extends AppCompatActivity {
 
     private void removeItem(int position) {
         if (position != 0) {
-            mList.remove(position);
-            beginningGroup.removeElem(position);
-            mInviteAdapter.notifyItemRemoved(position);
+            if (isUpdateData(getIntent().getExtras().getString(NAME_OF_GROUP)) == false) {
+                mList.remove(position);
+                beginningGroup.removeElem(position);
+                mInviteAdapter.notifyItemRemoved(position);
+            } else {
+                for (int i = 0; i < mList.size(); i++) {
+//                    sprawdzić czy na mlist znajdue sie jakiś mail z beginningGroup
+//                    if(warnuek){
+//                        break;
+//                    }
+                }
+            }
         } else {
             Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
         }
@@ -236,6 +246,20 @@ public class InviteActivity extends AppCompatActivity {
         mList.add(new ItemCardView(user_google_information.getEmail()));
     }
 
+    private void prepareListGroup() {
+        for (int i = 0; i < beginningGroup.getSize(); i++) {
+            mList.add(new ItemCardView(beginningGroup.getMembers().get(i)));
+        }
+    }
+
+    private boolean isUpdateData(String action) {
+        if (action.equals("UPDATE")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     static boolean isValid(String email) {
 //        String regex = "^[a-z0-9](\\.?[a-z0-9]){5,}@g(oogle)?mail\\.com$"; // tylko gmail i google mail
         String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$"; // wszystkie domeny
@@ -245,7 +269,7 @@ public class InviteActivity extends AppCompatActivity {
     @Override
     public void finish() {
         Intent backToHomeFragment = new Intent(this, MainActivity.class);
-        setResult(R.id.nav_home, backToHomeFragment);
+        setResult(R.id.nav_members, backToHomeFragment);
         super.finish();
     }
 }

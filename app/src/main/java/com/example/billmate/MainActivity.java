@@ -84,6 +84,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new BillsFragment()).commitAllowingStateLoss();
             navigationView.setCheckedItem(R.id.nav_bills);
         }
+        if (resultCode == R.id.nav_members) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new MembersFragment()).commitAllowingStateLoss();
+            navigationView.setCheckedItem(R.id.nav_members);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
