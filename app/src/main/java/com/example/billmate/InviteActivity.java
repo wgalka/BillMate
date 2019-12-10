@@ -208,8 +208,7 @@ public class InviteActivity extends AppCompatActivity {
 
     private void updateExistGroup() {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
-        documentReference.update("members", beginningGroup.getMembers());
-        documentReference.update("size", beginningGroup.getSize());
+        documentReference.update("members", beginningGroup.getMembers(), "size", beginningGroup.getSize());
     }
 
     private void oneUserAddToListId(final String id, ArrayList<ItemCardView> members) {

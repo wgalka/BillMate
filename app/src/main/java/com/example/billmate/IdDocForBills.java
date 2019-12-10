@@ -18,13 +18,23 @@ public class IdDocForBills {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     private String idGroupDoc;
+    private String uidUser;
     private ArrayList<String> idDocs = new ArrayList<String>();
 
     public IdDocForBills() {
     }
 
-    public IdDocForBills(String idGroupDoc) {
+    public IdDocForBills(String idGroupDoc, String uidUser) {
         this.idGroupDoc = idGroupDoc;
+        this.uidUser = uidUser;
+    }
+
+    public String getUidUser() {
+        return uidUser;
+    }
+
+    public void setUidUser(String uidUser) {
+        this.uidUser = uidUser;
     }
 
     public String getIdGroupDoc() {
@@ -55,7 +65,7 @@ public class IdDocForBills {
         return idDocs.size();
     }
 
-    protected void idDocUpdate(String email) {
+    protected void idDocUpdate(final String email) {
         db.collection("groups").document(getIdGroupDoc()).collection("bookOfAccounts").document(email).set(this, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -71,20 +81,5 @@ public class IdDocForBills {
                 });
     }
 
-    protected void idDocsUpdate(String email) {
-        db.collection("groups").document(getIdGroupDoc()).collection("bookOfAccounts").document(email).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                IdDocForBills idDocForBills = documentSnapshot.toObject(IdDocForBills.class);
-                setIdDocs(idDocForBills.getIdDocs());
-                Log.d(TAG, "Dane zostały zapisane");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Błąd w odczycie danych: " + e.toString());
-            }
-        });
-    }
 
 }
