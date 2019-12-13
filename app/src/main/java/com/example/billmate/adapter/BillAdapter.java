@@ -14,42 +14,63 @@ import com.example.billmate.itemsBean.Bill;
 
 import java.util.ArrayList;
 
-public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder> {
-    private ArrayList<Bill> mBillList;
-    public static class BillViewHolder extends RecyclerView.ViewHolder {
+public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
+    private ArrayList<Bill> mList;
+    private OnItemClickListener mListener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView mBillImage;
         public TextView mBillTitle;
         public TextView mBillOwner;
         public TextView mBillTotal;
         public TextView mBillOwes;
 
-        public BillViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final BillAdapter.OnItemClickListener listener) {
             super(itemView);
             mBillImage = itemView.findViewById(R.id.mBillImage);
             mBillTitle = itemView.findViewById(R.id.mBillTitle);
             mBillOwner = itemView.findViewById(R.id.mBillOwner);
             mBillTotal = itemView.findViewById(R.id.mBillTotal);
             mBillOwes = itemView.findViewById(R.id.mBillOwes);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 
     public BillAdapter(ArrayList<Bill> BillList) {
-        mBillList = BillList;
+        mList = BillList;
     }
 
-    ;
 
     @NonNull
     @Override
-    public BillViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bill, parent, false);
-        BillViewHolder bvh = new BillViewHolder(v);
-        return bvh;
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_view_bills, parent, false);
+        ViewHolder viewHolder = new ViewHolder(v, mListener);
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BillViewHolder holder, int position) {
-        Bill currentItem = mBillList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Bill currentItem = mList.get(position);
 
         holder.mBillImage.setImageResource(currentItem.getmBillImage());
         holder.mBillTitle.setText(currentItem.getBillTitle());
@@ -60,6 +81,6 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.BillViewHolder
 
     @Override
     public int getItemCount() {
-        return mBillList.size();
+        return mList.size();
     }
 }

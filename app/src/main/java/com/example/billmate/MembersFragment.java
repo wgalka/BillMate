@@ -44,7 +44,7 @@ public class MembersFragment extends Fragment {
     private EditText newNameGroup;
     private ArrayList<ItemCardView> mList = new ArrayList<ItemCardView>();
     private RecyclerView mRecyclerView;
-    protected static InviteAdapter mMembersFragment;
+    private InviteAdapter mMembersFragment;
     private RecyclerView.LayoutManager mLayoutManager;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference = db.collection("groups");

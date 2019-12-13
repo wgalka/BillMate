@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buildLayout(savedInstanceState);
-        downloadListenerIdDoc();
+        downloadListenerIdDocGroups();
     }
 
     @Override
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void downloadListenerIdDoc() {
+    private void downloadListenerIdDocGroups() {
         documentReference = db.document("list/" + user_google_information.getEmail());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                     if (idDocsForUser.getIdDocs().size() != 0) {
-                        loadingObject();
+                        loadingObjectgroup();
                     } else {
                         //pusty obiekt
                         beginningGroup.setNameOfGroup(GROUP_NOT_EXIST);
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    protected void loadingObject() {
+    protected void loadingObjectgroup() {
         clearMenuItem();
         for (int i = 0; i < idDocsForUser.getSize(); i++) {
             documentReference = db.collection("groups").document(idDocsForUser.getIdDocs().get(i));

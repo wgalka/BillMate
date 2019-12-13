@@ -1,7 +1,6 @@
 package com.example.billmate;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,16 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.billmate.MainActivity.beginningGroup;
 import static com.example.billmate.MainActivity.groups;
-import static com.example.billmate.MembersFragment.mMembersFragment;
 
 public class InviteActivity extends AppCompatActivity {
 
@@ -139,9 +134,6 @@ public class InviteActivity extends AppCompatActivity {
                         updateExistGroup();
                         oneUserAddToListId(beginningGroup.getIdDocFirebase(), mList);
                         finish();
-
-                        //refresh mlist
-                        mMembersFragment.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
                     }
