@@ -9,6 +9,7 @@
     android:theme="@style/AppTheme">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/go_to_bills"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
@@ -36,14 +37,6 @@
                         android:scaleType="centerCrop"
                         app:srcCompat="@drawable/ic_group" />
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Group name"
-                        android:textAlignment="center"
-                        android:textColor="@color/primary_text" />
 
                 </LinearLayout>
 
@@ -61,11 +54,11 @@
                         android:textColor="@color/primary_text" />
 
                     <TextView
-                        android:id="@+id/textView8"
+                        android:id="@+id/other_own_you"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="+ 100 PLN"
+                        android:text="+ 0 PLN"
                         android:textColor="@color/income" />
                 </LinearLayout>
 
@@ -83,11 +76,11 @@
                         android:textColor="@color/primary_text" />
 
                     <TextView
-                        android:id="@+id/textView11"
+                        android:id="@+id/you_own_other"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="- 200 PLN"
+                        android:text="- 0 PLN"
                         android:textColor="@color/outcome" />
                 </LinearLayout>
 
@@ -103,16 +96,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="You owe"
+                    android:text="Bilans"
                     android:textAlignment="center"
                     android:textColor="@color/outcome" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/bilans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="- 100 PLN"
+                    android:text="- 0 PLN"
                     android:textAlignment="center"
                     android:textColor="@color/outcome" />
             </LinearLayout>
