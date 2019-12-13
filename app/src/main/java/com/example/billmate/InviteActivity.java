@@ -174,14 +174,18 @@ public class InviteActivity extends AppCompatActivity {
 //                    if(warnuek){
 //                        break;
 //                    }
-                for (int i = 0; i < mList.size(); i++) {
+                    boolean isAlreadyMember = false;
                     for (String elem : beginningGroup.getMembers()) {
-                        if (mList.get(i).getmText1().equals(elem)) {
-                            Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy.", Toast.LENGTH_SHORT).show();
-                            break;
+                        if (mList.get(position).getmText1().equals(elem)) {
+                            Toast.makeText(getApplicationContext(), elem+" vs "+mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
+                            isAlreadyMember = true;
                         }
                     }
-                }
+                    if(isAlreadyMember){
+                        Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy."+mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        mList.remove(position);
+                    }
             }
         } else {
             Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
