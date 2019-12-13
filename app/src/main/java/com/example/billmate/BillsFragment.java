@@ -1,5 +1,6 @@
 package com.example.billmate;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,11 +55,13 @@ public class BillsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_bills, container, false);
         bulidRecycleView(mainView);
+        swipeFragmentBills(mainView);
         loadObject();
         return mainView;
     }
 
     private void bulidRecycleView(View mainView) {
+
         mRecyclerView = mainView.findViewById(R.id.BillsRecycleView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -68,6 +72,19 @@ public class BillsFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 loadingObjectBillAgain();
+            }
+        });
+    }
+
+    private void swipeFragmentBills(View mainView) {
+        final SwipeRefreshLayout swipeRefreshLayout = mainView.findViewById(R.id.swipeRefreshLayoutBills);
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                loadingObjectBillAgain();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }

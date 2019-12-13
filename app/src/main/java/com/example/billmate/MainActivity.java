@@ -6,6 +6,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
+import androidx.databinding.ListChangeRegistry;
+import androidx.databinding.MapChangeRegistry;
+import androidx.databinding.ObservableMap;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -46,6 +49,9 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

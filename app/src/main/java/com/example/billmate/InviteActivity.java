@@ -170,18 +170,11 @@ public class InviteActivity extends AppCompatActivity {
                 beginningGroup.removeElem(position);
                 mInviteAdapter.notifyItemRemoved(position);
             } else {
-                //sprawdzić czy na mlist znajdue sie jakiś mail z beginningGroup
+                for (int i = 0; i < mList.size(); i++) {
+//                    sprawdzić czy na mlist znajdue sie jakiś mail z beginningGroup
 //                    if(warnuek){
 //                        break;
 //                    }
-
-                for (int i = 0; i < mList.size(); i++) {
-                    for (String elem : beginningGroup.getMembers()) {
-                        if (mList.get(i).getmText1().equals(elem)) {
-                            Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy.", Toast.LENGTH_SHORT).show();
-                            break;
-                        }
-                    }
                 }
             }
         } else {

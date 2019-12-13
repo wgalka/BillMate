@@ -1,5 +1,6 @@
 package com.example.billmate;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,8 +36,22 @@ public class MyGroupsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mainView = inflater.inflate(R.layout.fragment_my_groups, container, false);
         initVariables(mainView);
+        swipeFragmentGroups(mainView);
         calculateBilans();
         return mainView;
+    }
+
+    private void swipeFragmentGroups(View mainView) {
+        final SwipeRefreshLayout swipeRefreshLayout = mainView.findViewById(R.id.swipeRefreshLayoutGroups);
+        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(true);
+                calculateBilans();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void initVariables(View mainView) {
@@ -59,6 +75,9 @@ public class MyGroupsFragment extends Fragment {
     }
 
     private void calculateBilans() {
+        if (bills.size() != 0) {
+            other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
+        }
         //other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
         //ArrayList i HashMap observable
     }
