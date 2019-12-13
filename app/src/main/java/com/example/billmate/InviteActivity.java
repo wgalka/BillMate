@@ -174,7 +174,6 @@ public class InviteActivity extends AppCompatActivity {
 //                    if(warnuek){
 //                        break;
 //                    }
-                }
                 for (int i = 0; i < mList.size(); i++) {
                     for (String elem : beginningGroup.getMembers()) {
                         if (mList.get(i).getmText1().equals(elem)) {
@@ -182,6 +181,7 @@ public class InviteActivity extends AppCompatActivity {
                             break;
                         }
                     }
+                }
             }
         } else {
             Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
