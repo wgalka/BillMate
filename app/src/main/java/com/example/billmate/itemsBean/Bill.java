@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Bill {
     private int mBillImage;
@@ -12,8 +13,8 @@ public class Bill {
     private String BillDescription;
     private String BillTotal;
     private String BillOwes;
-
-
+    private Long BillTime;
+    private String BillStatus;
 
     private HashMap<String, Boolean> BillPayers;
 
@@ -22,22 +23,24 @@ public class Bill {
 
     public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
         this.mBillImage = mBillImage;
-        BillTitle = billTitle;
-        BillCreator = billOwner;
-        BillTotal = billTotal;
-        BillOwes = billOwes;
+        this.BillTitle = billTitle;
+        this.BillCreator = billOwner;
+        this.BillTotal = billTotal;
+        this.BillOwes = billOwes;
     }
 
-    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers) {
-        BillTitle = billTitle;
-        BillCreator = billCreator;
-        BillDescription = billDescription;
-        BillTotal = billTotal;
+    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers,Long billTime, String billStatus) {
+        this.BillTitle = billTitle;
+        this.BillCreator = billCreator;
+        this.BillDescription = billDescription;
+        this.BillTotal = billTotal;
         double billowes = Double.parseDouble(billTotal);
         billowes = billowes/billPayers.size();
         billowes = round(billowes,2);
-        BillOwes = String.valueOf(billowes);
-        BillPayers = billPayers;
+        this.BillOwes = String.valueOf(billowes);
+        this.BillPayers = billPayers;
+        this.BillTime = billTime;
+        this.BillStatus = billStatus;
     }
 
     public int getmBillImage() {
@@ -96,6 +99,22 @@ public class Bill {
 
     public void setBillPayers(HashMap<String, Boolean> billPayers) {
         BillPayers = billPayers;
+    }
+
+    public Long getTime() {
+        return BillTime;
+    }
+
+    public void setTime(Long time) {
+        this.BillTime = time;
+    }
+
+    public String getBillStatus() {
+        return BillStatus;
+    }
+
+    public void setBillStatus(String billStatus) {
+        BillStatus = billStatus;
     }
 
     public static double round(double value, int places) {

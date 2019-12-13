@@ -40,6 +40,7 @@ import java.util.regex.Pattern;
 public class CreateBill extends AppCompatActivity {
 
     private static final String TAG = CreateBill.class.getSimpleName();
+    private final String NOT_APPROVED = "NOT_APPROVED";
     private ArrayList<String> billPayers;
     private EditText billTitle;
     private EditText billDescription;
@@ -53,6 +54,7 @@ public class CreateBill extends AppCompatActivity {
     private TextView eBillGroupMembers;
     private Bill bill;
     private IdDocForBills idDocForBills;
+    private CurrentTime currentTime = new CurrentTime();
 
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,14 +95,11 @@ public class CreateBill extends AppCompatActivity {
                         }
                     }
 //                    bill.setBillPayers(payers);
-                    bill = new Bill(billTitle.getText().toString(), user_google_information.getEmail(), billDescription.getText().toString(), billTotalPrice.getText().toString(), payers);
+                    bill = new Bill(billTitle.getText().toString(), user_google_information.getEmail(), billDescription.getText().toString(), billTotalPrice.getText().toString(), payers, currentTime.milliseconds(), NOT_APPROVED);
                     //wysyłanie do bazy
                     collectionReference.add(bill).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-//                            for (int i = 0; i < billPayers.size(); i++) {
-//                                addBillToIdDocsCollection(documentReference.getId(), billPayers.get(i));
-//                            }
                             Log.d(TAG, "Dane zostały zapisane");
                             finish();
                         }
@@ -117,20 +116,6 @@ public class CreateBill extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void addBillToIdDocsCollection(final String documentReference, String email) {
-        db.collection("groups").document(beginningGroup.getIdDocFirebase()).collection("bookOfAccounts").document(email)
-                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                        if ((e) != null) {
-                            return;
-                        }
-                        IdDocForBills idDocForBills = documentSnapshot.toObject(IdDocForBills.class);
-                        idDocForBills.addElem(documentReference);
-                    }
-                });
     }
 
     private void setGroupMembers() {

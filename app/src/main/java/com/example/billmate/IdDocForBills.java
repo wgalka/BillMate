@@ -1,15 +1,6 @@
 package com.example.billmate;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-
 import java.util.ArrayList;
 
 public class IdDocForBills {
@@ -64,22 +55,4 @@ public class IdDocForBills {
     public int getSize() {
         return idDocs.size();
     }
-
-    protected void idDocUpdate(final String email) {
-        db.collection("groups").document(getIdGroupDoc()).collection("bookOfAccounts").document(email).set(this, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Dane zostały zapisane");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
-                    }
-                });
-    }
-
-
 }

@@ -190,7 +190,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         createNewGroup();
                         break;
                     case R.id.nav_bills:
-                        createBill();
+                        if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
+                            createBill();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Utwórz grupę w zakładce HOME", Toast.LENGTH_LONG).show();
+                        }
                         break;
                     case R.id.nav_members:
                         if (beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())) {
