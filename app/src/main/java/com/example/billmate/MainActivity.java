@@ -21,7 +21,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.billmate.itemsBean.Bill;
 import com.example.billmate.itemsBean.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,11 +40,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -66,10 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
     protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
     protected static IdDocsForUser idDocsForUser = new IdDocsForUser();
-
-    protected static ArrayList<String> idDocBills = new ArrayList<String>();
-    protected static HashMap<String, Bill> bills = new HashMap<String, Bill>();
-    protected static HashMap<String, HashMap<String, Bill>> conection = new HashMap<String, HashMap<String, Bill>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if (!(groups.get(idDocsForUser.getIdDocs().get(0)) == null)) {
                         beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
                         setTitle(beginningGroup.getNameOfGroup());
-                        downloadListenerIdDocBills();
                     }
                 }
             });
@@ -334,50 +324,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void clearMenuItem() {
         MenuItem menu = navigationView.getMenu().getItem(1);
         menu.getSubMenu().clear();
-    }
-
-    private void downloadListenerIdDocBills() {
-        idDocBills.clear();
-        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if ((e) != null) {
-                    return;
-                }
-                if (documentSnapshot.exists()) {
-                    Log.d(TAG, "Doc istnieje");
-                    idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
-                    Set<String> set = new HashSet<String>(idDocBills);
-                    idDocBills = new ArrayList<String>(set);
-                    loadingObjectBill();
-                    Log.d(TAG, "AKTUALNE DANE DOT. ID_BILLS ");
-                } else {
-                    Log.d(TAG, "Doc nie istnieje");
-                }
-            }
-        });
-    }
-
-    private void loadingObjectBill() {
-        if (!idDocBills.isEmpty()) {
-            for (int i = 0; i < idDocBills.size(); i++) {
-                documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + idDocBills.get(i));
-                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Bill billLocal = documentSnapshot.toObject(Bill.class);
-                        bills.put(documentSnapshot.getId(), billLocal);
-                        conection.put(beginningGroup.getIdDocFirebase(), bills);
-                        Log.d(TAG, "Dane zostały wczytane");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
-                    }
-                });
-            }
-        }
     }
 }

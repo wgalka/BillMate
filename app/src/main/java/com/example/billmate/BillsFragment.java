@@ -18,13 +18,10 @@ import android.widget.Toast;
 
 import com.example.billmate.adapter.BillAdapter;
 import com.example.billmate.itemsBean.Bill;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -32,13 +29,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import static com.example.billmate.MainActivity.beginningGroup;
-import static com.example.billmate.MainActivity.bills;
-import static com.example.billmate.MainActivity.conection;
-import static com.example.billmate.MainActivity.idDocBills;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class BillsFragment extends Fragment {
 
@@ -47,6 +43,8 @@ public class BillsFragment extends Fragment {
     private BillAdapter mBillAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Bill> mList = new ArrayList<Bill>();
+    private ArrayList<String> idDocBills = new ArrayList<String>();
+    private HashMap<String, Bill> bills = new HashMap<String, Bill>();
 
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -57,7 +55,7 @@ public class BillsFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_bills, container, false);
         bulidRecycleView(mainView);
         swipeFragmentBills(mainView);
-        loadObject();
+        downloadListenerIdDocBills();
         return mainView;
     }
 
@@ -90,39 +88,32 @@ public class BillsFragment extends Fragment {
         });
     }
 
-    private void loadObject() {
-        mList.clear();
-        if (conection.containsKey(beginningGroup.getIdDocFirebase())) {
-            for (int i = 0; i < conection.get(beginningGroup.getIdDocFirebase()).size(); i++) {
-                Log.d(TAG, "Mapy " + conection.get(beginningGroup.getIdDocFirebase()).containsKey(idDocBills.get(i)));
-                Log.d(TAG, "MapyCon " + conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTitle());
-                mList.add(new Bill(R.drawable.ic_format_list,
-                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTitle(),
-                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillOwner(),
-                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTotal(),
-                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillOwes()));
-                mBillAdapter.notifyDataSetChanged();
+    private void downloadListenerIdDocBills() {
+        idDocBills.clear();
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if ((e) != null) {
+                    return;
+                }
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "Doc istnieje");
+                    idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
+                    Set<String> set = new HashSet<String>(idDocBills);
+                    idDocBills = new ArrayList<String>(set);
+                    loadingObjectBillAgain();
+                } else {
+                    Log.d(TAG, "Doc nie istnieje");
+                    Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
+                }
             }
-        } else {
-            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
-        }
-
-
-//        if (idDocBills.size() != 0) {
-//            mList.clear();
-//            for (int i = 0; i < idDocBills.size(); i++) {
-//                mList.add(new Bill(R.drawable.ic_format_list, bills.get(idDocBills.get(i)).getBillTitle(),
-//                        bills.get(idDocBills.get(i)).getBillOwner(), bills.get(idDocBills.get(i)).getBillTotal(), bills.get(idDocBills.get(i)).getBillOwes()));
-//                mBillAdapter.notifyDataSetChanged();
-//            }
-//        } else {
-//            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
-//        }
+        });
     }
-
 
     private void loadingObjectBillAgain() {
         if (!idDocBills.isEmpty()) {
+            mList.clear();
             for (int i = 0; i < idDocBills.size(); i++) {
                 documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + idDocBills.get(i));
                 documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -130,6 +121,8 @@ public class BillsFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Bill billLocal = documentSnapshot.toObject(Bill.class);
                         bills.put(documentSnapshot.getId(), billLocal);
+                        mList.add(new Bill(R.drawable.ic_format_list, billLocal.getBillTitle(), billLocal.getBillOwner(), billLocal.getBillTotal(), billLocal.getBillOwes()));
+                        mBillAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Dane zostały wczytane");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -137,13 +130,10 @@ public class BillsFragment extends Fragment {
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
                     }
-                }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        loadObject();
-                    }
                 });
             }
+        } else {
+            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
         }
     }
 }
