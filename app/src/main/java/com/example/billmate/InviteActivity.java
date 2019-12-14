@@ -25,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 import static com.example.billmate.MainActivity.groups;
@@ -43,6 +45,7 @@ public class InviteActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
     private DocumentReference documentReference;
+    private ArrayList<String> copy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,7 @@ public class InviteActivity extends AppCompatActivity {
         confirmAddNewMember = findViewById(R.id.addNewMember);
         finishFirstConfiguration = findViewById(R.id.finish);
         getEmailMember = findViewById(R.id.getEmailMember);
+        copy = new ArrayList<String>(beginningGroup.getMembers());
         setConfirmAddNewMember();
         bulidRecycleView();
         ifUpdateGroup(isUpdateData(getIntent().getExtras().getString(NAME_OF_GROUP)));
@@ -170,21 +174,10 @@ public class InviteActivity extends AppCompatActivity {
                 beginningGroup.removeElem(position);
                 mInviteAdapter.notifyItemRemoved(position);
             } else {
-//                    sprawdzić czy na mlist znajdue sie jakiś mail z beginningGroup
-//                    if(warnuek){
-//                        break;
-//                    }
-                boolean isAlreadyMember = false;
-                for (String elem : beginningGroup.getMembers()) {
-                    if (mList.get(position).getmText1().equals(elem)) {
-                        Toast.makeText(getApplicationContext(), elem + " vs " + mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
-                        isAlreadyMember = true;
-                    }
-                }
-                if (isAlreadyMember) {
-                    Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy." + mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
-                } else {
+                if (position > copy.size() - 1) {
                     mList.remove(position);
+                    beginningGroup.removeElem(position);
+                    mInviteAdapter.notifyItemRemoved(position);
                 }
             }
         } else {
@@ -222,12 +215,9 @@ public class InviteActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
-                        for (int i = 0; i < idDocsForUser.getSize(); i++) {
-                            if (!idDocsForUser.getIdDocs().get(i).equals(id)) {
-                                idDocsForUser.addElem(id);
-                                idDocsForUser.userUpdate(documentSnapshot.getId());
-                            }
-                        }
+                        Set<String> set = new HashSet<String>(idDocsForUser.getIdDocs());
+                        idDocsForUser.setIdDocs(new ArrayList<String>(set));
+                        idDocsForUser.userUpdate(documentSnapshot.getId());
                     } else {
                         Log.d(TAG, "DOC nie istnieje dla " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = new IdDocsForUser();
@@ -276,5 +266,11 @@ public class InviteActivity extends AppCompatActivity {
         Intent backToHomeFragment = new Intent(this, MainActivity.class);
         setResult(R.id.nav_members, backToHomeFragment);
         super.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        beginningGroup.setMembers(copy);
+        super.onBackPressed();
     }
 }
