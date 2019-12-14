@@ -103,35 +103,36 @@ public class MyGroupsFragment extends Fragment {
 
     private void calculateBilans(String owes, HashMap<String, Boolean> paid, int size, String whoBuy) {
         if (whoBuy.equals(user_google_information.getEmail())) {
-            Double result = 0.0;
-            String previousTEXT = (String) other_own_you.getText();
-            double previous = Double.parseDouble(previousTEXT);
+            double result = 0.0;
             for (String key : paid.keySet()) {
                 if (paid.get(key) == false) {
                     result += Double.parseDouble(owes);
                 }
             }
-            result = round(result, 2);
+            String previousTEXT = (String) other_own_you.getText();
+            double previous = Double.parseDouble(previousTEXT);
+            bilans(true,result);
             result +=previous;
-
-            belays(true,result);
-
+            result = round(result, 2);
             other_own_you.setText(String.valueOf(result));
+
+
+
         } else {
-            Double result = 0.0;
+            double result2 = 0.0;
             String previousTEXT = (String) you_own_other.getText();
             double previous = Double.parseDouble(previousTEXT);
             for (String key : paid.keySet()) {
                 if (key.equals(user_google_information.getEmail()) && paid.get(key) == false) {
-                    result += Double.parseDouble(owes);
+                    result2 += Double.parseDouble(owes);
                 }
             }
-            result = round(result, 2);
-            result +=previous;
+            bilans(false,result2);
+            result2 +=previous;
+            result2 = round(result2, 2);
+            you_own_other.setText(String.valueOf(result2));
 
-            belays(false,result);
 
-            you_own_other.setText(String.valueOf(result));
         }
 //        if (false) {
 //            if (whoBuy.equals(user_google_information.getEmail())) {
@@ -154,16 +155,15 @@ public class MyGroupsFragment extends Fragment {
 //        }
     }
 
-    private void belays(Boolean payer, Double amount) {
+    private void bilans(Boolean payer, double amount) {
         String previous = (String) bilans.getText();
-        Double result = Double.parseDouble(previous);
+        double addressed = Double.parseDouble(previous);
         if (payer == true) {
-            result += amount;
-            bilans.setText(String.valueOf(result));
+            addressed += amount;
         } else {
-            result -= amount;
-            bilans.setText(String.valueOf(result));
+            addressed -= amount;
         }
+        bilans.setText(String.valueOf(addressed));
     }
 
     private void downloadListenerIdDocBills() {
