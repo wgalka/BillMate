@@ -74,9 +74,17 @@ public class BillsFragment extends Fragment {
 
             @Override
             public void onPayClick(int position) {
-                Toast.makeText(getContext(), "Pay Click! " + mList.get(position).getBillDescription(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Pay Click! " + mList.get(position).getDocumentID(), Toast.LENGTH_LONG).show();
+                updateBillPayers(mList.get(position).getDocumentID());
             }
         });
+    }
+
+    private void updateBillPayers(String documentID) {
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + documentID);
+        bills.get(documentID).getBillPayers().put(user_google_information.getEmail(), true);
+        documentReference.update("billPayers", bills.get(documentID).getBillPayers());
+        loadingObjectBillAgain();
     }
 
     private void swipeFragmentBills(View mainView) {
@@ -128,10 +136,12 @@ public class BillsFragment extends Fragment {
                         mList.add(new Bill(
                                 billLocal.getBillTitle(),
                                 billLocal.getBillOwner(),
+                                billLocal.getBillPayers(),
                                 billLocal.getBillDescription(),
                                 billLocal.getBillTotal(),
                                 billLocal.getBillOwes(),
-                                billLocal.getTime()
+                                billLocal.getTime(),
+                                billLocal.getDocumentID()
                         ));
                         mBillAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Dane zostały wczytane");

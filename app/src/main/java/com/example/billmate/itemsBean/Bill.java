@@ -16,20 +16,22 @@ public class Bill {
     private String BillOwes;
     private Long BillTime;
     private String BillStatus;
-    private String uid;
+    private String documentID;
 
     private HashMap<String, Boolean> BillPayers;
 
     public Bill() {
     }
 
-    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, String billOwes, Long billTime) {
+    public Bill(String billTitle, String billCreator, HashMap<String, Boolean> billPayers, String billDescription, String billTotal, String billOwes, Long billTime, String documentID) {
         this.BillTitle = billTitle;
         this.BillCreator = billCreator;
+        this.BillPayers = billPayers;
         this.BillDescription = billDescription;
         this.BillTotal = billTotal;
         this.BillOwes = billOwes;
         this.BillTime = billTime;
+        this.documentID = documentID;
     }
 
     public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers, Long billTime, String billStatus) {
@@ -120,12 +122,12 @@ public class Bill {
         BillStatus = billStatus;
     }
 
-    public String getUid() {
-        return uid;
+    public String getDocumentID() {
+        return documentID;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setDocumentID(String documentID) {
+        this.documentID = documentID;
     }
 
     public static double round(double value, int places) {

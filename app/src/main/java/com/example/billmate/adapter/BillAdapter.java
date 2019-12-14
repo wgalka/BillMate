@@ -94,7 +94,8 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Bill currentItem = mList.get(position);
-        if (currentItem.getBillOwner().equals(user_google_information.getEmail()) == true) {
+        if (currentItem.getBillOwner().equals(user_google_information.getEmail()) == true
+                || currentItem.getBillPayers().get(user_google_information.getEmail())) {
             holder.mBillPayButton.setVisibility(View.GONE);
             holder.mBillOwes.setVisibility(View.GONE);
         } else {
