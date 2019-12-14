@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected static ArrayList<String> idDocBills = new ArrayList<String>();
     protected static HashMap<String, Bill> bills = new HashMap<String, Bill>();
+    protected static HashMap<String, HashMap<String, Bill>> conection = new HashMap<String, HashMap<String, Bill>>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,9 +147,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     Log.d(TAG, "WSZYSTKIE DANE WCZYTANE");
-                    beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
-                    setTitle(beginningGroup.getNameOfGroup());
-                    downloadListenerIdDocBills();
+                    if (!(groups.get(idDocsForUser.getIdDocs().get(0)) == null)) {
+                        beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
+                        setTitle(beginningGroup.getNameOfGroup());
+                        downloadListenerIdDocBills();
+                    }
                 }
             });
         }
@@ -361,6 +364,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Bill billLocal = documentSnapshot.toObject(Bill.class);
                         bills.put(documentSnapshot.getId(), billLocal);
+                        conection.put(beginningGroup.getIdDocFirebase(), bills);
                         Log.d(TAG, "Dane zostały wczytane");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
