@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.adapters.ToolbarBindingAdapter;
 
 import com.example.billmate.itemsBean.Bill;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -78,7 +79,7 @@ public class CreateBill extends AppCompatActivity {
             public void onClick(View v) {
                 if (isFormValid()) {
                     System.out.println("Wszystko po walidacji formularza !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-                    Toast.makeText(getApplicationContext(), "Tworzenie rachunku", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tworzenie rachunku"+beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
 //                    bill=new Bill();
 //                    bill.setBillTitle(billTitle.getText().toString());
 //                    bill.setBillOwner(user_google_information.getEmail());
@@ -119,12 +120,12 @@ public class CreateBill extends AppCompatActivity {
     }
 
     private void setGroupMembers() {
-        ArrayList<String> groupMembers = beginningGroup.getMembers();
+        ArrayList<String> groupMembers = (ArrayList<String>) beginningGroup.getMembers().clone();
 //        groupMembers.add("pafsda@gmail.com");
 //        groupMembers.add("vbuwrbveyu@gmail.com");
 //        groupMembers.add("bruwuivew@gmail.com");
 
-        billPayers = beginningGroup.getMembers();
+        billPayers = (ArrayList<String>) beginningGroup.getMembers().clone();
 
         for (int i = 0; i < groupMembers.size(); i++) {
             final CheckBox checkBox = new CheckBox(this);
@@ -134,6 +135,7 @@ public class CreateBill extends AppCompatActivity {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    System.out.println("nazwa grupy:" + beginningGroup.getMembers());
                     if (isChecked) {
                         billPayers.add(checkBox.getText().toString());
                         System.out.println("Checkbox is true: " + billPayers);
@@ -141,6 +143,7 @@ public class CreateBill extends AppCompatActivity {
                         billPayers.remove(checkBox.getText().toString());
                         System.out.println("Checkbox is false: " + billPayers);
                     }
+
                 }
             });
             mGroupMembersLinearLayout.addView(checkBox, mGroupMembersLinearLayout.getChildCount());
