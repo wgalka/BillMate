@@ -54,7 +54,9 @@ public class MyGroupsFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_my_groups, container, false);
         initVariables(mainView);
         swipeFragmentGroups(mainView);
-        downloadListenerIdDocBills();
+        if (beginningGroup.getNameOfGroup() != null) {
+            downloadListenerIdDocBills();
+        }
         return mainView;
     }
 
@@ -65,6 +67,10 @@ public class MyGroupsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
+                if (beginningGroup.getNameOfGroup() != null) {
+                    downloadListenerIdDocBills();
+                }
+                clearTextView();
                 loadingObjectBillAgain();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -77,6 +83,12 @@ public class MyGroupsFragment extends Fragment {
         you_own_other = mainView.findViewById(R.id.you_own_other);
         bilans = mainView.findViewById(R.id.bilans);
         setGoToFragmentBills();
+    }
+
+    private void clearTextView() {
+        other_own_you.setText("0");
+        you_own_other.setText("0");
+        bilans.setText("0");
     }
 
     private void setGoToFragmentBills() {

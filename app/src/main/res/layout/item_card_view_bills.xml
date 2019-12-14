@@ -24,6 +24,7 @@
             android:id="@+id/mBillDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="BillDescription"
             android:textColor="@color/primary_text" />
 
@@ -31,6 +32,7 @@
             android:id="@+id/mBillTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="BillTime"
             android:textColor="@color/primary_text" />
 
@@ -47,7 +49,7 @@
             android:id="@+id/mBillTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="321,99 PLN"
             android:textColor="@color/primary_text" />
 
@@ -55,8 +57,7 @@
             android:id="@+id/mBillOwes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:text="20,41 PLN"
             android:textColor="@color/outcome" />
 
@@ -64,7 +65,7 @@
             android:id="@+id/mBillPayButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/round_bg"
             android:backgroundTint="@color/primary_light"
             android:text="Pay" />
