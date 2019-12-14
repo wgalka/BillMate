@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.billmate.itemsBean.Bill;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -63,7 +65,7 @@ public class MyGroupsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                calculateBilans();
+                loadingObjectBillAgain();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -89,57 +91,80 @@ public class MyGroupsFragment extends Fragment {
         });
     }
 
-    private void calculateBilans() {
-//        if (bills.size() != 0) {
-//            //other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
-//        }
-        //other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
-        //ArrayList i HashMap observable
+    private void calculateBilans(String owes, boolean payer, int size) {
+        if (payer == true) {
+            Double result = Double.parseDouble(owes) * (size - 1);
+            String previous = (String) other_own_you.getText();
+            Double showResult = Double.parseDouble(previous);
+            bilans(payer, result);
+            showResult += result;
+            other_own_you.setText(String.valueOf(showResult));
+        } else {
+            Double result = Double.parseDouble(owes);
+            String previous = (String) you_own_other.getText();
+            Double showResult = Double.parseDouble(previous);
+            bilans(payer, result);
+            showResult += result;
+            you_own_other.setText(String.valueOf(showResult));
+        }
     }
 
-//    private void downloadListenerIdDocBills() {
-//        idDocBills.clear();
-//        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
-//        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-//                if ((e) != null) {
-//                    return;
-//                }
-//                if (documentSnapshot.exists()) {
-//                    Log.d(TAG, "Doc istnieje");
-//                    idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
-//                    Set<String> set = new HashSet<String>(idDocBills);
-//                    idDocBills = new ArrayList<String>(set);
-//                    loadingObjectBillAgain();
-//                } else {
-//                    Log.d(TAG, "Doc nie istnieje");
-//                    Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//    }
-//
-//    private void loadingObjectBillAgain() {
-//        if (!idDocBills.isEmpty()) {
-//            for (int i = 0; i < idDocBills.size(); i++) {
-//                documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + idDocBills.get(i));
-//                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        Bill billLocal = documentSnapshot.toObject(Bill.class);
-//                        bills.put(documentSnapshot.getId(), billLocal);
-//                        Log.d(TAG, "Dane zostały wczytane");
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
-//                    }
-//                });
-//            }
-//        } else {
-//            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
-//        }
-//    }
+    private void bilans(Boolean payer, Double amount) {
+        String previous = (String) you_own_other.getText();
+        Double result = Double.parseDouble(previous);
+        if (payer == true) {
+            result = result + amount;
+            bilans.setText(String.valueOf(result));
+        } else {
+            result = result - amount;
+            bilans.setText(String.valueOf(result));
+        }
+    }
+
+    private void downloadListenerIdDocBills() {
+        idDocBills.clear();
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                if ((e) != null) {
+                    return;
+                }
+                if (documentSnapshot.exists()) {
+                    Log.d(TAG, "Doc istnieje");
+                    idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
+                    Set<String> set = new HashSet<String>(idDocBills);
+                    idDocBills = new ArrayList<String>(set);
+                    loadingObjectBillAgain();
+                } else {
+                    Log.d(TAG, "Doc nie istnieje");
+                    //Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void loadingObjectBillAgain() {
+        if (!idDocBills.isEmpty()) {
+            for (int i = 0; i < idDocBills.size(); i++) {
+                documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + idDocBills.get(i));
+                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Bill billLocal = documentSnapshot.toObject(Bill.class);
+                        bills.put(documentSnapshot.getId(), billLocal);
+                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers().get(user_google_information.getEmail()), billLocal.getBillPayers().size());
+                        Log.d(TAG, "Dane zostały wczytane");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
+                    }
+                });
+            }
+        } else {
+            //Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
+        }
+    }
 }

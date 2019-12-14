@@ -59,7 +59,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="+ 0 PLN"
+                        android:text="0"
                         android:textColor="@color/income" />
                 </LinearLayout>
 
@@ -81,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="- 0 PLN"
+                        android:text="0"
                         android:textColor="@color/outcome" />
                 </LinearLayout>
 
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="- 0 PLN"
+                    android:text="0"
                     android:textAlignment="center"
                     android:textColor="@color/outcome" />
             </LinearLayout>
