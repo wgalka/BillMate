@@ -91,23 +91,23 @@ public class BillsFragment extends Fragment {
     }
 
     private void loadObject() {
+        mList.clear();
         if (conection.containsKey(beginningGroup.getIdDocFirebase())) {
-            mList.clear();
             for (int i = 0; i < conection.get(beginningGroup.getIdDocFirebase()).size(); i++) {
-                for (int j = 0; j < idDocBills.size(); j++) {
-                    Log.d(TAG, "Mapy " + conection.get(beginningGroup.getIdDocFirebase()).containsKey(idDocBills.get(j)));
-                    Log.d(TAG, "MapyCon " + conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(j)).getBillTitle());
-                    mList.add(new Bill(R.drawable.ic_format_list,
-                            conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(j)).getBillTitle(),
-                            conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(j)).getBillOwner(),
-                            conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(j)).getBillTotal(),
-                            conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(j)).getBillOwes()));
-                    mBillAdapter.notifyDataSetChanged();
-                }
+                Log.d(TAG, "Mapy " + conection.get(beginningGroup.getIdDocFirebase()).containsKey(idDocBills.get(i)));
+                Log.d(TAG, "MapyCon " + conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTitle());
+                mList.add(new Bill(R.drawable.ic_format_list,
+                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTitle(),
+                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillOwner(),
+                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillTotal(),
+                        conection.get(beginningGroup.getIdDocFirebase()).get(idDocBills.get(i)).getBillOwes()));
+                mBillAdapter.notifyDataSetChanged();
             }
         } else {
             Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
         }
+
+
 //        if (idDocBills.size() != 0) {
 //            mList.clear();
 //            for (int i = 0; i < idDocBills.size(); i++) {
@@ -119,6 +119,7 @@ public class BillsFragment extends Fragment {
 //            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
 //        }
     }
+
 
     private void loadingObjectBillAgain() {
         if (!idDocBills.isEmpty()) {

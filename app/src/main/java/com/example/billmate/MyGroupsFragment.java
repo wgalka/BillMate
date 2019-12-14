@@ -76,7 +76,7 @@ public class MyGroupsFragment extends Fragment {
 
     private void calculateBilans() {
         if (bills.size() != 0) {
-            other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
+            //other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
         }
         //other_own_you.setText(bills.get(idDocBills.get(0)).getBillOwes());
         //ArrayList i HashMap observable

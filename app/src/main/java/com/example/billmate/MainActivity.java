@@ -44,6 +44,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -346,6 +348,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (documentSnapshot.exists()) {
                     Log.d(TAG, "Doc istnieje");
                     idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
+                    Set<String> set = new HashSet<String>(idDocBills);
+                    idDocBills = new ArrayList<String>(set);
                     loadingObjectBill();
                     Log.d(TAG, "AKTUALNE DANE DOT. ID_BILLS ");
                 } else {
