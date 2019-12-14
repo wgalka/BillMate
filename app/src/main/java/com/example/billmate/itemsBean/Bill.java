@@ -22,15 +22,16 @@ public class Bill {
     public Bill() {
     }
 
-    public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
-        this.mBillImage = mBillImage;
+    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, String billOwes, Long billTime) {
         this.BillTitle = billTitle;
-        this.BillCreator = billOwner;
+        this.BillCreator = billCreator;
+        this.BillDescription = billDescription;
         this.BillTotal = billTotal;
         this.BillOwes = billOwes;
+        this.BillTime = billTime;
     }
 
-    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers,Long billTime, String billStatus) {
+    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers, Long billTime, String billStatus) {
         this.BillTitle = billTitle;
         this.BillCreator = billCreator;
         this.BillDescription = billDescription;
