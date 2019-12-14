@@ -70,7 +70,11 @@ public class BillsFragment extends Fragment {
         mBillAdapter.setOnItemClickListener(new BillAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                loadingObjectBillAgain();
+            }
+
+            @Override
+            public void onPayClick(int position) {
+                Toast.makeText(getContext(), "Pay Click! " + mList.get(position).getBillDescription(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -128,7 +132,7 @@ public class BillsFragment extends Fragment {
                                 billLocal.getBillTotal(),
                                 billLocal.getBillOwes(),
                                 billLocal.getTime()
-                                ));
+                        ));
                         mBillAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Dane zostały wczytane");
                     }

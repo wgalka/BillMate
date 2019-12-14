@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +26,8 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
         void onItemClick(int position);
+
+        void onPayClick(int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -38,7 +41,7 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
         public TextView mBillOwner;
         public TextView mBillTotal;
         public TextView mBillOwes;
-        public Button mBillPayButton;
+        public View mBillPayButton;
 
         public ViewHolder(@NonNull View itemView, final BillAdapter.OnItemClickListener listener) {
             super(itemView);
@@ -57,6 +60,17 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
+                        }
+                    }
+                }
+            });
+            mBillPayButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            listener.onPayClick(position);
                         }
                     }
                 }
@@ -87,8 +101,8 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             holder.mBillPayButton.setVisibility(View.VISIBLE);
             holder.mBillOwes.setVisibility(View.VISIBLE);
         }
-        holder.mBillTime.setText("Time: " + convertMillisecondsToHours(currentItem.getTime()) + " hours ago");
-//        holder.mBillTime.setText("Time: "+currentItem.getTime()+" minutes ago");
+        long result = milliseconds() - currentItem.getTime();
+        holder.mBillTime.setText("Time: " + convertMillisecondsToHours(result) + " hours ago");
         holder.mBillDescription.setText("Description: " + currentItem.getBillDescription());
         holder.mBillTitle.setText("Product: " + currentItem.getBillTitle());
         holder.mBillOwner.setText("Owner: " + currentItem.getBillOwner());
@@ -99,6 +113,12 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     private Long convertMillisecondsToHours(Long milliseconds) {
         long minutes = TimeUnit.MILLISECONDS.toHours(milliseconds);
         return minutes;
+    }
+
+    protected Long milliseconds() {
+        long date = System.currentTimeMillis();
+        String milliseconds = String.valueOf(date);
+        return date;
     }
 
     @Override
