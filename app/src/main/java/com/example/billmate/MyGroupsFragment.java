@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,10 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.billmate.itemsBean.Bill;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -104,36 +101,67 @@ public class MyGroupsFragment extends Fragment {
         });
     }
 
-    private void calculateBilans(String owes, boolean paid, int size, String whoBuy) {
-        if (paid == false) {
-            if (whoBuy.equals(user_google_information.getEmail())) {
-                Double result = Double.parseDouble(owes) * (size - 1);
-                String previous = (String) other_own_you.getText();
-                Double showResult = Double.parseDouble(previous);
-                //bilans(true, result);
-                showResult += result;
-                showResult = round(showResult, 2);
-                other_own_you.setText(String.valueOf(showResult));
-            } else {
-                Double result = Double.parseDouble(owes);
-                String previous = (String) you_own_other.getText();
-                Double showResult = Double.parseDouble(previous);
-                //bilans(false, result);
-                showResult += result;
-                showResult = round(showResult, 2);
-                you_own_other.setText(String.valueOf(showResult));
+    private void calculateBilans(String owes, HashMap<String, Boolean> paid, int size, String whoBuy) {
+        if (whoBuy.equals(user_google_information.getEmail())) {
+            Double result = 0.0;
+            String previousTEXT = (String) other_own_you.getText();
+            double previous = Double.parseDouble(previousTEXT);
+            for (String key : paid.keySet()) {
+                if (paid.get(key) == false) {
+                    result += Double.parseDouble(owes);
+                }
             }
+            result = round(result, 2);
+            result +=previous;
+
+            belays(true,result);
+
+            other_own_you.setText(String.valueOf(result));
+        } else {
+            Double result = 0.0;
+            String previousTEXT = (String) you_own_other.getText();
+            double previous = Double.parseDouble(previousTEXT);
+            for (String key : paid.keySet()) {
+                if (key.equals(user_google_information.getEmail()) && paid.get(key) == false) {
+                    result += Double.parseDouble(owes);
+                }
+            }
+            result = round(result, 2);
+            result +=previous;
+
+            belays(false,result);
+
+            you_own_other.setText(String.valueOf(result));
         }
+//        if (false) {
+//            if (whoBuy.equals(user_google_information.getEmail())) {
+//                Double result = Double.parseDouble(owes) * (size - 1);
+//                String previous = (String) other_own_you.getText();
+//                Double showResult = Double.parseDouble(previous);
+//                //belays(true, result);
+//                showResult += result;
+//                showResult = round(showResult, 2);
+//                other_own_you.setText(String.valueOf(showResult));
+//            } else {
+//                Double result = Double.parseDouble(owes);
+//                String previous = (String) you_own_other.getText();
+//                Double showResult = Double.parseDouble(previous);
+//                //belays(false, result);
+//                showResult += result;
+//                showResult = round(showResult, 2);
+//                you_own_other.setText(String.valueOf(showResult));
+//            }
+//        }
     }
 
-    private void bilans(Boolean payer, Double amount) {
-        String previous = (String) you_own_other.getText();
+    private void belays(Boolean payer, Double amount) {
+        String previous = (String) bilans.getText();
         Double result = Double.parseDouble(previous);
         if (payer == true) {
-            result = result + amount;
+            result += amount;
             bilans.setText(String.valueOf(result));
         } else {
-            result = result - amount;
+            result -= amount;
             bilans.setText(String.valueOf(result));
         }
     }
@@ -170,7 +198,7 @@ public class MyGroupsFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Bill billLocal = documentSnapshot.toObject(Bill.class);
                         bills.put(documentSnapshot.getId(), billLocal);
-                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers().get(user_google_information.getEmail()), billLocal.getBillPayers().size(), billLocal.getBillOwner());
+                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers(), billLocal.getBillPayers().size(), billLocal.getBillOwner());
                         Log.d(TAG, "Dane zostały wczytane");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
