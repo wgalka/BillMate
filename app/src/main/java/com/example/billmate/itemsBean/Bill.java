@@ -3,6 +3,7 @@ package com.example.billmate.itemsBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -103,6 +104,15 @@ public class Bill {
 
     public Long getTime() {
         return BillTime;
+    }
+
+    public String getTimeString(){
+        if(this.BillTime == null){
+            return "NULL TIME !!! ?? ?   ?";
+        } else{
+            Date currentDate = new Date(this.BillTime);
+            return currentDate.toString();
+        }
     }
 
     public void setTime(Long time) {

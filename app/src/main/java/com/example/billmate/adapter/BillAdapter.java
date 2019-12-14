@@ -27,19 +27,21 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mBillImage;
         public TextView mBillTitle;
         public TextView mBillOwner;
         public TextView mBillTotal;
         public TextView mBillOwes;
+        public TextView mBillDate;
+        public TextView mBillDescription;
 
         public ViewHolder(@NonNull View itemView, final BillAdapter.OnItemClickListener listener) {
             super(itemView);
-            mBillImage = itemView.findViewById(R.id.mBillImage);
             mBillTitle = itemView.findViewById(R.id.mBillTitle);
             mBillOwner = itemView.findViewById(R.id.mBillOwner);
             mBillTotal = itemView.findViewById(R.id.mBillTotal);
             mBillOwes = itemView.findViewById(R.id.mBillOwes);
+            mBillDate = itemView.findViewById(R.id.mBillDate);
+            mBillDescription = itemView.findViewById(R.id.mBillDescription);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,11 +74,12 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Bill currentItem = mList.get(position);
 
-        holder.mBillImage.setImageResource(currentItem.getmBillImage());
         holder.mBillTitle.setText(currentItem.getBillTitle());
         holder.mBillOwner.setText(currentItem.getBillOwner());
         holder.mBillTotal.setText(currentItem.getBillTotal());
         holder.mBillOwes.setText(currentItem.getBillOwes());
+        holder.mBillDate.setText(currentItem.getTimeString());
+        holder.mBillDescription.setText(currentItem.getBillDescription());
     }
 
     @Override

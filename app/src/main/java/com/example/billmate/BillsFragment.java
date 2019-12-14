@@ -121,7 +121,7 @@ public class BillsFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Bill billLocal = documentSnapshot.toObject(Bill.class);
                         bills.put(documentSnapshot.getId(), billLocal);
-                        mList.add(new Bill(R.drawable.ic_format_list, billLocal.getBillTitle(), billLocal.getBillOwner(), billLocal.getBillTotal(), billLocal.getBillOwes()));
+                        mList.add(new Bill(billLocal.getBillTitle(), billLocal.getBillOwner(), billLocal.getBillDescription(), billLocal.getBillTotal(), billLocal.getBillPayers(), billLocal.getTime(), billLocal.getBillStatus()));
                         mBillAdapter.notifyDataSetChanged();
                         Log.d(TAG, "Dane zostały wczytane");
                     }
