@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.example.billmate.MainActivity.beginningGroup;
+import static com.example.billmate.itemsBean.Bill.round;
 
 
 public class MyGroupsFragment extends Fragment {
@@ -103,21 +104,25 @@ public class MyGroupsFragment extends Fragment {
         });
     }
 
-    private void calculateBilans(String owes, boolean payer, int size) {
-        if (payer == true) {
-            Double result = Double.parseDouble(owes) * (size - 1);
-            String previous = (String) other_own_you.getText();
-            Double showResult = Double.parseDouble(previous);
-            bilans(payer, result);
-            showResult += result;
-            other_own_you.setText(String.valueOf(showResult));
-        } else {
-            Double result = Double.parseDouble(owes);
-            String previous = (String) you_own_other.getText();
-            Double showResult = Double.parseDouble(previous);
-            bilans(payer, result);
-            showResult += result;
-            you_own_other.setText(String.valueOf(showResult));
+    private void calculateBilans(String owes, boolean paid, int size, String whoBuy) {
+        if (paid == false) {
+            if (whoBuy.equals(user_google_information.getEmail())) {
+                Double result = Double.parseDouble(owes) * (size - 1);
+                String previous = (String) other_own_you.getText();
+                Double showResult = Double.parseDouble(previous);
+                //bilans(true, result);
+                showResult += result;
+                showResult = round(showResult, 2);
+                other_own_you.setText(String.valueOf(showResult));
+            } else {
+                Double result = Double.parseDouble(owes);
+                String previous = (String) you_own_other.getText();
+                Double showResult = Double.parseDouble(previous);
+                //bilans(false, result);
+                showResult += result;
+                showResult = round(showResult, 2);
+                you_own_other.setText(String.valueOf(showResult));
+            }
         }
     }
 
@@ -165,7 +170,7 @@ public class MyGroupsFragment extends Fragment {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         Bill billLocal = documentSnapshot.toObject(Bill.class);
                         bills.put(documentSnapshot.getId(), billLocal);
-                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers().get(user_google_information.getEmail()), billLocal.getBillPayers().size());
+                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers().get(user_google_information.getEmail()), billLocal.getBillPayers().size(), billLocal.getBillOwner());
                         Log.d(TAG, "Dane zostały wczytane");
                     }
                 }).addOnFailureListener(new OnFailureListener() {

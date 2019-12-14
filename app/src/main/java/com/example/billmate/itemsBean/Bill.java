@@ -16,6 +16,7 @@ public class Bill {
     private String BillOwes;
     private Long BillTime;
     private String BillStatus;
+    private String uid;
 
     private HashMap<String, Boolean> BillPayers;
 
@@ -37,8 +38,8 @@ public class Bill {
         this.BillDescription = billDescription;
         this.BillTotal = billTotal;
         double billowes = Double.parseDouble(billTotal);
-        billowes = billowes/billPayers.size();
-        billowes = round(billowes,2);
+        billowes = billowes / billPayers.size();
+        billowes = round(billowes, 2);
         this.BillOwes = String.valueOf(billowes);
         this.BillPayers = billPayers;
         this.BillTime = billTime;
@@ -107,15 +108,6 @@ public class Bill {
         return BillTime;
     }
 
-    public String getTimeString(){
-        if(this.BillTime == null){
-            return "NULL TIME !!! ?? ?   ?";
-        } else{
-            Date currentDate = new Date(this.BillTime);
-            return currentDate.toString();
-        }
-    }
-
     public void setTime(Long time) {
         this.BillTime = time;
     }
@@ -126,6 +118,14 @@ public class Bill {
 
     public void setBillStatus(String billStatus) {
         BillStatus = billStatus;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public static double round(double value, int places) {
