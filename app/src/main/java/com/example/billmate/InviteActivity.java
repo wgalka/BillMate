@@ -174,18 +174,18 @@ public class InviteActivity extends AppCompatActivity {
 //                    if(warnuek){
 //                        break;
 //                    }
-                    boolean isAlreadyMember = false;
-                    for (String elem : beginningGroup.getMembers()) {
-                        if (mList.get(position).getmText1().equals(elem)) {
-                            Toast.makeText(getApplicationContext(), elem+" vs "+mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
-                            isAlreadyMember = true;
-                        }
+                boolean isAlreadyMember = false;
+                for (String elem : beginningGroup.getMembers()) {
+                    if (mList.get(position).getmText1().equals(elem)) {
+                        Toast.makeText(getApplicationContext(), elem + " vs " + mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
+                        isAlreadyMember = true;
                     }
-                    if(isAlreadyMember){
-                        Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy."+mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
-                    }else{
-                        mList.remove(position);
-                    }
+                }
+                if (isAlreadyMember) {
+                    Toast.makeText(getApplicationContext(), "Probujesz usunąć uzytkownika należącego do grupy." + mList.get(position).getmText1(), Toast.LENGTH_SHORT).show();
+                } else {
+                    mList.remove(position);
+                }
             }
         } else {
             Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
@@ -222,8 +222,12 @@ public class InviteActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
-                        idDocsForUser.addElem(id);
-                        idDocsForUser.userUpdate(documentSnapshot.getId());
+                        for (int i = 0; i < idDocsForUser.getSize(); i++) {
+                            if (!idDocsForUser.getIdDocs().get(i).equals(id)) {
+                                idDocsForUser.addElem(id);
+                                idDocsForUser.userUpdate(documentSnapshot.getId());
+                            }
+                        }
                     } else {
                         Log.d(TAG, "DOC nie istnieje dla " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = new IdDocsForUser();
