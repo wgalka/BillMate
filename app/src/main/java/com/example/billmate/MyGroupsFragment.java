@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -86,6 +88,7 @@ public class MyGroupsFragment extends Fragment {
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                animatedIconView.startAnimation();
                 mPullToRefreshView.setRefreshing(true);
                 if (beginningGroup.getNameOfGroup() != null) {
                     downloadListenerIdDocBills();
@@ -104,7 +107,6 @@ public class MyGroupsFragment extends Fragment {
         bilans = mainView.findViewById(R.id.bilans);
         animatedIconView = (AnimatedIconView) mainView.findViewById(R.id.animatedIconView);
         animatedIconView.setAnimatedIcon(IconFactory.iconVerticalArrow());
-        animatedIconView.startAnimation();
         setGoToFragmentBills();
     }
 

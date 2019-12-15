@@ -13,6 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
         <androidx.cardview.widget.CardView
             android:id="@+id/go_to_bills"
             android:layout_width="match_parent"
@@ -120,11 +121,22 @@
 
         </androidx.cardview.widget.CardView>
 
-        <tarek360.animated.icons.AnimatedIconView
-            android:id="@+id/animatedIconView"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:visibility="visible" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <tarek360.animated.icons.AnimatedIconView
+                android:id="@+id/animatedIconView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/round_bg_with_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.05" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
