@@ -1,6 +1,7 @@
 package com.example.billmate;
 
 import android.graphics.Color;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +26,17 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.yalantis.pulltomakesoup.PullToRefreshView;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import tarek360.animated.icons.AnimatedIconView;
+import tarek360.animated.icons.IconFactory;
+import tarek360.animated.icons.drawables.AnimatedIcon;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 import static com.example.billmate.itemsBean.Bill.round;
@@ -43,6 +49,8 @@ public class MyGroupsFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference documentReference;
     private View goToFragmentBills;
+    private AnimatedIconView animatedIconView;
+    private PullToRefreshView mPullToRefreshView;
     private TextView other_own_you, you_own_other, bilans;
     private ArrayList<String> idDocBills = new ArrayList<String>();
     private HashMap<String, Bill> bills = new HashMap<String, Bill>();
@@ -56,23 +64,35 @@ public class MyGroupsFragment extends Fragment {
         if (beginningGroup.getNameOfGroup() != null) {
             downloadListenerIdDocBills();
         }
-        Snackbar.make(goToFragmentBills, "Make some dish!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         return mainView;
     }
 
     private void swipeFragmentGroups(View mainView) {
-        final SwipeRefreshLayout swipeRefreshLayout = mainView.findViewById(R.id.swipeRefreshLayoutGroups);
-        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//        final SwipeRefreshLayout swipeRefreshLayout = mainView.findViewById(R.id.pull_to_refresh);
+//        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
+//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                swipeRefreshLayout.setRefreshing(true);
+//                if (beginningGroup.getNameOfGroup() != null) {
+//                    downloadListenerIdDocBills();
+//                }
+//                clearTextView();
+//                loadingObjectBillAgain();
+//                swipeRefreshLayout.setRefreshing(false);
+//            }
+//        });
+        mPullToRefreshView = (PullToRefreshView) mainView.findViewById(R.id.pull_to_refresh);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(true);
+                mPullToRefreshView.setRefreshing(true);
                 if (beginningGroup.getNameOfGroup() != null) {
                     downloadListenerIdDocBills();
                 }
                 clearTextView();
                 loadingObjectBillAgain();
-                swipeRefreshLayout.setRefreshing(false);
+                mPullToRefreshView.setRefreshing(false);
             }
         });
     }
@@ -82,6 +102,9 @@ public class MyGroupsFragment extends Fragment {
         other_own_you = mainView.findViewById(R.id.other_own_you);
         you_own_other = mainView.findViewById(R.id.you_own_other);
         bilans = mainView.findViewById(R.id.bilans);
+        animatedIconView = (AnimatedIconView) mainView.findViewById(R.id.animatedIconView);
+        animatedIconView.setAnimatedIcon(IconFactory.iconVerticalArrow());
+        animatedIconView.startAnimation();
         setGoToFragmentBills();
     }
 
