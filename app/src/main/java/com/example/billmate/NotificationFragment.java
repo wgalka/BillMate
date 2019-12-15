@@ -14,13 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.billmate.adapter.BillAdapter;
 import com.example.billmate.adapter.BookOfBillAdapter;
 import com.example.billmate.itemsBean.Bill;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -36,7 +34,7 @@ public class NotificationFragment extends Fragment {
 
     private static final String TAG = NotificationFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
-    private BillAdapter mBillAdapter;
+    private BookOfBillAdapter mBillAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Bill> mList = new ArrayList<Bill>();
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
@@ -55,7 +53,7 @@ public class NotificationFragment extends Fragment {
         mRecyclerView = mainView.findViewById(R.id.NotificationRecycleView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
-        mBillAdapter = new BillAdapter(mList);
+        mBillAdapter = new BookOfBillAdapter(mList);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mBillAdapter);
         mBillAdapter.setOnItemClickListener(new BookOfBillAdapter.OnItemClickListener() {
