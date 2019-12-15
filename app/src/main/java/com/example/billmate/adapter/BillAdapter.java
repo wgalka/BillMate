@@ -24,6 +24,9 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
     private OnItemClickListener mListener;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
 
+    public void setOnItemClickListener(BookOfBillAdapter.OnItemClickListener new_activity) {
+    }
+
     public interface OnItemClickListener {
         void onItemClick(int position);
 

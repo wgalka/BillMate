@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                         break;
                     case R.id.nav_notifications:
-                        //tu raczej nie powinno byc +
+                        Snackbar.make(view, "Rachunki dodaje się w zakładce Bills", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         break;
                     default:
                         Snackbar.make(view, "WOW! Jak to zrobiłeś!?", Snackbar.LENGTH_LONG).setAction("Action", null).show();

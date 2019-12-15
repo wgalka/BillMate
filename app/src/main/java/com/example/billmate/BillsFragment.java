@@ -60,7 +60,6 @@ public class BillsFragment extends Fragment {
     }
 
     private void bulidRecycleView(View mainView) {
-
         mRecyclerView = mainView.findViewById(R.id.BillsRecycleView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
