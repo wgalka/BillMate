@@ -130,19 +130,21 @@ public class BillsFragment extends Fragment {
                 documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Bill billLocal = documentSnapshot.toObject(Bill.class);
-                        bills.put(documentSnapshot.getId(), billLocal);
-                        mList.add(new Bill(
-                                billLocal.getBillTitle(),
-                                billLocal.getBillOwner(),
-                                billLocal.getBillPayers(),
-                                billLocal.getBillDescription(),
-                                billLocal.getBillTotal(),
-                                billLocal.getBillOwes(),
-                                billLocal.getTime(),
-                                billLocal.getDocumentID()
-                        ));
-                        mBillAdapter.notifyDataSetChanged();
+                        if (documentSnapshot.exists()) {
+                            Bill billLocal = documentSnapshot.toObject(Bill.class);
+                            bills.put(documentSnapshot.getId(), billLocal);
+                            mList.add(new Bill(
+                                    billLocal.getBillTitle(),
+                                    billLocal.getBillOwner(),
+                                    billLocal.getBillPayers(),
+                                    billLocal.getBillDescription(),
+                                    billLocal.getBillTotal(),
+                                    billLocal.getBillOwes(),
+                                    billLocal.getTime(),
+                                    billLocal.getDocumentID()
+                            ));
+                            mBillAdapter.notifyDataSetChanged();
+                        }
                         Log.d(TAG, "Dane zostały wczytane");
                     }
                 }).addOnFailureListener(new OnFailureListener() {

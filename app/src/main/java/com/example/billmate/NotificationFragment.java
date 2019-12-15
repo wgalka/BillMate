@@ -46,6 +46,7 @@ public class NotificationFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_notification, container, false);
         bulidRecycleView(mainView);
         swipeFragmentBills(mainView);
+        loadingBookOfBills();
         return mainView;
     }
 
@@ -79,7 +80,7 @@ public class NotificationFragment extends Fragment {
 
     private void loadingBookOfBills() {
         collectionReference = db.collection("groups/" + beginningGroup.getIdDocFirebase() +
-                "/bookOfbills/" + user_google_information.getEmail() + "/bills");
+                "/bookOfBills/" + user_google_information.getEmail() + "/bills");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
