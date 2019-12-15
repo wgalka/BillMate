@@ -116,7 +116,7 @@ public class InviteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
-                    Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getSize(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
                     //oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
                     beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
@@ -215,6 +215,7 @@ public class InviteActivity extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
+                        idDocsForUser.addElem(id);
                         Set<String> set = new HashSet<String>(idDocsForUser.getIdDocs());
                         idDocsForUser.setIdDocs(new ArrayList<String>(set));
                         idDocsForUser.userUpdate(documentSnapshot.getId());

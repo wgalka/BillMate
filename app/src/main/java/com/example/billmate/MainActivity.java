@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -208,12 +209,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
                         }
                         break;
-//                    case R.id.nav_notifications:
-//                        createNewItem(navigationView, "TestItem", "TestDescription");
-//                        break;
+                    case R.id.nav_notifications:
+                        //tu raczej nie powinno byc +
+                        break;
                     default:
-                        Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
-//                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "WOW! Jak to zrobiłeś!?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -238,10 +238,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new MembersFragment()).commit();
                 break;
 
-//            case R.id.nav_notifications:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new NotificationFragment()).commit();
-//                break;
+            case R.id.nav_notifications:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new NotificationFragment()).commit();
+                break;
 
 
             // Actions group

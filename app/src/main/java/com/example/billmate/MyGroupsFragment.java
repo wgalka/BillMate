@@ -17,6 +17,7 @@ import com.example.billmate.itemsBean.Bill;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -55,6 +56,7 @@ public class MyGroupsFragment extends Fragment {
         if (beginningGroup.getNameOfGroup() != null) {
             downloadListenerIdDocBills();
         }
+        Snackbar.make(goToFragmentBills, "Make some dish!", Snackbar.LENGTH_LONG).setAction("Action", null).show();
         return mainView;
     }
 
@@ -111,13 +113,10 @@ public class MyGroupsFragment extends Fragment {
             }
             String previousTEXT = (String) other_own_you.getText();
             double previous = Double.parseDouble(previousTEXT);
-            bilans(true,result);
-            result +=previous;
+            bilans(true, result);
+            result += previous;
             result = round(result, 2);
             other_own_you.setText(String.valueOf(result));
-
-
-
         } else {
             double result2 = 0.0;
             String previousTEXT = (String) you_own_other.getText();
@@ -127,32 +126,11 @@ public class MyGroupsFragment extends Fragment {
                     result2 += Double.parseDouble(owes);
                 }
             }
-            bilans(false,result2);
-            result2 +=previous;
+            bilans(false, result2);
+            result2 += previous;
             result2 = round(result2, 2);
             you_own_other.setText(String.valueOf(result2));
-
-
         }
-//        if (false) {
-//            if (whoBuy.equals(user_google_information.getEmail())) {
-//                Double result = Double.parseDouble(owes) * (size - 1);
-//                String previous = (String) other_own_you.getText();
-//                Double showResult = Double.parseDouble(previous);
-//                //belays(true, result);
-//                showResult += result;
-//                showResult = round(showResult, 2);
-//                other_own_you.setText(String.valueOf(showResult));
-//            } else {
-//                Double result = Double.parseDouble(owes);
-//                String previous = (String) you_own_other.getText();
-//                Double showResult = Double.parseDouble(previous);
-//                //belays(false, result);
-//                showResult += result;
-//                showResult = round(showResult, 2);
-//                you_own_other.setText(String.valueOf(showResult));
-//            }
-//        }
     }
 
     private void bilans(Boolean payer, double amount) {
@@ -163,6 +141,7 @@ public class MyGroupsFragment extends Fragment {
         } else {
             addressed -= amount;
         }
+        addressed = round(addressed, 2);
         bilans.setText(String.valueOf(addressed));
     }
 

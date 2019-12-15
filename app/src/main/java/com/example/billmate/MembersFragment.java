@@ -28,6 +28,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -156,17 +157,45 @@ public class MembersFragment extends Fragment {
         if (beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())) {
             if (position != 0) {
                 //if user uregulował wszystkie zobowiązania
-                mList.remove(position);
-                deleteOneUserFromListId(beginningGroup.getIdDocFirebase(), beginningGroup.getMembers().get(position));
-                beginningGroup.removeElem(position);
-                mMembersFragment.notifyItemRemoved(position);
-                updateExistGroup();
-            } else {
-                Toast.makeText(getContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
+                ifIdDocBillsExist(position);
             }
         } else {
             Toast.makeText(getContext(), "Tylko administrator może usuwać", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void removeFromDatabase(int position) {
+        mList.remove(position);
+        deleteOneUserFromListId(beginningGroup.getIdDocFirebase(), beginningGroup.getMembers().get(position));
+        beginningGroup.removeElem(position);
+        mMembersFragment.notifyItemRemoved(position);
+        updateExistGroup();
+    }
+
+    private void ifIdDocBillsExist(final int position) {
+        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (!documentSnapshot.exists()) {
+                    removeFromDatabase(position);
+                } else {
+                    ArrayList idDocs = new ArrayList<String>();
+                    idDocs.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
+                    if (idDocs.size() == 0) {
+                        removeFromDatabase(position);
+                    } else {
+                        Toast.makeText(getContext(), "User ma niezapłacone rachunki", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                Log.d(TAG, "Dane zostały wczytane");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
+            }
+        });
     }
 
     private void updateExistGroup() {
