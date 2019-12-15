@@ -220,6 +220,7 @@ public class MembersFragment extends Fragment {
                         for (int i = 0; i < idDocsForUser.getSize(); i++) {
                             if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
                             idDocsForUser.removeElem(i);
+                            break;
                         }
                         idDocsForUser.userUpdate(documentSnapshot.getId());
                     }
@@ -244,6 +245,7 @@ public class MembersFragment extends Fragment {
                     for (int i = 0; i < idDocsForUser.getSize(); i++) {
                         if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
                         idDocsForUser.removeElem(i);
+                        break;
                     }
                     idDocsForUser.userUpdate(documentSnapshot.getId());
                 }
