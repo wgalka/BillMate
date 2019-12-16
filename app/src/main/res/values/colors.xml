@@ -10,4 +10,7 @@
     <color name="divider">#BDBDBD</color>
     <color name="income">#36A03C</color>
     <color name="outcome">#C62828</color>
+    <color name="ButtonPrimaryColor">#3F51B5</color>
+    <color name="ButtonACCEPT">#27A51E</color>
+    <color name="ButtonREJECT">#B91E1E</color>
 </resources>

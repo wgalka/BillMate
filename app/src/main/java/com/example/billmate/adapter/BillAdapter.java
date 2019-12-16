@@ -106,10 +106,10 @@ public class BillAdapter extends RecyclerView.Adapter<BillAdapter.ViewHolder> {
             holder.mBillOwes.setVisibility(View.VISIBLE);
         }
         long result = milliseconds() - currentItem.getTime();
-        holder.mBillTime.setText("Time: " + convertMillisecondsToHours(result) + " hours ago");
+        holder.mBillTime.setText("" + convertMillisecondsToHours(result) + " hours ago");
         holder.mBillDescription.setText("Description: " + currentItem.getBillDescription());
         holder.mBillTitle.setText("Product: " + currentItem.getBillTitle());
-        holder.mBillOwner.setText("Owner: " + currentItem.getBillOwner());
+        holder.mBillOwner.setText("" + currentItem.getBillOwner());
         holder.mBillTotal.setText("Cost of purchase: " + currentItem.getBillTotal());
         holder.mBillOwes.setText("To pay: " + currentItem.getBillOwes());
     }
