@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,6 +26,7 @@ public class RevertBill extends AppCompatActivity {
     private final String TAG = RevertBill.class.getSimpleName();
     private ArrayList<String> arraybillpayers;
     private String documentID;
+    private int sizeArrayListCopy;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LinearLayout mMembersLinearLayout;
@@ -48,13 +50,12 @@ public class RevertBill extends AppCompatActivity {
 
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    System.out.println("nazwa grupy:" + beginningGroup.getMembers());
                     if (isChecked) {
                         arraybillpayers.add(checkBox.getText().toString());
-                        System.out.println("Checkbox is true: " + arraybillpayers);
+                        Log.d(TAG, "Checkbox is true: " + arraybillpayers);
                     } else {
                         arraybillpayers.remove(checkBox.getText().toString());
-                        System.out.println("Checkbox is false: " + arraybillpayers);
+                        Log.d(TAG, "Checkbox is false: " + arraybillpayers);
                     }
                 }
             });
@@ -66,7 +67,13 @@ public class RevertBill extends AppCompatActivity {
         revertBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //warunek jeśli jest jeden user tlyko i dodatkowo jest odznaczony to nie można przejść dalej
+                Log.d(TAG, "Checkbox grupa: " + arraybillpayers.toString());
+                if (sizeArrayListCopy == 1 && arraybillpayers.size() == 0) {
+                    Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
+                }
+                //tworzenie obiektu (zmiana hashmapy dla usera true/false
+                //wysyłanie nowego obiektu
+                //usuwanie z bookofbills
             }
         });
     }
@@ -87,6 +94,7 @@ public class RevertBill extends AppCompatActivity {
                 break;
             }
         }
+        sizeArrayListCopy = arraybillpayers.size();
     }
 
     @Override
