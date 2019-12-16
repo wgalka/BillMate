@@ -101,6 +101,7 @@ public class BillsFragment extends Fragment {
 
     private void downloadListenerIdDocBills() {
         idDocBills.clear();
+        mList.clear();
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override

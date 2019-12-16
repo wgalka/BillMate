@@ -51,7 +51,6 @@ public class NotificationFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_notification, container, false);
         bulidRecycleView(mainView);
         swipeFragmentBills(mainView);
-        mList.clear();
         loadingBookOfBills();
         return mainView;
     }
@@ -70,6 +69,13 @@ public class NotificationFragment extends Fragment {
                 extra.putSerializable("objectBill", mList.get(position).getArraybillpayers());
                 Intent addMembers = new Intent(getContext(), RevertBill.class)
                         .putExtra("documentID", mList.get(position).getDocumentID())
+                        .putExtra("billOwes", mList.get(position).getBillOwes())
+                        .putExtra("time", mList.get(position).getTime())
+                        .putExtra("billStatus", mList.get(position).getBillStatus())
+                        .putExtra("billTotal", mList.get(position).getBillTotal())
+                        .putExtra("billDescription", mList.get(position).getBillDescription())
+                        .putExtra("billOwner", mList.get(position).getBillOwner())
+                        .putExtra("billTitle", mList.get(position).getBillTitle())
                         .putExtra("extra", extra);
                 startActivityForResult(addMembers, RESULT_CANCELED);
             }
@@ -90,6 +96,7 @@ public class NotificationFragment extends Fragment {
     }
 
     private void loadingBookOfBills() {
+        mList.clear();
         collectionReference = db.collection("groups/" + beginningGroup.getIdDocFirebase() +
                 "/bookOfBills/" + user_google_information.getEmail() + "/bills");
         collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -99,6 +106,9 @@ public class NotificationFragment extends Fragment {
                     return;
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    if (!documentSnapshot.exists()) {
+                        mList.clear();
+                    }
                     ArrayList<ArrayList<String>> listapomocnicza = new ArrayList<>();
                     listapomocnicza.add((ArrayList<String>) documentSnapshot.get("payersARRAY"));
                     Log.d(TAG, "listapomocnicza " + listapomocnicza.get(0));
@@ -123,6 +133,4 @@ public class NotificationFragment extends Fragment {
             }
         });
     }
-
-
 }

@@ -41,11 +41,11 @@
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/mRevertBill2"
+        app:layout_constraintStart_toEndOf="@+id/mDeleteBill"
         app:layout_constraintTop_toBottomOf="@+id/mMembersLinearLayout" />
 
     <Button
-        android:id="@+id/mRevertBill2"
+        android:id="@+id/mDeleteBill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
