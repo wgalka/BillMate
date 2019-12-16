@@ -112,6 +112,7 @@
             android:background="@drawable/round_bg"
             android:backgroundTint="@color/ButtonPrimaryColor"
             android:text="Pay"
+            android:textColor="@color/ButtonText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

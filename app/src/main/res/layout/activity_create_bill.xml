@@ -134,6 +134,7 @@
             android:background="@drawable/round_bg"
             android:backgroundTint="@color/ButtonPrimaryColor"
             android:text="Save"
+            android:textColor="@color/ButtonText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

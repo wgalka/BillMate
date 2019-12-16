@@ -13,4 +13,5 @@
     <color name="ButtonPrimaryColor">#3F51B5</color>
     <color name="ButtonACCEPT">#27A51E</color>
     <color name="ButtonREJECT">#B91E1E</color>
+    <color name="ButtonText">#FFFFFF</color>
 </resources>
