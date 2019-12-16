@@ -35,7 +35,7 @@ public class Bill {
         this.documentID = documentID;
     }
 
-    public Bill(String billTitle, String billCreator, HashMap<String, Boolean> billPayers, String billDescription, String billTotal, String billStatus, Long billTime, String documentID, ArrayList<String> payersARRAY) {
+    public Bill(String billTitle, String billCreator, HashMap<String, Boolean> billPayers, String billDescription, String billTotal, String billStatus, Long billTime, String documentID, ArrayList<String> payersARRAY, String billOwes) {
         this.BillTitle = billTitle;
         this.BillCreator = billCreator;
         this.BillPayers = billPayers;
@@ -45,6 +45,7 @@ public class Bill {
         this.BillTime = billTime;
         this.documentID = documentID;
         this.payersARRAY = payersARRAY;
+        this.BillOwes = billOwes;
     }
 
     public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers, Long billTime, String billStatus) {

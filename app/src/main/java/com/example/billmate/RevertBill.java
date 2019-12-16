@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -35,10 +36,10 @@ public class RevertBill extends AppCompatActivity {
         setContentView(R.layout.activity_revert_bill);
         initVariables();
         setGroupMembers();
+        setRevertBill();
     }
 
     private void setGroupMembers() {
-        arraybillpayers.add("przykladowymail@gmail.com");
         for (int i = 0; i < arraybillpayers.size(); i++) {
             final CheckBox checkBox = new CheckBox(this);
             checkBox.setText(arraybillpayers.get(i));
@@ -62,7 +63,12 @@ public class RevertBill extends AppCompatActivity {
     }
 
     private void setRevertBill() {
-
+        revertBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //warunek jeśli jest jeden user tlyko i dodatkowo jest odznaczony to nie można przejść dalej
+            }
+        });
     }
 
     private void initVariables() {

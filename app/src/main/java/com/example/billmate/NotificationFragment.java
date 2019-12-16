@@ -98,24 +98,25 @@ public class NotificationFragment extends Fragment {
                     return;
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Log.d(TAG, "DocumentSnapshot " + documentSnapshot.toString());
-                    Bill billLocal = documentSnapshot.toObject(Bill.class);
-                    Log.d(TAG, "Bill pobrany do obiektu " + billLocal.getArraybillpayers().toString());
                     ArrayList<ArrayList<String>> listapomocnicza = new ArrayList<>();
                     listapomocnicza.add((ArrayList<String>) documentSnapshot.get("payersARRAY"));
-                    Log.d(TAG, "listapomocnicza " + listapomocnicza.toString());
-//                    bills.put(documentSnapshot.getId(),billLocal);
-//                    mList.add(new Bill(
-//                            billLocal.getBillTitle(),
-//                            billLocal.getBillOwner(),
-//                            billLocal.getBillPayers(),
-//                            billLocal.getBillDescription(),
-//                            billLocal.getBillTotal(),
-//                            billLocal.getBillStatus(),
-//                            billLocal.getTime(),
-//                            billLocal.getDocumentID(),
-//                            billLocal.getArraybillpayers()));
-//                    mBillAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "listapomocnicza " + listapomocnicza.get(0));
+                    Bill billLocal = documentSnapshot.toObject(Bill.class);
+                    billLocal.setArraybillpayers(listapomocnicza.get(0));
+                    Log.d(TAG, "Bill pobrany do obiektu " + billLocal.getArraybillpayers().toString());
+                    bills.put(documentSnapshot.getId(), billLocal);
+                    mList.add(new Bill(
+                            billLocal.getBillTitle(),
+                            billLocal.getBillOwner(),
+                            billLocal.getBillPayers(),
+                            billLocal.getBillDescription(),
+                            billLocal.getBillTotal(),
+                            billLocal.getBillStatus(),
+                            billLocal.getTime(),
+                            billLocal.getDocumentID(),
+                            billLocal.getArraybillpayers(),
+                            billLocal.getBillOwes()));
+                    mBillAdapter.notifyDataSetChanged();
                 }
                 Log.d(TAG, "Dane zostały wczytane");
             }

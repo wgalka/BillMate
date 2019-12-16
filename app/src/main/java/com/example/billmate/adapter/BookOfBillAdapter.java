@@ -42,6 +42,7 @@ public class BookOfBillAdapter extends RecyclerView.Adapter<BookOfBillAdapter.Vi
             mBillDescription = itemView.findViewById(R.id.mBillDescription);
             mBillTime = itemView.findViewById(R.id.mBillTime);
             mBillStatus = itemView.findViewById(R.id.mBillStatus);
+            mBillStatus.setVisibility(View.GONE);
             mBillTotal = itemView.findViewById(R.id.mBillTotal);
 
             itemView.setOnClickListener(new View.OnClickListener() {
