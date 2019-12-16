@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.billmate.adapter.BookOfBillAdapter;
 import com.example.billmate.itemsBean.Bill;
@@ -69,8 +68,8 @@ public class NotificationFragment extends Fragment {
                 Bundle extra = new Bundle();
                 extra.putSerializable("objectBill", mList.get(position).getArraybillpayers());
                 Intent addMembers = new Intent(getContext(), RevertBill.class)
-                        .putExtra("documentID",mList.get(position).getDocumentID())
-                        .putExtra("extra",extra);
+                        .putExtra("documentID", mList.get(position).getDocumentID())
+                        .putExtra("extra", extra);
                 startActivityForResult(addMembers, RESULT_CANCELED);
             }
         });
@@ -99,19 +98,24 @@ public class NotificationFragment extends Fragment {
                     return;
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
+                    Log.d(TAG, "DocumentSnapshot " + documentSnapshot.toString());
                     Bill billLocal = documentSnapshot.toObject(Bill.class);
-                    bills.put(documentSnapshot.getId(),billLocal);
-                    mList.add(new Bill(
-                            billLocal.getBillTitle(),
-                            billLocal.getBillOwner(),
-                            billLocal.getBillPayers(),
-                            billLocal.getBillDescription(),
-                            billLocal.getBillTotal(),
-                            billLocal.getBillStatus(),
-                            billLocal.getTime(),
-                            billLocal.getDocumentID(),
-                            billLocal.getArraybillpayers()));
-                    mBillAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "Bill pobrany do obiektu " + billLocal.getArraybillpayers().toString());
+                    ArrayList<ArrayList<String>> listapomocnicza = new ArrayList<>();
+                    listapomocnicza.add((ArrayList<String>) documentSnapshot.get("payersARRAY"));
+                    Log.d(TAG, "listapomocnicza " + listapomocnicza.toString());
+//                    bills.put(documentSnapshot.getId(),billLocal);
+//                    mList.add(new Bill(
+//                            billLocal.getBillTitle(),
+//                            billLocal.getBillOwner(),
+//                            billLocal.getBillPayers(),
+//                            billLocal.getBillDescription(),
+//                            billLocal.getBillTotal(),
+//                            billLocal.getBillStatus(),
+//                            billLocal.getTime(),
+//                            billLocal.getDocumentID(),
+//                            billLocal.getArraybillpayers()));
+//                    mBillAdapter.notifyDataSetChanged();
                 }
                 Log.d(TAG, "Dane zostały wczytane");
             }

@@ -79,7 +79,7 @@ public class CreateBill extends AppCompatActivity {
             public void onClick(View v) {
                 if (isFormValid()) {
                     System.out.println("Wszystko po walidacji formularza !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-                    Toast.makeText(getApplicationContext(), "Tworzenie rachunku"+beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Tworzenie rachunku" + beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
 //                    bill=new Bill();
 //                    bill.setBillTitle(billTitle.getText().toString());
 //                    bill.setBillOwner(user_google_information.getEmail());

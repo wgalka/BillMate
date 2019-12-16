@@ -61,7 +61,7 @@ public class RevertBill extends AppCompatActivity {
         }
     }
 
-    private void setRevertBill(){
+    private void setRevertBill() {
 
     }
 
@@ -76,7 +76,7 @@ public class RevertBill extends AppCompatActivity {
 
     private void deleteOwnerFromList() {
         for (int i = 0; i < arraybillpayers.size(); i++) {
-            if(user_google_information.getEmail().equals(arraybillpayers.get(i))){
+            if (user_google_information.getEmail().equals(arraybillpayers.get(i))) {
                 arraybillpayers.remove(i);
                 break;
             }
