@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.billmate.itemsBean.Bill;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +25,7 @@ import static com.example.billmate.MainActivity.beginningGroup;
 public class RevertBill extends AppCompatActivity {
 
     private final String TAG = RevertBill.class.getSimpleName();
+    private final String NOT_APPROVED = "NOT_APPROVED";
     private ArrayList<String> arraybillpayers;
     private String documentID;
     private int sizeArrayListCopy;
@@ -31,6 +33,7 @@ public class RevertBill extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private LinearLayout mMembersLinearLayout;
     private Button revertBill;
+    private Bill bill = new Bill();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,11 @@ public class RevertBill extends AppCompatActivity {
                 Log.d(TAG, "Checkbox grupa: " + arraybillpayers.toString());
                 if (sizeArrayListCopy == 1 && arraybillpayers.size() == 0) {
                     Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
+                } else {
+                    HashMap<String, Boolean> payers = new HashMap<String, Boolean>();
+                    for (int i = 0; i < arraybillpayers.size(); i++){
+                        //payers.put();
+                    }
                 }
                 //tworzenie obiektu (zmiana hashmapy dla usera true/false
                 //wysyłanie nowego obiektu

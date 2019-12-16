@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 
 public class CreateBill extends AppCompatActivity {
 
-    private static final String TAG = CreateBill.class.getSimpleName();
+    private final String TAG = CreateBill.class.getSimpleName();
     private final String NOT_APPROVED = "NOT_APPROVED";
     private ArrayList<String> billPayers;
     private EditText billTitle;
@@ -85,7 +85,7 @@ public class CreateBill extends AppCompatActivity {
 //                    bill.setBillOwner(user_google_information.getEmail());
 //                    bill.setBillDescription(billDescription.getText().toString());
 //                    bill.setBillTotal(billTotalPrice.getText().toString());
-                    HashMap<String, Boolean> payers = new HashMap<>();
+                    HashMap<String, Boolean> payers = new HashMap<String, Boolean>();
                     for (int i = 0; i < billPayers.size(); i++) {
                         if (billPayers.get(i).equals(user_google_information.getEmail())) {
                             payers.put(billPayers.get(i), true);
@@ -96,7 +96,8 @@ public class CreateBill extends AppCompatActivity {
                         }
                     }
 //                    bill.setBillPayers(payers);
-                    bill = new Bill(billTitle.getText().toString(), user_google_information.getEmail(), billDescription.getText().toString(), billTotalPrice.getText().toString(), payers, currentTime.milliseconds(), NOT_APPROVED);
+                    bill = new Bill(billTitle.getText().toString(), user_google_information.getEmail(),
+                            billDescription.getText().toString(), billTotalPrice.getText().toString(), payers, currentTime.milliseconds(), NOT_APPROVED);
                     //wysyłanie do bazy
                     collectionReference.add(bill).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override

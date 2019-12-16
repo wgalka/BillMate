@@ -51,6 +51,7 @@ public class NotificationFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_notification, container, false);
         bulidRecycleView(mainView);
         swipeFragmentBills(mainView);
+        mList.clear();
         loadingBookOfBills();
         return mainView;
     }
