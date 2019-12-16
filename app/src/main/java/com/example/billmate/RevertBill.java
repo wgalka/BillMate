@@ -27,6 +27,7 @@ public class RevertBill extends AppCompatActivity {
     private final String TAG = RevertBill.class.getSimpleName();
     private final String NOT_APPROVED = "NOT_APPROVED";
     private ArrayList<String> arraybillpayers;
+    private ArrayList<String> allPayers;
     private String documentID;
     private int sizeArrayListCopy;
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,7 +49,7 @@ public class RevertBill extends AppCompatActivity {
         for (int i = 0; i < arraybillpayers.size(); i++) {
             final CheckBox checkBox = new CheckBox(this);
             checkBox.setText(arraybillpayers.get(i));
-            checkBox.setChecked(true);
+            checkBox.setChecked(false);
             checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -75,10 +76,16 @@ public class RevertBill extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
                 } else {
                     HashMap<String, Boolean> payers = new HashMap<String, Boolean>();
-                    for (int i = 0; i < arraybillpayers.size(); i++){
-                        //payers.put();
+                    for (int i = 0; i<allPayers.size();i++){
+                        if(arraybillpayers.contains(allPayers.get(i))){
+                            payers.put(allPayers.get(i),false);
+                        }else{
+                            payers.put(allPayers.get(i),true);
+                        }
                     }
+                    Log.d(TAG, "Nowa lista osob ktore placą: " + payers.toString());
                 }
+
                 //tworzenie obiektu (zmiana hashmapy dla usera true/false
                 //wysyłanie nowego obiektu
                 //usuwanie z bookofbills
@@ -91,6 +98,7 @@ public class RevertBill extends AppCompatActivity {
         revertBill = findViewById(R.id.mRevertBill);
         Bundle extra = getIntent().getBundleExtra("extra");
         arraybillpayers = (ArrayList<String>) extra.getSerializable("objectBill");
+        allPayers = (ArrayList<String>) ((ArrayList<String>) extra.getSerializable("objectBill")).clone();
         documentID = getIntent().getExtras().getString("documentID");
         deleteOwnerFromList();
     }
