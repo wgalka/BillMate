@@ -97,7 +97,7 @@ public class RevertBill extends AppCompatActivity {
 
                     }
                     Log.d(TAG, "Nowa lista osob ktore placą: " + payers.toString());
-                    //updateBookOfBillPayers(documentID);
+                    updateBookOfBillPayers(documentID);
                 }
                 //tworzenie obiektu (zmiana hashmapy dla usera true/false
                 //wysyłanie nowego obiektu
