@@ -1,5 +1,6 @@
 package com.example.billmate;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +28,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import static android.app.Activity.RESULT_CANCELED;
 import static com.example.billmate.MainActivity.beginningGroup;
 
 
@@ -37,9 +41,11 @@ public class NotificationFragment extends Fragment {
     private BookOfBillAdapter mBillAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Bill> mList = new ArrayList<Bill>();
+    private ArrayList<String> arraybillpayers = new ArrayList<String>();
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
+    private HashMap<String, Bill> bills = new HashMap<String, Bill>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,7 +66,12 @@ public class NotificationFragment extends Fragment {
         mBillAdapter.setOnItemClickListener(new BookOfBillAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                Toast.makeText(getContext(), "New Activity", Toast.LENGTH_LONG).show();
+                Bundle extra = new Bundle();
+                extra.putSerializable("objectBill", mList.get(position).getArraybillpayers());
+                Intent addMembers = new Intent(getContext(), RevertBill.class)
+                        .putExtra("documentID",mList.get(position).getDocumentID())
+                        .putExtra("extra",extra);
+                startActivityForResult(addMembers, RESULT_CANCELED);
             }
         });
     }
@@ -89,8 +100,20 @@ public class NotificationFragment extends Fragment {
                 }
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Bill billLocal = documentSnapshot.toObject(Bill.class);
-                    //dalsze przygotowania
+                    bills.put(documentSnapshot.getId(),billLocal);
+                    mList.add(new Bill(
+                            billLocal.getBillTitle(),
+                            billLocal.getBillOwner(),
+                            billLocal.getBillPayers(),
+                            billLocal.getBillDescription(),
+                            billLocal.getBillTotal(),
+                            billLocal.getBillStatus(),
+                            billLocal.getTime(),
+                            billLocal.getDocumentID(),
+                            billLocal.getArraybillpayers()));
+                    mBillAdapter.notifyDataSetChanged();
                 }
+                Log.d(TAG, "Dane zostały wczytane");
             }
         });
     }

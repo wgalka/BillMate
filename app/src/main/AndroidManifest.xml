@@ -9,10 +9,11 @@
         android:roundIcon="@drawable/ic_fridge"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".RevertBill"></activity>
         <activity
             android:name=".CreateBill"
             android:label="@string/write_something"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InviteActivity" />
         <activity android:name=".CreateNewGroup" />
         <activity
