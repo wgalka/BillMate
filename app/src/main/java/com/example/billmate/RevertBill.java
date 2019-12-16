@@ -31,7 +31,7 @@ public class RevertBill extends AppCompatActivity {
 
     private final String TAG = RevertBill.class.getSimpleName();
     private final String NOT_APPROVED = "NOT_APPROVED";
-    private ArrayList<String> arraybillpayers;
+    private ArrayList<String> arraybillpayers = new ArrayList<>();
     private ArrayList<String> allPayers;
     private String documentID, billOwes, billStatus, billTotal, billDescription, billOwner, billTitle;
     private long time;
@@ -53,24 +53,26 @@ public class RevertBill extends AppCompatActivity {
     }
 
     private void setGroupMembers() {
-        for (int i = 0; i < arraybillpayers.size(); i++) {
-            final CheckBox checkBox = new CheckBox(this);
-            checkBox.setText(arraybillpayers.get(i));
-            checkBox.setChecked(false);
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        for (int i = 0; i < allPayers.size(); i++) {
+            if (!allPayers.get(i).equals(user_google_information.getEmail())) {
+                final CheckBox checkBox = new CheckBox(this);
+                checkBox.setText(allPayers.get(i));
+                checkBox.setChecked(false);
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        arraybillpayers.add(checkBox.getText().toString());
-                        Log.d(TAG, "Checkbox is true: " + arraybillpayers);
-                    } else {
-                        arraybillpayers.remove(checkBox.getText().toString());
-                        Log.d(TAG, "Checkbox is false: " + arraybillpayers);
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        if (isChecked) {
+                            arraybillpayers.add(checkBox.getText().toString());
+                            Log.d(TAG, "Checkbox is true: " + arraybillpayers);
+                        } else {
+                            arraybillpayers.remove(checkBox.getText().toString());
+                            Log.d(TAG, "Checkbox is false: " + arraybillpayers);
+                        }
                     }
-                }
-            });
-            mMembersLinearLayout.addView(checkBox, mMembersLinearLayout.getChildCount());
+                });
+                mMembersLinearLayout.addView(checkBox, mMembersLinearLayout.getChildCount());
+            }
         }
     }
 
@@ -83,11 +85,16 @@ public class RevertBill extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
                 } else {
                     for (int i = 0; i < allPayers.size(); i++) {
-                        if (arraybillpayers.contains(allPayers.get(i))) {
-                            payers.put(allPayers.get(i), false);
-                        } else {
+                        if (allPayers.get(i).equals(user_google_information.getEmail())) {
                             payers.put(allPayers.get(i), true);
+                        } else {
+                            if (arraybillpayers.contains(allPayers.get(i))) {
+                                payers.put(allPayers.get(i), false);
+                            } else {
+                                payers.put(allPayers.get(i), true);
+                            }
                         }
+
                     }
                     Log.d(TAG, "Nowa lista osob ktore placą: " + payers.toString());
                     //updateBookOfBillPayers(documentID);
@@ -126,7 +133,7 @@ public class RevertBill extends AppCompatActivity {
         revertBill = findViewById(R.id.mRevertBill);
         mDeleteBill = findViewById(R.id.mDeleteBill);
         Bundle extra = getIntent().getBundleExtra("extra");
-        arraybillpayers = (ArrayList<String>) extra.getSerializable("objectBill");
+//        arraybillpayers = (ArrayList<String>) extra.getSerializable("objectBill");
         allPayers = (ArrayList<String>) ((ArrayList<String>) extra.getSerializable("objectBill")).clone();
         documentID = getIntent().getExtras().getString("documentID");
         billOwes = getIntent().getExtras().getString("billOwes");
@@ -136,7 +143,7 @@ public class RevertBill extends AppCompatActivity {
         billOwner = getIntent().getExtras().getString("billOwner");
         billTitle = getIntent().getExtras().getString("billTitle");
         time = getIntent().getExtras().getLong("time");
-        deleteOwnerFromList();
+//        deleteOwnerFromList();
         setmDeleteBill();
     }
 
