@@ -116,10 +116,15 @@ public class RevertBill extends AppCompatActivity {
     }
 
     private void updateBookOfBillPayers(String documentID) {
-        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfBills/" + user_google_information.getEmail() + "/bills/" + documentID);
-        payers.put(user_google_information.getEmail(), true);
-        documentReference.update("billPayers", payers);
-        finish();
+        if(arraybillpayers.size() != 0){
+            documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfBills/" + user_google_information.getEmail() + "/bills/" + documentID);
+            payers.put(user_google_information.getEmail(), true);
+            documentReference.update("billPayers", payers);
+            finish();
+        }else {
+            Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     private void deleteBookOfBill(String documentID) {
