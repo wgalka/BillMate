@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.billmate.adapter.InviteAdapter;
+import com.example.billmate.itemsBean.IdDocsForUser;
 import com.example.billmate.itemsBean.ItemCardView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,9 +33,7 @@ import java.util.Collection;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static androidx.constraintlayout.widget.Constraints.TAG;
 import static com.example.billmate.MainActivity.beginningGroup;
-import static com.example.billmate.MainActivity.groups;
 
 public class MembersFragment extends Fragment {
 

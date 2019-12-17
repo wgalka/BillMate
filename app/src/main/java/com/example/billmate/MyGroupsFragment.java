@@ -187,6 +187,7 @@ public class MyGroupsFragment extends Fragment {
                     loadingObjectBillAgain();
                 } else {
                     Log.d(TAG, "Doc nie istnieje");
+                    clearTextView();
                     //Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
                 }
             }

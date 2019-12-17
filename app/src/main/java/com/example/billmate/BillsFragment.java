@@ -20,6 +20,7 @@ import com.example.billmate.adapter.BillAdapter;
 import com.example.billmate.itemsBean.Bill;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -60,7 +61,7 @@ public class BillsFragment extends Fragment {
         return mainView;
     }
 
-    private void bulidRecycleView(View mainView) {
+    private void bulidRecycleView(final View mainView) {
         mRecyclerView = mainView.findViewById(R.id.BillsRecycleView);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -70,6 +71,7 @@ public class BillsFragment extends Fragment {
         mBillAdapter.setOnItemClickListener(new BillAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Snackbar.make(mainView, mList.get(position).getDocumentID(), Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
@@ -88,7 +90,7 @@ public class BillsFragment extends Fragment {
                 HashMap<String, Boolean> billpayers = new HashMap<String, Boolean>();
                 Bill fastBill = documentSnapshot.toObject(Bill.class);
                 billpayers = fastBill.getBillPayers();
-                billpayers.put(user_google_information.getEmail(),true);
+                billpayers.put(user_google_information.getEmail(), true);
                 documentReference.update("billPayers", billpayers);
                 loadingObjectBillAgain();
             }
@@ -119,14 +121,14 @@ public class BillsFragment extends Fragment {
                     return;
                 }
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, "Doc istnieje");
+                    Log.d(TAG, getString(R.string.doc_exist));
                     idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
                     Set<String> set = new HashSet<String>(idDocBills);
                     idDocBills = new ArrayList<String>(set);
                     loadingObjectBillAgain();
                 } else {
-                    Log.d(TAG, "Doc nie istnieje");
-                    Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
+                    Log.d(TAG, getString(R.string.doc_not_exist));
+                    Toast.makeText(getContext(), getString(R.string.nie_masz_zaleglosci), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -155,17 +157,17 @@ public class BillsFragment extends Fragment {
                             ));
                             mBillAdapter.notifyDataSetChanged();
                         }
-                        Log.d(TAG, "Dane zostały wczytane");
+                        Log.d(TAG, getString(R.string.data_save));
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
+                        Log.d(TAG, getString(R.string.error_save) + e.toString());
                     }
                 });
             }
         } else {
-            Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.nie_masz_zaleglosci), Toast.LENGTH_LONG).show();
         }
     }
 }

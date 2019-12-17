@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.billmate.itemsBean.BeginningGroup;
+import com.example.billmate.itemsBean.IdDocsForUser;
 import com.example.billmate.itemsBean.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -131,11 +133,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
-                    beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
-                    groups.put(documentSnapshot.getId(), beginningGroupLocal);
-                    createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
-                    Log.d(TAG, "Dane zostały zapisane");
+                    if(documentSnapshot.exists()){
+                        BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
+                        beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
+                        groups.put(documentSnapshot.getId(), beginningGroupLocal);
+                        createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
+                        Log.d(TAG, "Dane zostały zapisane");
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_load_group) + documentSnapshot.getId(), Toast.LENGTH_LONG).show();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -215,7 +221,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                         break;
                     case R.id.nav_notifications:
-                        Snackbar.make(view, "Rachunki dodaje się w zakładce Bills", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "Rachunki dodaje się w zakładce Bills", Snackbar.LENGTH_LONG).show();
                         break;
                     default:
                         Snackbar.make(view, "WOW! Jak to zrobiłeś!?", Snackbar.LENGTH_LONG).setAction("Action", null).show();

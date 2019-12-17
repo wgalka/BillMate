@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.billmate.adapter.InviteAdapter;
+import com.example.billmate.itemsBean.IdDocsForUser;
 import com.example.billmate.itemsBean.ItemCardView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,6 +38,7 @@ public class InviteActivity extends AppCompatActivity {
     private static final String TAG = InviteActivity.class.getSimpleName();
     private Button confirmAddNewMember, finishFirstConfiguration;
     private EditText getEmailMember;
+    private View clear_textview;
     private ArrayList<ItemCardView> mList = new ArrayList<ItemCardView>();
     private RecyclerView mRecyclerView;
     private InviteAdapter mInviteAdapter;
@@ -54,6 +56,8 @@ public class InviteActivity extends AppCompatActivity {
         confirmAddNewMember = findViewById(R.id.addNewMember);
         finishFirstConfiguration = findViewById(R.id.finish);
         getEmailMember = findViewById(R.id.getEmailMember);
+        clear_textview = findViewById(R.id.clear_textview);
+        setClear_textview();
         copy = new ArrayList<String>(beginningGroup.getMembers());
         setConfirmAddNewMember();
         bulidRecycleView();
@@ -273,5 +277,14 @@ public class InviteActivity extends AppCompatActivity {
     public void onBackPressed() {
         beginningGroup.setMembers(copy);
         super.onBackPressed();
+    }
+
+    private void setClear_textview(){
+        clear_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getEmailMember.setText("");
+            }
+        });
     }
 }

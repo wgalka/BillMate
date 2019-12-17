@@ -13,7 +13,26 @@
     <string name="create">Create</string>
 
     <string name="write_something">Write something!</string>
+    <string name="error_load_group">"Błąd przy wczytywaniu grupy: "</string>
+    <string name="data_save">"Dane zostały zapisane"</string>
+    <string name="error_save">"Błąd w zapisnie danych: "</string>
+    <string name="doc_not_exist">"Dokument nie istnieje! "</string>
+    <string name="doc_exist">"Dokument istnieje! "</string>
+    <string name="nie_masz_zaleglosci">"Brawo! Nie masz zaległości. "</string>
+    <string name="create_bill_for">"Tworzenie rachunku dla grupy: "</string>
+    <string name="check_something">"Coś wymaga poprawy. "</string>
+    <string name="checkbox_true">"Checkbox is true: "</string>
+    <string name="checkbox_false">"Checkbox is false: "</string>
+    <string name="title_3words">"Tytuł rachunku musi zawierać minimum 3 znaki"</string>
+    <string name="price_error">"Price value should be greater than 0"</string>
+    <string name="description_too_short">"Description too short"</string>
+
+
+
+
+    <!--    <string name=""> </string>-->
     <!--    <string name=""> </string>-->
 
     <!--    getString(R.string)-->
+    getString(R.string.title_3words)
 </resources>
