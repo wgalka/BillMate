@@ -174,14 +174,11 @@ public class CreateBill extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-//                    Toast.makeText(getApplicationContext(), "okej text jest wypełniany dla ciebie", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Okej text jest wypełniany dla ciebie");
                 } else {
                     if (billTitle.getText().length() < 3) {
-                        Toast.makeText(getApplicationContext(), "Tytuł rachunku musi zawierać minimum 3 znaki", Toast.LENGTH_SHORT).show();
-//                        System.out.println("kolory: "+billTitle.getBackgroundTintList());
-//                        billTitle.setBackgroundTintList(getResources().getColorStateList(R.color.outcome));
-                        eBillTitle.setText("Title too short");
-//                        eBillTitle.setTextColor(getResources().getColorStateList(R.color.outcome));
+                        Toast.makeText(getApplicationContext(), getString(R.string.title_3words), Toast.LENGTH_SHORT).show();
+                        eBillTitle.setText(getString(R.string.title_toot_short));
                     } else {
                         eBillTitle.setText("");
                     }
@@ -196,27 +193,27 @@ public class CreateBill extends AppCompatActivity {
             //resetowanie pola bledu
             eBillTitle.setText("");
         } else {
-            eBillTitle.setText("Title too short");
+            eBillTitle.setText(getString(R.string.title_3words));
             ++isFormValid;
         }
         if (billDescription.getText().toString().length() > 2) {
             //resetowanie pola bledu
             eBillDescription.setText("");
         } else {
-            eBillDescription.setText("Description too short");
+            eBillDescription.setText(getString(R.string.description_too_short));
             ++isFormValid;
         }
         if (checkEditTextGreaterThanZero(billTotalPrice)) {
             //resetowanie pola bledu
             eBillTotalPrice.setText("");
         } else {
-            eBillTotalPrice.setText("Price should be greater than 0");
+            eBillTotalPrice.setText(getString(R.string.price_should_be));
         }
         if (billPayers.size() > 0) {
             //resetowanie pola bledu
             eBillGroupMembers.setText("");
         } else {
-            eBillGroupMembers.setText("Someone have to pay");
+            eBillGroupMembers.setText(getString(R.string.someone_have_to_pay));
         }
         return isFormValid == 0;
     }
@@ -224,14 +221,13 @@ public class CreateBill extends AppCompatActivity {
     private boolean checkEditTextGreaterThanZero(EditText field) {
         try {
             double price = Double.valueOf(field.getText().toString());
-            System.out.println("Price: " + price);
+            Log.d(TAG, getString(R.string.price) + price);
             if (price <= 0) {
-                throw new NullPointerException("zero price");
+                throw new NullPointerException("Zero price");
             }
             return true;
         } catch (Exception e) {
-
-            System.out.println("!!! Error: " + e);
+            Log.d(TAG, e.toString());
             return false;
         }
     }
@@ -250,11 +246,6 @@ public class CreateBill extends AppCompatActivity {
         mBillTotalPrice.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
         //Layout where group members were loaded
         mGroupMembersLinearLayout = (LinearLayout) findViewById(R.id.mGroupMembersLinearLayout);
-    }
-
-    public void showToastSaveBill() {
-        Toast.makeText(getApplicationContext(), getString(R.string.write_something), Toast.LENGTH_SHORT).show();
-        return;
     }
 
     class DecimalDigitsInputFilter implements InputFilter {

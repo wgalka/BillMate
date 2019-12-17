@@ -24,10 +24,12 @@
     <string name="checkbox_true">"Checkbox is true: "</string>
     <string name="checkbox_false">"Checkbox is false: "</string>
     <string name="title_3words">"Tytuł rachunku musi zawierać minimum 3 znaki"</string>
+    <string name="title_toot_short">"Title too short"</string>
     <string name="price_error">"Price value should be greater than 0"</string>
     <string name="description_too_short">"Description too short"</string>
-
-
+    <string name="price_should_be">"Price should be greater than 0"</string>
+    <string name="someone_have_to_pay">"Someone have to pay"</string>
+    <string name="price">"Price: "</string>
 
 
     <!--    <string name=""> </string>-->

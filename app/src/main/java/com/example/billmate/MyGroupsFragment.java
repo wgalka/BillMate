@@ -1,26 +1,20 @@
 package com.example.billmate;
 
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.billmate.itemsBean.Bill;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,7 +32,6 @@ import java.util.Set;
 
 import tarek360.animated.icons.AnimatedIconView;
 import tarek360.animated.icons.IconFactory;
-import tarek360.animated.icons.drawables.AnimatedIcon;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 import static com.example.billmate.itemsBean.Bill.round;
@@ -46,7 +39,7 @@ import static com.example.billmate.itemsBean.Bill.round;
 
 public class MyGroupsFragment extends Fragment {
 
-    private static final String TAG = MyGroupsFragment.class.getSimpleName();
+    private final String TAG = MyGroupsFragment.class.getSimpleName();
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private DocumentReference documentReference;
@@ -70,20 +63,6 @@ public class MyGroupsFragment extends Fragment {
     }
 
     private void swipeFragmentGroups(View mainView) {
-//        final SwipeRefreshLayout swipeRefreshLayout = mainView.findViewById(R.id.pull_to_refresh);
-//        swipeRefreshLayout.setColorSchemeColors(Color.BLUE, Color.YELLOW, Color.BLUE);
-//        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                swipeRefreshLayout.setRefreshing(true);
-//                if (beginningGroup.getNameOfGroup() != null) {
-//                    downloadListenerIdDocBills();
-//                }
-//                clearTextView();
-//                loadingObjectBillAgain();
-//                swipeRefreshLayout.setRefreshing(false);
-//            }
-//        });
         mPullToRefreshView = (PullToRefreshView) mainView.findViewById(R.id.pull_to_refresh);
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -188,7 +167,6 @@ public class MyGroupsFragment extends Fragment {
                 } else {
                     Log.d(TAG, "Doc nie istnieje");
                     clearTextView();
-                    //Toast.makeText(getContext(), "Brawo! Nie masz zaległości", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -201,15 +179,19 @@ public class MyGroupsFragment extends Fragment {
                 documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Bill billLocal = documentSnapshot.toObject(Bill.class);
-                        bills.put(documentSnapshot.getId(), billLocal);
-                        calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers(), billLocal.getBillPayers().size(), billLocal.getBillOwner());
-                        Log.d(TAG, "Dane zostały wczytane");
+                        if(documentSnapshot.exists()){
+                            Bill billLocal = documentSnapshot.toObject(Bill.class);
+                            bills.put(documentSnapshot.getId(), billLocal);
+                            calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers(), billLocal.getBillPayers().size(), billLocal.getBillOwner());
+                            Log.d(TAG,getString(R.string.data_save));
+                        } else {
+                            Log.d(TAG,getString(R.string.error_save));
+                        }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
+                        Log.d(TAG,getString(R.string.error_save)+ e.toString());
                     }
                 });
             }

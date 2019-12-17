@@ -40,7 +40,7 @@ import java.util.Set;
 
 public class BillsFragment extends Fragment {
 
-    private static final String TAG = BillsFragment.class.getSimpleName();
+    private final String TAG = BillsFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private BillAdapter mBillAdapter;
     private RecyclerView.LayoutManager mLayoutManager;

@@ -35,7 +35,7 @@ import static com.example.billmate.MainActivity.groups;
 public class InviteActivity extends AppCompatActivity {
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
-    private static final String TAG = InviteActivity.class.getSimpleName();
+    private final String TAG = InviteActivity.class.getSimpleName();
     private Button confirmAddNewMember, finishFirstConfiguration;
     private EditText getEmailMember;
     private View clear_textview;

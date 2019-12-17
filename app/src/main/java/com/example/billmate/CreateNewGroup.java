@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class CreateNewGroup extends AppCompatActivity {
 
-    private static final String TAG = CreateNewGroup.class.getSimpleName();
+    private final String TAG = CreateNewGroup.class.getSimpleName();
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
     private Button confirmCreateNewGroup;
     private EditText nameOfgroup;
