@@ -27,6 +27,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 
@@ -81,9 +82,17 @@ public class BillsFragment extends Fragment {
 
     private void updateBillPayers(String documentID) {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + documentID);
-        bills.get(documentID).getBillPayers().put(user_google_information.getEmail(), true);
-        documentReference.update("billPayers", bills.get(documentID).getBillPayers());
-        loadingObjectBillAgain();
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                HashMap<String, Boolean> billpayers = new HashMap<String, Boolean>();
+                Bill fastBill = documentSnapshot.toObject(Bill.class);
+                billpayers = fastBill.getBillPayers();
+                billpayers.put(user_google_information.getEmail(),true);
+                documentReference.update("billPayers", billpayers);
+                loadingObjectBillAgain();
+            }
+        });
     }
 
     private void swipeFragmentBills(View mainView) {
