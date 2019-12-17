@@ -30,11 +30,28 @@
     <string name="price_should_be">"Price should be greater than 0"</string>
     <string name="someone_have_to_pay">"Someone have to pay"</string>
     <string name="price">"Price: "</string>
+    <string name="success_create_new_group">"Pozytywnie utworzono grupe: "</string>
+    <string name="add_one_member_to_group">"Dodaj przynajmniej jedną osobę do grupy: "</string>
+    <string name="create_group_in_home">"Uwtórz grupę w zakładce HOME"</string>
+    <string name="admin_delete_alert">"Administratora nie można usunąć!"</string>
+    <string name="admin_operation_alert">"Tylko administrator może wykonać tą operacje"</string>
+    <string name="exist_doc_for">"Istnieje dokument dla: "</string>
+    <string name="change_name_group">"Nazwa grupy zmieniona. "</string>
+    <string name="user_delete_alert">"User ma niezapłacone rachunki. "</string>
+    <string name="you_must_choose_one_member">"Musisz wybrać przynajmniej jedną osobę. "</string>
 
 
+    <string name="information">"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum accumsan est velit, id commodo dolor ultricies vitae. Curabitur eu massa nec urna tincidunt tempor. Ut consectetur nunc nec quam varius, quis vulputate eros venenatis. Etiam cursus porta felis id dignissim. Sed eleifend nisl nec orci gravida faucibus sed vitae nisl. Suspendisse dictum aliquam scelerisque. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum eget hendrerit tellus. Nam quam ex, accumsan non laoreet vel, consequat eget orci.
+
+Duis faucibus nisl id tortor vulputate sagittis. Phasellus consequat lacus nunc. Nunc ex lectus, porttitor in elementum vitae, rhoncus vel ante. Praesent ultrices enim ultrices sapien tincidunt vehicula vitae et dui. Nulla sem dui, molestie eget lacus in, varius iaculis erat. Duis eu massa sapien. Proin felis arcu, vestibulum sit amet felis vel, aliquam posuere arcu. Duis ultrices, dolor at vehicula lacinia, tortor ante egestas ligula, a ornare eros libero id lectus.
+
+In venenatis a turpis nec pulvinar. Aenean eu libero elit. Donec turpis nisi, dapibus ut scelerisque vel, blandit sit amet ex. Phasellus ex est, malesuada at massa venenatis, laoreet pulvinar diam. Sed nec turpis posuere nibh congue pretium non bibendum nisl. Nam sed urna at quam gravida varius in eget magna. Interdum et malesuada fames ac ante ipsum primis in faucibus. In suscipit erat vel nunc ullamcorper posuere. Sed nec felis consectetur, ultricies nisl a, ornare nibh. Integer ut consequat erat. Sed luctus accumsan libero, eget iaculis ligula malesuada nec. In vitae massa sed purus sollicitudin ultrices. Proin posuere lacus ut congue faucibus.
+
+Etiam rhoncus sem augue, eu auctor sem ornare at. Suspendisse tincidunt tincidunt est, id fringilla felis dictum in. Etiam ut lorem augue. Proin ac nibh sed orci cursus vestibulum sit amet id justo. Vestibulum at erat finibus, vestibulum dui at, elementum erat. Donec et leo elementum, pellentesque velit nec, auctor felis. Fusce finibus, turpis nec varius venenatis, lorem ex luctus metus, eget mattis diam lectus ut risus. Quisque posuere dapibus dui, ac sodales nibh pulvinar sed. Mauris sed nibh mi. Vivamus ullamcorper, ipsum ultrices ultrices vestibulum, mi libero lacinia diam, at pulvinar tellus diam non libero. Quisque eu odio a quam auctor euismod et vitae elit.
+
+Aliquam porta vitae ipsum eu sagittis. Phasellus ac sapien lorem. Nunc convallis orci id neque egestas molestie. Nunc rhoncus, mi eget lacinia rhoncus, lectus ipsum tincidunt odio, quis ornare tellus elit in libero. Quisque vehicula elit non mattis malesuada. Duis lacus ex, iaculis et accumsan sit amet, varius ut metus. Donec auctor vitae felis eu porttitor. Pellentesque auctor lacus velit, ac rhoncus tellus fringilla in. Pellentesque porta quam elit, quis euismod purus dapibus sit amet. Mauris vel neque nec risus placerat ornare. Fusce blandit nisl nec augue porttitor dictum. Donec auctor, neque vitae porttitor tempus, orci turpis molestie erat, id tristique neque quam at nunc."</string>
     <!--    <string name=""> </string>-->
     <!--    <string name=""> </string>-->
 
     <!--    getString(R.string)-->
-    getString(R.string.title_3words)
 </resources>

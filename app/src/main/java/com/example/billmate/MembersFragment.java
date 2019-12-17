@@ -38,7 +38,7 @@ import static com.example.billmate.MainActivity.beginningGroup;
 public class MembersFragment extends Fragment {
 
     private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
-    private static final String TAG = MembersFragment.class.getSimpleName();
+    private final String TAG = MembersFragment.class.getSimpleName();
     private FirebaseUser user_google_information = FirebaseAuth.getInstance().getCurrentUser();
     private Button deleteGroup, renameGroup;
     private EditText newNameGroup;
@@ -93,7 +93,7 @@ public class MembersFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd w usuwaniu danych: " + e.toString());
+                        Log.d(TAG, getString(R.string.error_save) + e.toString());
                     }
                 });
             }
@@ -113,7 +113,7 @@ public class MembersFragment extends Fragment {
                     updateNameGroup();
                     newNameGroup.getText().clear();
                     newNameGroup.setVisibility(GONE);
-                    Toast.makeText(getContext(), "Nazwa grupy zmieniona", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.change_name_group), Toast.LENGTH_LONG).show();
                 } else {
                     newNameGroup.setVisibility(GONE);
                 }
@@ -159,7 +159,7 @@ public class MembersFragment extends Fragment {
                 ifIdDocBillsExist(position);
             }
         } else {
-            Toast.makeText(getContext(), "Tylko administrator może usuwać", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getString(R.string.admin_operation_alert), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -184,15 +184,15 @@ public class MembersFragment extends Fragment {
                     if (idDocs.size() == 0) {
                         removeFromDatabase(position);
                     } else {
-                        Toast.makeText(getContext(), "User ma niezapłacone rachunki", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.user_delete_alert), Toast.LENGTH_SHORT).show();
                     }
                 }
-                Log.d(TAG, "Dane zostały wczytane");
+                Log.d(TAG, getString(R.string.data_save));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
+                Log.d(TAG, getString(R.string.error_save) + e.toString());
             }
         });
     }
@@ -214,7 +214,7 @@ public class MembersFragment extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                        Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                         for (int i = 0; i < idDocsForUser.getSize(); i++) {
                             if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
@@ -227,7 +227,7 @@ public class MembersFragment extends Fragment {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                    Log.d(TAG, getString(R.string.error_save) + e.toString());
                 }
             });
         }
@@ -239,7 +239,7 @@ public class MembersFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                    Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
                     IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                     for (int i = 0; i < idDocsForUser.getSize(); i++) {
                         if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
@@ -252,7 +252,7 @@ public class MembersFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                Log.d(TAG, getString(R.string.error_save) + e.toString());
             }
         });
     }

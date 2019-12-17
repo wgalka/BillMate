@@ -35,7 +35,7 @@ import static com.example.billmate.MainActivity.beginningGroup;
 
 public class NotificationFragment extends Fragment {
 
-    private static final String TAG = NotificationFragment.class.getSimpleName();
+    private final String TAG = NotificationFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private BookOfBillAdapter mBillAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -129,7 +129,7 @@ public class NotificationFragment extends Fragment {
                             billLocal.getBillOwes()));
                     mBillAdapter.notifyDataSetChanged();
                 }
-                Log.d(TAG, "Dane zostały wczytane");
+                Log.d(TAG, getString(R.string.data_save));
             }
         });
     }

@@ -35,6 +35,8 @@ import static com.example.billmate.MainActivity.groups;
 public class InviteActivity extends AppCompatActivity {
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
+    private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
+    private static final String UPDATE = "UPDATE";
     private final String TAG = InviteActivity.class.getSimpleName();
     private Button confirmAddNewMember, finishFirstConfiguration;
     private EditText getEmailMember;
@@ -86,7 +88,7 @@ public class InviteActivity extends AppCompatActivity {
                             isDuplicated = 1;
                             break;
                         }
-                    } // poprawić sprawdzanie na 2 listach czy nie wystepuje duplikowanie maili, potestować też usuwanie w trakcie dodawania
+                    }
                     if (mList.size() != 0) {
                         isDuplicated = 0;
                         for (int i = 0; i < mList.size(); i++) {
@@ -120,14 +122,14 @@ public class InviteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
-                    Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getNameOfGroup(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.success_create_new_group) + beginningGroup.getNameOfGroup(), Toast.LENGTH_LONG).show();
                     //oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
                     beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
                     beginningGroup.getMembers().clear();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.add_one_member_to_group), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -137,16 +139,16 @@ public class InviteActivity extends AppCompatActivity {
         finishFirstConfiguration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+                if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
                     if (groups.get(beginningGroup.getIdDocFirebase()).getSize() + beginningGroup.getSize() > groups.get(beginningGroup.getIdDocFirebase()).getSize() && mList.size() > 0) {
                         updateExistGroup();
                         oneUserAddToListId(beginningGroup.getIdDocFirebase(), mList);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.add_one_member_to_group), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Uwtórz grupę w zakładce HOME", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.create_group_in_home), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -185,7 +187,7 @@ public class InviteActivity extends AppCompatActivity {
                 }
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.admin_delete_alert), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -194,13 +196,13 @@ public class InviteActivity extends AppCompatActivity {
         collectionReference.add(beginningGroup).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "Dane zostały zapisane");
+                Log.d(TAG, getString(R.string.data_save));
                 oneUserAddToListId(documentReference.getId(), mList);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                Log.d(TAG, getString(R.string.error_save) + e.toString());
             }
         });
     }
@@ -217,14 +219,14 @@ public class InviteActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                        Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                         idDocsForUser.addElem(id);
                         Set<String> set = new HashSet<String>(idDocsForUser.getIdDocs());
                         idDocsForUser.setIdDocs(new ArrayList<String>(set));
                         idDocsForUser.userUpdate(documentSnapshot.getId());
                     } else {
-                        Log.d(TAG, "DOC nie istnieje dla " + documentSnapshot.getId());
+                        Log.d(TAG, "Nie " + getString(R.string.exist_doc_for) + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = new IdDocsForUser();
                         idDocsForUser.addElem(id);
                         idDocsForUser.userUpdate(documentSnapshot.getId());
@@ -233,7 +235,7 @@ public class InviteActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                    Log.d(TAG, getString(R.string.error_save) + e.toString());
                 }
             });
         }
@@ -253,7 +255,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private boolean isUpdateData(String action) {
-        if (action.equals("UPDATE")) {
+        if (action.equals(UPDATE)) {
             return true;
         } else {
             return false;
@@ -279,7 +281,7 @@ public class InviteActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void setClear_textview(){
+    private void setClear_textview() {
         clear_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

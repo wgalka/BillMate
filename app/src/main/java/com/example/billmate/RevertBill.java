@@ -1,6 +1,5 @@
 package com.example.billmate;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,12 +12,8 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.billmate.itemsBean.Bill;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -64,10 +59,10 @@ public class RevertBill extends AppCompatActivity {
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             arraybillpayers.add(checkBox.getText().toString());
-                            Log.d(TAG, "Checkbox is true: " + arraybillpayers);
+                            Log.d(TAG, getString(R.string.checkbox_true) + arraybillpayers);
                         } else {
                             arraybillpayers.remove(checkBox.getText().toString());
-                            Log.d(TAG, "Checkbox is false: " + arraybillpayers);
+                            Log.d(TAG, getString(R.string.checkbox_false) + arraybillpayers);
                         }
                     }
                 });
@@ -82,7 +77,7 @@ public class RevertBill extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "Checkbox grupa: " + arraybillpayers.toString());
                 if (sizeArrayListCopy == 1 && arraybillpayers.size() == 0) {
-                    Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.you_must_choose_one_member), Toast.LENGTH_LONG).show();
                 } else {
                     for (int i = 0; i < allPayers.size(); i++) {
                         if (allPayers.get(i).equals(user_google_information.getEmail())) {
@@ -99,9 +94,6 @@ public class RevertBill extends AppCompatActivity {
                     Log.d(TAG, "Nowa lista osob ktore placą: " + payers.toString());
                     updateBookOfBillPayers(documentID);
                 }
-                //tworzenie obiektu (zmiana hashmapy dla usera true/false
-                //wysyłanie nowego obiektu
-                //usuwanie z bookofbills
             }
         });
     }
@@ -116,13 +108,13 @@ public class RevertBill extends AppCompatActivity {
     }
 
     private void updateBookOfBillPayers(String documentID) {
-        if(arraybillpayers.size() != 0){
+        if (arraybillpayers.size() != 0) {
             documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfBills/" + user_google_information.getEmail() + "/bills/" + documentID);
             payers.put(user_google_information.getEmail(), true);
             documentReference.update("billPayers", payers);
             finish();
-        }else {
-            Toast.makeText(getApplicationContext(), "Musisz wybrać przynajmniej jedną osobę", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.you_must_choose_one_member), Toast.LENGTH_LONG).show();
         }
 
     }

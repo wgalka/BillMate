@@ -159,13 +159,13 @@ public class MyGroupsFragment extends Fragment {
                     return;
                 }
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, "Doc istnieje");
+                    Log.d(TAG, getString(R.string.doc_exist));
                     idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
                     Set<String> set = new HashSet<String>(idDocBills);
                     idDocBills = new ArrayList<String>(set);
                     loadingObjectBillAgain();
                 } else {
-                    Log.d(TAG, "Doc nie istnieje");
+                    Log.d(TAG, getString(R.string.doc_not_exist));
                     clearTextView();
                 }
             }
@@ -179,19 +179,19 @@ public class MyGroupsFragment extends Fragment {
                 documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()){
+                        if (documentSnapshot.exists()) {
                             Bill billLocal = documentSnapshot.toObject(Bill.class);
                             bills.put(documentSnapshot.getId(), billLocal);
                             calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers(), billLocal.getBillPayers().size(), billLocal.getBillOwner());
-                            Log.d(TAG,getString(R.string.data_save));
+                            Log.d(TAG, getString(R.string.data_save));
                         } else {
-                            Log.d(TAG,getString(R.string.error_save));
+                            Log.d(TAG, getString(R.string.error_save));
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,getString(R.string.error_save)+ e.toString());
+                        Log.d(TAG, getString(R.string.error_save) + e.toString());
                     }
                 });
             }

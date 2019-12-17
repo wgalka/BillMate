@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
     private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = MainActivity.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient;
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -133,25 +133,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()){
+                    if (documentSnapshot.exists()) {
                         BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
                         beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
                         groups.put(documentSnapshot.getId(), beginningGroupLocal);
                         createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
-                        Log.d(TAG, "Dane zostały zapisane");
+                        Log.d(TAG, getString(R.string.data_save));
                     } else {
-                        Toast.makeText(getApplicationContext(), getString(R.string.error_load_group) + documentSnapshot.getId(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_load_group) + documentSnapshot.getId(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                    Log.d(TAG, getString(R.string.error_save) + e.toString());
                 }
             }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    Log.d(TAG, "WSZYSTKIE DANE WCZYTANE");
+                    Log.d(TAG, getString(R.string.data_save));
                     if (!(groups.get(idDocsForUser.getIdDocs().get(0)) == null)) {
                         beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
                         setTitle(beginningGroup.getNameOfGroup());
@@ -210,14 +210,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
                             createBill();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Utwórz grupę w zakładce HOME", Toast.LENGTH_LONG).show();
+                            Snackbar.make(view, getString(R.string.create_group_in_home), Snackbar.LENGTH_LONG).show();
                         }
                         break;
                     case R.id.nav_members:
                         if (beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())) {
                             addNewMember();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
+                            Snackbar.make(view, "Tylko administrator może dodawać nowych userów", Snackbar.LENGTH_LONG).show();
                         }
                         break;
                     case R.id.nav_notifications:
@@ -257,7 +257,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             // Actions group
             case R.id.nav_info:
-                Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.information), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 logout();
