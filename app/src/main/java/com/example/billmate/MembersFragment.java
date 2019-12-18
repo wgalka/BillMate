@@ -205,6 +205,7 @@ public class MembersFragment extends Fragment {
     private void updateNameGroup() {
         documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase());
         documentReference.update("nameOfGroup", beginningGroup.getNameOfGroup());
+        ((MainActivity)getActivity()).loadingObjectgroup();
     }
 
     private void deleteGroupFromListId(final String id, ArrayList<String> members) {
