@@ -3,6 +3,7 @@ package com.example.billmate.itemsBean;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -15,28 +16,46 @@ public class Bill {
     private String BillOwes;
     private Long BillTime;
     private String BillStatus;
+    private String documentID;
+    private ArrayList<String> payersARRAY = new ArrayList<String>();
 
     private HashMap<String, Boolean> BillPayers;
 
     public Bill() {
     }
 
-    public Bill(int mBillImage, String billTitle, String billOwner, String billTotal, String billOwes) {
-        this.mBillImage = mBillImage;
+    public Bill(String billTitle, String billCreator, HashMap<String, Boolean> billPayers, String billDescription, String billTotal, String billOwes, Long billTime, String documentID) {
         this.BillTitle = billTitle;
-        this.BillCreator = billOwner;
+        this.BillCreator = billCreator;
+        this.BillPayers = billPayers;
+        this.BillDescription = billDescription;
         this.BillTotal = billTotal;
+        this.BillOwes = billOwes;
+        this.BillTime = billTime;
+        this.documentID = documentID;
+    }
+
+    public Bill(String billTitle, String billCreator, HashMap<String, Boolean> billPayers, String billDescription, String billTotal, String billStatus, Long billTime, String documentID, ArrayList<String> payersARRAY, String billOwes) {
+        this.BillTitle = billTitle;
+        this.BillCreator = billCreator;
+        this.BillPayers = billPayers;
+        this.BillDescription = billDescription;
+        this.BillTotal = billTotal;
+        this.BillStatus = billStatus;
+        this.BillTime = billTime;
+        this.documentID = documentID;
+        this.payersARRAY = payersARRAY;
         this.BillOwes = billOwes;
     }
 
-    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers,Long billTime, String billStatus) {
+    public Bill(String billTitle, String billCreator, String billDescription, String billTotal, HashMap<String, Boolean> billPayers, Long billTime, String billStatus) {
         this.BillTitle = billTitle;
         this.BillCreator = billCreator;
         this.BillDescription = billDescription;
         this.BillTotal = billTotal;
         double billowes = Double.parseDouble(billTotal);
-        billowes = billowes/billPayers.size();
-        billowes = round(billowes,2);
+        billowes = billowes / billPayers.size();
+        billowes = round(billowes, 2);
         this.BillOwes = String.valueOf(billowes);
         this.BillPayers = billPayers;
         this.BillTime = billTime;
@@ -115,6 +134,22 @@ public class Bill {
 
     public void setBillStatus(String billStatus) {
         BillStatus = billStatus;
+    }
+
+    public String getDocumentID() {
+        return documentID;
+    }
+
+    public void setDocumentID(String documentID) {
+        this.documentID = documentID;
+    }
+
+    public ArrayList<String> getArraybillpayers() {
+        return payersARRAY;
+    }
+
+    public void setArraybillpayers(ArrayList<String> arraybillpayers) {
+        this.payersARRAY = arraybillpayers;
     }
 
     public static double round(double value, int places) {

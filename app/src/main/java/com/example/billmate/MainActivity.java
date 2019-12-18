@@ -21,7 +21,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.billmate.itemsBean.Bill;
+import com.example.billmate.itemsBean.BeginningGroup;
+import com.example.billmate.itemsBean.IdDocsForUser;
 import com.example.billmate.itemsBean.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,6 +32,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -39,19 +41,15 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
     private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private final String TAG = MainActivity.class.getSimpleName();
     GoogleSignInClient mGoogleSignInClient;
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -66,9 +64,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected static BeginningGroup beginningGroup = new BeginningGroup(); //if != null
     protected static HashMap<String, BeginningGroup> groups = new HashMap<String, BeginningGroup>();
     protected static IdDocsForUser idDocsForUser = new IdDocsForUser();
-
-    protected static ArrayList<String> idDocBills = new ArrayList<String>();
-    protected static HashMap<String, Bill> bills = new HashMap<String, Bill>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +89,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MembersFragment()).commitAllowingStateLoss();
             navigationView.setCheckedItem(R.id.nav_members);
+        }
+        if (resultCode == R.id.nav_notifications) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new NotificationFragment()).commitAllowingStateLoss();
+            navigationView.setCheckedItem(R.id.nav_notifications);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -133,24 +133,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
-                    beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
-                    groups.put(documentSnapshot.getId(), beginningGroupLocal);
-                    createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
-                    Log.d(TAG, "Dane zostały zapisane");
+                    if (documentSnapshot.exists()) {
+                        BeginningGroup beginningGroupLocal = documentSnapshot.toObject(BeginningGroup.class);
+                        beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
+                        groups.put(documentSnapshot.getId(), beginningGroupLocal);
+                        createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
+                        Log.d(TAG, "Data_Save");
+                    } else {
+                        Toast.makeText(getApplicationContext(), getString(R.string.error_load_group) + documentSnapshot.getId(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                    Log.d(TAG, "Data_Not_Save" + e.toString());
                 }
             }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    Log.d(TAG, "WSZYSTKIE DANE WCZYTANE");
-                    beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
-                    setTitle(beginningGroup.getNameOfGroup());
-                    downloadListenerIdDocBills();
+                    Log.d(TAG, "Data_Save");
+                    if (!(groups.get(idDocsForUser.getIdDocs().get(0)) == null)) {
+                        beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
+                        setTitle(beginningGroup.getNameOfGroup());
+                    }
                 }
             });
         }
@@ -205,22 +210,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
                             createBill();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Utwórz grupę w zakładce HOME", Toast.LENGTH_LONG).show();
+                            Snackbar.make(view, getString(R.string.create_group_in_home), Snackbar.LENGTH_LONG).show();
                         }
                         break;
                     case R.id.nav_members:
                         if (beginningGroup.getMembers().get(0).equals(user_google_information.getEmail())) {
                             addNewMember();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Tylko administrator może dodawać nowych userów", Toast.LENGTH_LONG).show();
+                            Snackbar.make(view, "Tylko administrator może dodawać nowych userów", Snackbar.LENGTH_LONG).show();
                         }
                         break;
-//                    case R.id.nav_notifications:
-//                        createNewItem(navigationView, "TestItem", "TestDescription");
-//                        break;
+                    case R.id.nav_notifications:
+                        Snackbar.make(view, "Rachunki dodaje się w zakładce Bills", Snackbar.LENGTH_LONG).show();
+                        break;
                     default:
-                        Toast.makeText(getApplicationContext(), navigationView.getCheckedItem().toString(), Toast.LENGTH_LONG).show();
-//                        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(view, "WOW! Jak to zrobiłeś!?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
         });
@@ -245,15 +249,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         new MembersFragment()).commit();
                 break;
 
-//            case R.id.nav_notifications:
-//                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                        new NotificationFragment()).commit();
-//                break;
+            case R.id.nav_notifications:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new NotificationFragment()).commit();
+                break;
 
 
             // Actions group
             case R.id.nav_info:
-                Toast.makeText(this, "Information", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.information), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_logout:
                 logout();
@@ -331,47 +335,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void clearMenuItem() {
         MenuItem menu = navigationView.getMenu().getItem(1);
         menu.getSubMenu().clear();
-    }
-
-    private void downloadListenerIdDocBills() {
-        idDocBills.clear();
-        documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bookOfAccounts/" + user_google_information.getEmail());
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                if ((e) != null) {
-                    return;
-                }
-                if (documentSnapshot.exists()) {
-                    Log.d(TAG, "Doc istnieje");
-                    idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
-                    loadingObjectBill();
-                    Log.d(TAG, "AKTUALNE DANE DOT. ID_BILLS ");
-                } else {
-                    Log.d(TAG, "Doc nie istnieje");
-                }
-            }
-        });
-    }
-
-    private void loadingObjectBill() {
-        if (!idDocBills.isEmpty()) {
-            for (int i = 0; i < idDocBills.size(); i++) {
-                documentReference = db.document("groups/" + beginningGroup.getIdDocFirebase() + "/bills/" + idDocBills.get(i));
-                documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Bill billLocal = documentSnapshot.toObject(Bill.class);
-                        bills.put(documentSnapshot.getId(), billLocal);
-                        Log.d(TAG, "Dane zostały wczytane");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "Błąd wczytywania danych: " + e.toString());
-                    }
-                });
-            }
-        }
     }
 }

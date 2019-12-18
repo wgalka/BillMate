@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.billmate.adapter.InviteAdapter;
+import com.example.billmate.itemsBean.IdDocsForUser;
 import com.example.billmate.itemsBean.ItemCardView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.example.billmate.MainActivity.beginningGroup;
 import static com.example.billmate.MainActivity.groups;
@@ -32,9 +35,12 @@ import static com.example.billmate.MainActivity.groups;
 public class InviteActivity extends AppCompatActivity {
 
     private static final String NAME_OF_GROUP = "NAME_OF_GROUP";
-    private static final String TAG = InviteActivity.class.getSimpleName();
+    private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
+    private static final String UPDATE = "UPDATE";
+    private final String TAG = InviteActivity.class.getSimpleName();
     private Button confirmAddNewMember, finishFirstConfiguration;
     private EditText getEmailMember;
+    private View clear_textview;
     private ArrayList<ItemCardView> mList = new ArrayList<ItemCardView>();
     private RecyclerView mRecyclerView;
     private InviteAdapter mInviteAdapter;
@@ -43,6 +49,7 @@ public class InviteActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference collectionReference;
     private DocumentReference documentReference;
+    private ArrayList<String> copy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +58,9 @@ public class InviteActivity extends AppCompatActivity {
         confirmAddNewMember = findViewById(R.id.addNewMember);
         finishFirstConfiguration = findViewById(R.id.finish);
         getEmailMember = findViewById(R.id.getEmailMember);
+        clear_textview = findViewById(R.id.clear_textview);
+        setClear_textview();
+        copy = new ArrayList<String>(beginningGroup.getMembers());
         setConfirmAddNewMember();
         bulidRecycleView();
         ifUpdateGroup(isUpdateData(getIntent().getExtras().getString(NAME_OF_GROUP)));
@@ -78,7 +88,7 @@ public class InviteActivity extends AppCompatActivity {
                             isDuplicated = 1;
                             break;
                         }
-                    } // poprawić sprawdzanie na 2 listach czy nie wystepuje duplikowanie maili, potestować też usuwanie w trakcie dodawania
+                    }
                     if (mList.size() != 0) {
                         isDuplicated = 0;
                         for (int i = 0; i < mList.size(); i++) {
@@ -112,14 +122,14 @@ public class InviteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (beginningGroup.getMembers().size() > 1) {
-                    Toast.makeText(getApplicationContext(), "Pozytywnie utworzono grupe: " + beginningGroup.getSize(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.success_create_new_group) + beginningGroup.getNameOfGroup(), Toast.LENGTH_LONG).show();
                     //oneUserAddToListId(beginningGroup.getIdDocFirebase(),mList);
                     beginningGroup.setIdDocFirebase(null);
                     uploadNewGroup();
                     beginningGroup.getMembers().clear();
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.add_one_member_to_group), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -129,16 +139,16 @@ public class InviteActivity extends AppCompatActivity {
         finishFirstConfiguration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!beginningGroup.getNameOfGroup().equals("GROUP_NOT_EXIST")) {
+                if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
                     if (groups.get(beginningGroup.getIdDocFirebase()).getSize() + beginningGroup.getSize() > groups.get(beginningGroup.getIdDocFirebase()).getSize() && mList.size() > 0) {
                         updateExistGroup();
                         oneUserAddToListId(beginningGroup.getIdDocFirebase(), mList);
                         finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Dodaj przynajmniej jedną osobę do grupy", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.add_one_member_to_group), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "Uwtórz grupę w zakładce HOME", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.create_group_in_home), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -170,15 +180,14 @@ public class InviteActivity extends AppCompatActivity {
                 beginningGroup.removeElem(position);
                 mInviteAdapter.notifyItemRemoved(position);
             } else {
-                for (int i = 0; i < mList.size(); i++) {
-//                    sprawdzić czy na mlist znajdue sie jakiś mail z beginningGroup
-//                    if(warnuek){
-//                        break;
-//                    }
+                if (position > copy.size() - 1) {
+                    mList.remove(position);
+                    beginningGroup.removeElem(position);
+                    mInviteAdapter.notifyItemRemoved(position);
                 }
             }
         } else {
-            Toast.makeText(getApplicationContext(), "Administratora nie można usunąć", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.admin_delete_alert), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -187,13 +196,13 @@ public class InviteActivity extends AppCompatActivity {
         collectionReference.add(beginningGroup).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "Dane zostały zapisane");
+                Log.d(TAG, "Data_Save");
                 oneUserAddToListId(documentReference.getId(), mList);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                Log.d(TAG, "Data_Not_Save" + e.toString());
             }
         });
     }
@@ -210,12 +219,14 @@ public class InviteActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, "DOC istnieje dla " + documentSnapshot.getId());
+                        Log.d(TAG, "Doc_Exist" + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                         idDocsForUser.addElem(id);
+                        Set<String> set = new HashSet<String>(idDocsForUser.getIdDocs());
+                        idDocsForUser.setIdDocs(new ArrayList<String>(set));
                         idDocsForUser.userUpdate(documentSnapshot.getId());
                     } else {
-                        Log.d(TAG, "DOC nie istnieje dla " + documentSnapshot.getId());
+                        Log.d(TAG, "Doc_Not_Exist " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = new IdDocsForUser();
                         idDocsForUser.addElem(id);
                         idDocsForUser.userUpdate(documentSnapshot.getId());
@@ -224,7 +235,7 @@ public class InviteActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, "Błąd w zapisnie danych: " + e.toString());
+                    Log.d(TAG, "Data_Error_Save" + e.toString());
                 }
             });
         }
@@ -244,7 +255,7 @@ public class InviteActivity extends AppCompatActivity {
     }
 
     private boolean isUpdateData(String action) {
-        if (action.equals("UPDATE")) {
+        if (action.equals(UPDATE)) {
             return true;
         } else {
             return false;
@@ -262,5 +273,20 @@ public class InviteActivity extends AppCompatActivity {
         Intent backToHomeFragment = new Intent(this, MainActivity.class);
         setResult(R.id.nav_members, backToHomeFragment);
         super.finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        beginningGroup.setMembers(copy);
+        super.onBackPressed();
+    }
+
+    private void setClear_textview() {
+        clear_textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getEmailMember.setText("");
+            }
+        });
     }
 }

@@ -1,4 +1,4 @@
-package com.example.billmate;
+package com.example.billmate.itemsBean;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;

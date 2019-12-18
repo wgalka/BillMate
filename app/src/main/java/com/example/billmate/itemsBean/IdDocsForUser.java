@@ -1,4 +1,4 @@
-package com.example.billmate;
+package com.example.billmate.itemsBean;
 
 import android.util.Log;
 
@@ -40,7 +40,7 @@ public class IdDocsForUser {
         return idDocs.size();
     }
 
-    protected void userUpdate(String email) {
+    public void userUpdate(String email) {
         db.collection("list").document(email).set(this, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

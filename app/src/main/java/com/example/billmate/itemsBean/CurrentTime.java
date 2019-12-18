@@ -1,4 +1,4 @@
-package com.example.billmate;
+package com.example.billmate.itemsBean;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,13 +10,13 @@ public class CurrentTime {
     public CurrentTime() {
     }
 
-    protected Long milliseconds() {
+    public Long milliseconds() {
         date = System.currentTimeMillis();
         String milliseconds = String.valueOf(date);
         return date;
     }
 
-    protected Long convertMillisecondsToMinutes(Long milliseconds) {
+    public Long convertMillisecondsToMinutes(Long milliseconds) {
         long minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds);
         return minutes;
     }

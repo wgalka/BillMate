@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RevertBill">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Who didn't pay?"
+        android:textColor="@color/primary_dark"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/mGroupMembersLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.564" />
+
+    <LinearLayout
+        android:id="@+id/mMembersLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/mRevertBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_bg"
+        android:backgroundTint="@color/ButtonREJECT"
+        android:text="Save"
+        android:textColor="@color/ButtonText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/mDeleteBill"
+        app:layout_constraintTop_toBottomOf="@+id/mMembersLinearLayout" />
+
+    <Button
+        android:id="@+id/mDeleteBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/round_bg"
+        android:backgroundTint="@color/ButtonPrimaryColor"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
+        android:text="Everyone Paid"
+        android:textColor="@color/ButtonText"
+        app:layout_constraintEnd_toStartOf="@+id/mRevertBill"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mMembersLinearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
