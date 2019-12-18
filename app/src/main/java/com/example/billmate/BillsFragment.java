@@ -40,6 +40,7 @@ import java.util.Set;
 
 public class BillsFragment extends Fragment {
 
+    private static final String GROUP_NOT_EXIST = "GROUP_NOT_EXIST";
     private final String TAG = BillsFragment.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private BillAdapter mBillAdapter;
@@ -121,14 +122,16 @@ public class BillsFragment extends Fragment {
                     return;
                 }
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, getString(R.string.doc_exist));
+                    Log.d(TAG, "Doc_Exist");
                     idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
                     Set<String> set = new HashSet<String>(idDocBills);
                     idDocBills = new ArrayList<String>(set);
                     loadingObjectBillAgain();
                 } else {
-                    Log.d(TAG, getString(R.string.doc_not_exist));
-                    Toast.makeText(getContext(), getString(R.string.nie_masz_zaleglosci), Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "Doc_Not_Exist");
+                    if (!beginningGroup.getNameOfGroup().equals(GROUP_NOT_EXIST)) {
+                        Toast.makeText(getContext(), getString(R.string.nie_masz_zaleglosci), Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -157,12 +160,12 @@ public class BillsFragment extends Fragment {
                             ));
                             mBillAdapter.notifyDataSetChanged();
                         }
-                        Log.d(TAG, getString(R.string.data_save));
+                        Log.d(TAG, "Data_Save");
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, getString(R.string.error_save) + e.toString());
+                        Log.d(TAG, "Data_Error_Save" + e.toString());
                     }
                 });
             }

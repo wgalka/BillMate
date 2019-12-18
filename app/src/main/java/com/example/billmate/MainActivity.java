@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         beginningGroupLocal.setIdDocFirebase(documentSnapshot.getId());
                         groups.put(documentSnapshot.getId(), beginningGroupLocal);
                         createNewItem(navigationView, groups.get(documentSnapshot.getId()).getNameOfGroup(), documentSnapshot.getId());
-                        Log.d(TAG, getString(R.string.data_save));
+                        Log.d(TAG, "Data_Save");
                     } else {
                         Toast.makeText(getApplicationContext(), getString(R.string.error_load_group) + documentSnapshot.getId(), Toast.LENGTH_SHORT).show();
                     }
@@ -146,12 +146,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, getString(R.string.error_save) + e.toString());
+                    Log.d(TAG, "Data_Not_Save" + e.toString());
                 }
             }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    Log.d(TAG, getString(R.string.data_save));
+                    Log.d(TAG, "Data_Save");
                     if (!(groups.get(idDocsForUser.getIdDocs().get(0)) == null)) {
                         beginningGroup = groups.get(idDocsForUser.getIdDocs().get(0));
                         setTitle(beginningGroup.getNameOfGroup());

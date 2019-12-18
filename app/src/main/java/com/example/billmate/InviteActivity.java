@@ -196,13 +196,13 @@ public class InviteActivity extends AppCompatActivity {
         collectionReference.add(beginningGroup).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, getString(R.string.data_save));
+                Log.d(TAG, "Data_Save");
                 oneUserAddToListId(documentReference.getId(), mList);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, getString(R.string.error_save) + e.toString());
+                Log.d(TAG, "Data_Not_Save" + e.toString());
             }
         });
     }
@@ -219,14 +219,14 @@ public class InviteActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
+                        Log.d(TAG, "Doc_Exist" + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                         idDocsForUser.addElem(id);
                         Set<String> set = new HashSet<String>(idDocsForUser.getIdDocs());
                         idDocsForUser.setIdDocs(new ArrayList<String>(set));
                         idDocsForUser.userUpdate(documentSnapshot.getId());
                     } else {
-                        Log.d(TAG, "Nie " + getString(R.string.exist_doc_for) + documentSnapshot.getId());
+                        Log.d(TAG, "Doc_Not_Exist " + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = new IdDocsForUser();
                         idDocsForUser.addElem(id);
                         idDocsForUser.userUpdate(documentSnapshot.getId());
@@ -235,7 +235,7 @@ public class InviteActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, getString(R.string.error_save) + e.toString());
+                    Log.d(TAG, "Data_Error_Save" + e.toString());
                 }
             });
         }

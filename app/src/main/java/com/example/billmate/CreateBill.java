@@ -90,13 +90,13 @@ public class CreateBill extends AppCompatActivity {
                     collectionReference.add(bill).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, getString(R.string.data_save));
+                            Log.d(TAG, "Data_Save");
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, getString(R.string.error_save) + e.toString());
+                            Log.d(TAG, "Data_Not_Save" + e.toString());
                         }
                     });
                 } else {

@@ -93,7 +93,7 @@ public class MembersFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, getString(R.string.error_save) + e.toString());
+                        Log.d(TAG, "Data_Not_Save" + e.toString());
                     }
                 });
             }
@@ -184,15 +184,15 @@ public class MembersFragment extends Fragment {
                     if (idDocs.size() == 0) {
                         removeFromDatabase(position);
                     } else {
-                        Toast.makeText(getContext(), getString(R.string.user_delete_alert), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "User ma niezapłacone rachunki.", Toast.LENGTH_SHORT).show();
                     }
                 }
-                Log.d(TAG, getString(R.string.data_save));
+                Log.d(TAG, "Data_Save");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, getString(R.string.error_save) + e.toString());
+                Log.d(TAG, "Data_not_Save" + e.toString());
             }
         });
     }
@@ -214,7 +214,7 @@ public class MembersFragment extends Fragment {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if (documentSnapshot.exists()) {
-                        Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
+                        Log.d(TAG, "Doc_Exist" + documentSnapshot.getId());
                         IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                         for (int i = 0; i < idDocsForUser.getSize(); i++) {
                             if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
@@ -227,7 +227,7 @@ public class MembersFragment extends Fragment {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, getString(R.string.error_save) + e.toString());
+                    Log.d(TAG, "Data_Not_Save" + e.toString());
                 }
             });
         }
@@ -239,7 +239,7 @@ public class MembersFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, getString(R.string.exist_doc_for) + documentSnapshot.getId());
+                    Log.d(TAG, "Doc_Exist" + documentSnapshot.getId());
                     IdDocsForUser idDocsForUser = documentSnapshot.toObject(IdDocsForUser.class);
                     for (int i = 0; i < idDocsForUser.getSize(); i++) {
                         if (idDocsForUser.getIdDocs().get(i).equals(id)) ;
@@ -252,7 +252,7 @@ public class MembersFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, getString(R.string.error_save) + e.toString());
+                Log.d(TAG, "Data_Not_Save" + e.toString());
             }
         });
     }

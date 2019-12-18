@@ -129,7 +129,7 @@ public class NotificationFragment extends Fragment {
                             billLocal.getBillOwes()));
                     mBillAdapter.notifyDataSetChanged();
                 }
-                Log.d(TAG, getString(R.string.data_save));
+                Log.d(TAG, "Data_Save");
             }
         });
     }

@@ -159,13 +159,13 @@ public class MyGroupsFragment extends Fragment {
                     return;
                 }
                 if (documentSnapshot.exists()) {
-                    Log.d(TAG, getString(R.string.doc_exist));
+                    Log.d(TAG, "Doc_Exist");
                     idDocBills.addAll((Collection<? extends String>) documentSnapshot.get("idDocs"));
                     Set<String> set = new HashSet<String>(idDocBills);
                     idDocBills = new ArrayList<String>(set);
                     loadingObjectBillAgain();
                 } else {
-                    Log.d(TAG, getString(R.string.doc_not_exist));
+                    Log.d(TAG, "Doc_Not_Exist");
                     clearTextView();
                 }
             }
@@ -183,15 +183,15 @@ public class MyGroupsFragment extends Fragment {
                             Bill billLocal = documentSnapshot.toObject(Bill.class);
                             bills.put(documentSnapshot.getId(), billLocal);
                             calculateBilans(billLocal.getBillOwes(), billLocal.getBillPayers(), billLocal.getBillPayers().size(), billLocal.getBillOwner());
-                            Log.d(TAG, getString(R.string.data_save));
+                            Log.d(TAG, "Data_Save");
                         } else {
-                            Log.d(TAG, getString(R.string.error_save));
+                            Log.d(TAG, "Doc_Not_Exist "+documentSnapshot.getId());
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, getString(R.string.error_save) + e.toString());
+                        Log.d(TAG, "Data_Not_Save" + e.toString());
                     }
                 });
             }
