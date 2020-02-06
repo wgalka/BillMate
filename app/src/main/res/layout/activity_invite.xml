@@ -17,7 +17,7 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:text="Provide your group member e-mail below."
-            android:textColor="@color/sd_label_text_color" />
+            android:textColor="@color/secondary_text" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearLayout6"

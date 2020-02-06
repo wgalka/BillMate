@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="Create grups. In next step you can add members"
             android:textAlignment="center"
-            android:textColor="@color/sd_label_text_color" />
+            android:textColor="@color/secondary_text" />
     </LinearLayout>
 
     <Button

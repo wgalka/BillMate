@@ -1,0 +1,1 @@
+Funkcje obsługujące działania on create i update dokumentów w bazie
