@@ -134,7 +134,7 @@ public class MembersFragment extends Fragment {
     }
 
     private void bulidRecycleView(View mainView) {
-        mRecyclerView = mainView.findViewById(R.id.group_managment);
+        mRecyclerView = mainView.findViewById(R.id.group_management);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mMembersFragment = new InviteAdapter(mList);

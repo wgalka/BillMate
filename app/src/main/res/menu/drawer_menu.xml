@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-    <item android:title="Managment">
+    <item android:title="Management">
         <menu>
             <group
-                android:id="@+id/group_managment"
+                android:id="@+id/group_management"
                 android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_home"

@@ -73,7 +73,7 @@
             android:textColorHint="@color/primary" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/group_managment"
+            android:id="@+id/group_management"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="10dp"
